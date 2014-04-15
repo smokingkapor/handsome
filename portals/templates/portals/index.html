@@ -1,0 +1,229 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block extrajs %}
+<script src="{% static 'js/portal.js' %}"></script>
+<!--[if lte IE 9]>       
+    <script src="{% static 'ie-bootstrap-carousel/ie-bootstrap-carousel.min.js' %}"></script>
+<![endif]-->
+{% endblock%}
+
+{% block title %}Mr-Handsome{% endblock %}
+
+{% block content %}
+<div class="carousel slide">
+    <div class="carousel-inner">
+        <div class="item active">
+            <div class="carousel-caption">
+                <div class="container">
+                    <p>
+                        <strong>Mr. Handsome.</strong>Your personal Fashion Consultant
+                    </p>
+                    <br /><br />
+                    <a href="javascript:void(0)" class="btn btn-default next">马上开始</a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="carousel-caption">
+                <div class="container">
+                    <h4>Choose your style</h4>
+                    <div class="row selector">
+                        <div class="col-md-offset-2 col-md-2">
+                            <div class="option">商务</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="option selected">休闲</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="option">英伦</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="option">不知道</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="pager">
+                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
+                                <li class="next"><a href="javascript:void(0);">&rarr;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="carousel-caption">
+                <div class="container">
+                    <h4>Choose your age</h4>
+                    <div class="row selector">
+                        <div class="col-md-offset-2 col-md-2">
+                            <div class="option">&lt;20</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="option selected">20-25</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="option">25-30</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="option">&gt;30</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="pager">
+                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
+                                <li class="next"><a href="javascript:void(0);">&rarr;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="carousel-caption">
+                <div class="container">
+                    <div class="col-md-6">
+                        <h4>马上注册</h4>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <span class="col-md-3 control-label">用户名：</span>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="col-md-3 control-label">密码：</span>
+                                <div class="col-md-7">
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="col-md-3 control-label">确认密码：</span>
+                                <div class="col-md-7">
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-7 text-right">
+                                    <input type="button" class="btn btn-default next" value="注册">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <form class="form-horizontal" role="form">
+                            <h4>快速登录</h4>
+                            <div class="form-group">
+                                <span class="col-md-3 control-label">用户名：</span>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="col-md-3 control-label">密码：</span>
+                                <div class="col-md-7">
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" />
+                                            <span>记住我</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-7 text-right">
+                                    <input type="button" class="btn btn-default next" value="登录">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="pager">
+                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="item">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <span class="col-sm-3 control-label">身高：</span>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="col-sm-3 control-label">体重：</span>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="col-sm-3 control-label">腰围：</span>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="col-sm-3 control-label">裤长：</span>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="col-sm-3 control-label">鞋码：</span>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <form class="form-inline" role="form">
+                                    <div class="form-group">
+                                        <span>全身照：</span>
+                                        <input type="file" class="form-control">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">上传</button>
+                                </form>
+                                <br />
+                                <div>
+                                    <img data-src="holder.js/171x180" style="height: 180px; width: 171px; display: block;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzEiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9Ijg1LjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcxeDE4MDwvdGV4dD48L3N2Zz4=">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="pager">
+                                    <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
