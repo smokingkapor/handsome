@@ -28,6 +28,7 @@
                 </div>
             </div>
         </div>
+
         <div class="item">
             <div class="carousel-caption">
                 <div class="container">
@@ -57,6 +58,7 @@
                 </div>
             </div>
         </div>
+
         <div class="item">
             <div class="carousel-caption">
                 <div class="container">
@@ -86,6 +88,8 @@
                 </div>
             </div>
         </div>
+
+        {% if not user.is_authenticated %}
         <div class="item">
             <div class="carousel-caption">
                 <div class="container">
@@ -159,6 +163,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <div class="item">
             <div class="item">
