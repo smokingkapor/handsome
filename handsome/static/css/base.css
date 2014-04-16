@@ -7,3 +7,15 @@ body {
     padding: 20px 10px 0 10px;
     width: 340px;
 }
+
+.eye_conversion {
+    cursor: pointer;
+}
+
+.eye_conversion:hover {
+    color: #2a6496;
+}
+
+.eye_conversion.glyphicon-eye-open {
+    color: #428bca;
+}

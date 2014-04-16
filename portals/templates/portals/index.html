@@ -3,6 +3,7 @@
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+<link rel="stylesheet" href="{% static 'jQuery-File-Upload/css/jquery.fileupload.css' %}">
 {% endblock%}
 
 {% block extrajs %}
@@ -10,6 +11,9 @@
 <!--[if lte IE 9]>       
     <script src="{% static 'ie-bootstrap-carousel/ie-bootstrap-carousel.min.js' %}"></script>
 <![endif]-->
+<script src="{% static 'jQuery-File-Upload/js/vendor/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.fileupload.js' %}"></script>
 {% endblock%}
 
 {% block title %}Mr-Handsome{% endblock %}
@@ -34,24 +38,17 @@
                 <div class="container">
                     <h4>Choose your style</h4>
                     <div class="row selector">
-                        <div class="col-md-offset-2 col-md-2">
-                            <div class="option">商务</div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="option selected">休闲</div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="option">英伦</div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="option">不知道</div>
-                        </div>
+                        {% for choice in STYLE_CHOICES %}
+                            <div class="{% if forloop.first %}col-sm-offset-2{% endif%} col-sm-2 {% if user.preferred_style == choice.0 %}selected{% endif %}">
+                                <div class="option" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
+                            </div>
+                        {% endfor %}
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="pager">
                                 <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next"><a href="javascript:void(0);">&rarr;</a></li>
+                                <li class="next {% if not user.preferred_style %}hidden{% endif %}"><a href="javascript:void(0);">&rarr;</a></li>
                             </ul>
                         </div>
                     </div>
@@ -64,24 +61,17 @@
                 <div class="container">
                     <h4>Choose your age</h4>
                     <div class="row selector">
-                        <div class="col-md-offset-2 col-md-2">
-                            <div class="option">&lt;20</div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="option selected">20-25</div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="option">25-30</div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="option">&gt;30</div>
-                        </div>
+                        {% for choice in AGE_GROUP_CHOICES %}
+                            <div class="{% if forloop.first %}col-sm-offset-2{% endif%} col-sm-2 {% if user.preferred_style == choice.0 %}selected{% endif %}">
+                                <div class="option" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
+                            </div>
+                        {% endfor %}
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="pager">
                                 <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next"><a href="javascript:void(0);">&rarr;</a></li>
+                                <li class="next {% if not user.age_group %}hidden{% endif %}"><a href="javascript:void(0);">&rarr;</a></li>
                             </ul>
                         </div>
                     </div>
@@ -95,60 +85,74 @@
                 <div class="container">
                     <div class="col-md-6">
                         <h4>马上注册</h4>
-                        <form class="form-horizontal" role="form">
+                        <form class="form-horizontal" role="form" action="{% url 'accounts:register' %}">
                             <div class="form-group">
                                 <span class="col-md-3 control-label">用户名：</span>
                                 <div class="col-md-7">
-                                    <input type="text" class="form-control">
+                                    <div class="input-group">
+                                        <input type="text" name="username" class="form-control" id="register-username">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user" data-input-id="register-username"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <span class="col-md-3 control-label">密码：</span>
                                 <div class="col-md-7">
-                                    <input type="password" class="form-control">
+                                    <div class="input-group">
+                                        <input type="password" name="password" class="form-control" id="register-password">
+                                        <span class="input-group-addon">
+                                            <span class="eye_conversion glyphicon glyphicon-eye-close" data-input-id="register-password"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <span class="col-md-3 control-label">确认密码：</span>
-                                <div class="col-md-7">
-                                    <input type="password" class="form-control">
+                            <div class="form-group hidden form-error">
+                                <div class="col-md-7 col-md-offset-3">
+                                    <div class="alert alert-danger"></div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-offset-3 col-md-7 text-right">
-                                    <input type="button" class="btn btn-default next" value="注册">
+                                    <input id="register-btn" data-loading-text="正在注册..." type="button" class="btn btn-default" value="注册">
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="col-md-6">
-                        <form class="form-horizontal" role="form">
+                        <form class="form-horizontal" role="form" action="{% url 'accounts:login' %}">
                             <h4>快速登录</h4>
                             <div class="form-group">
                                 <span class="col-md-3 control-label">用户名：</span>
                                 <div class="col-md-7">
-                                    <input type="text" class="form-control">
+                                    <div class="input-group">
+                                        <input type="text" name="username" class="form-control" id="login-username">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user" data-input-id="login-username"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <span class="col-md-3 control-label">密码：</span>
                                 <div class="col-md-7">
-                                    <input type="password" class="form-control">
+                                    <div class="input-group">
+                                        <input type="password" name="password" class="form-control" id="login-password">
+                                        <span class="input-group-addon">
+                                            <span class="eye_conversion glyphicon glyphicon-eye-close" data-input-id="login-password"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" />
-                                            <span>记住我</span>
-                                        </label>
-                                    </div>
+                            <div class="form-group hidden form-error">
+                                <div class="col-md-7 col-md-offset-3">
+                                    <div class="alert alert-danger"></div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-offset-3 col-md-7 text-right">
-                                    <input type="button" class="btn btn-default next" value="登录">
+                                    <input id="login-btn" data-loading-text="登录中..." type="button" class="btn btn-default" value="登录">
                                 </div>
                             </div>
                         </form>
@@ -205,17 +209,20 @@
                                 </form>
                             </div>
                             <div class="col-md-6">
-                                <form class="form-inline" role="form">
-                                    <div class="form-group">
-                                        <span>全身照：</span>
-                                        <input type="file" class="form-control">
-                                    </div>
-                                    <button type="submit" class="btn btn-default">上传</button>
-                                </form>
-                                <br />
-                                <div>
-                                    <img data-src="holder.js/171x180" style="height: 180px; width: 171px; display: block;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzEiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9Ijg1LjUiIHk9IjkwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MTcxeDE4MDwvdGV4dD48L3N2Zz4=">
+                                <span class="btn btn-success fileinput-button">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>上传全身照...</span>
+                                    <input id="fileupload" type="file" name="file" data-url="{% url 'accounts:upload' %}">
+                                </span>
+                                <br>
+                                <br>
+                                <!-- The global progress bar -->
+                                <div id="progress" class="progress">
+                                    <div class="progress-bar progress-bar-success"></div>
                                 </div>
+                                <div id="files" class="files">
+                                </div>
+                                <br>
                             </div>
                         </div>
                         <div class="row">

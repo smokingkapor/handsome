@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 LOCAL_APPS = (
+    'accounts',
     'handsome',
     'portals',
 )
@@ -44,6 +45,7 @@ INSTALLED_APPS = (
 
     # 3rd libs
     'compressor',
+    'south',
 ) + LOCAL_APPS
 
 MIDDLEWARE_CLASSES = (
@@ -93,6 +95,8 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 try:
     from local_settings import *  # noqa
