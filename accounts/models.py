@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 
 from .constants import(
     BUSINESS, CASUAL, ENGLAND, NO_IDEA, UNDER_20, BETWEEN_20_25, ABOVE_30,
-    BETWEEN_25_30
+    BETWEEN_25_30, FULL_BODY_SHOT
 )
 
 
@@ -15,17 +16,17 @@ class Profile(models.Model):
     """
 
     STYLE_CHOICES = (
-        (BUSINESS, '商务'),
-        (CASUAL, '休闲'),
-        (ENGLAND, '英伦'),
-        (NO_IDEA, '不知道'),
+        (BUSINESS, u'商务'),
+        (CASUAL, u'休闲'),
+        (ENGLAND, u'英伦'),
+        (NO_IDEA, u'不知道'),
     )
 
     AGE_GROUP_CHOICES = (
-        (UNDER_20, '<20'),
-        (BETWEEN_20_25, '20-25'),
-        (BETWEEN_25_30, '25-30'),
-        (ABOVE_30, '>30'),
+        (UNDER_20, u'<20'),
+        (BETWEEN_20_25, u'20-25'),
+        (BETWEEN_25_30, u'25-30'),
+        (ABOVE_30, u'>30'),
     )
 
     user = models.OneToOneField(User)
@@ -33,10 +34,34 @@ class Profile(models.Model):
                                        choices=STYLE_CHOICES)
     age_group = models.CharField(max_length=32, blank=True,
                                  choices=AGE_GROUP_CHOICES)
-    height = models.FloatField(blank=True, null=True)
-    weight = models.FloatField(blank=True, null=True)
-    waistline = models.FloatField(blank=True, null=True)
-    shoe_size = models.FloatField(blank=True, null=True)
+    height = models.CharField(max_length=16, blank=True)
+    weight = models.CharField(max_length=16, blank=True)
+    waistline = models.CharField(max_length=16, blank=True)
+    chest = models.CharField(max_length=16, blank=True)
+    hipline = models.CharField(max_length=16, blank=True)
+    foot = models.CharField(max_length=16, blank=True)
+
+    def get_fullbody_shot_url(self):
+        photo = self.user.photo_set.filter(tag=FULL_BODY_SHOT, is_primary=True).first()  # noqa
+        if photo:
+            return '{}fullbody-shot/{}'.format(settings.MEDIA_URL, photo.file)
+        return None
+
+
+class Photo(models.Model):
+    """
+    User photos
+    """
+
+    TAG_CHOICES = (
+        (FULL_BODY_SHOT, u'全身照'),
+    )
+
+    user = models.ForeignKey(User)
+    file = models.CharField(max_length=64)
+    is_primary = models.BooleanField(default=False)
+    tag = models.CharField(max_length=16, choices=TAG_CHOICES,
+                           default=FULL_BODY_SHOT, db_index=True)
 
 
 def create_user_profile(sender, instance, created, **kwargs):

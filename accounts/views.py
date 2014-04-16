@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
+import glob
 import os
+import shutil
 
 from django.conf import settings
 from django.contrib import auth
@@ -8,13 +10,17 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic.base import RedirectView
+from django.http.response import HttpResponse
+from django.views.generic.base import RedirectView, View
 from django.views.generic.edit import FormView
 
-from braces.views import JSONResponseMixin, LoginRequiredMixin, CsrfExemptMixin
+from braces.views import(
+    JSONResponseMixin, LoginRequiredMixin, CsrfExemptMixin, AjaxResponseMixin
+)
 
 from .forms import LoginForm, RegisterForm, UploadForm
-from django.http.response import HttpResponse
+from .models import Photo
+from handsome.utils import generate_str
 
 
 class LoginView(JSONResponseMixin, FormView):
@@ -114,14 +120,57 @@ class UploadView(CsrfExemptMixin, LoginRequiredMixin, FormView):
         Upload shot to temple folder
         """
         data = form.cleaned_data
+        user = self.request.user
         name, ext = os.path.splitext(data['file'].name)
-        filename = '{}{}'.format(self.request.user.id, ext)
-        path = os.path.join(settings.MEDIA_ROOT, 'tmp', filename)
-        if os.path.exists(path):
-            os.remove(path)
+        filename = '{}{}'.format(user.id, ext)
+        root = os.path.join(settings.MEDIA_ROOT, 'tmp')
+        # remove the tmp files for current user
+        path = os.path.join(root, filename)
+        [os.remove(p) for p in glob.glob(os.path.join(root, '{}.*'.format(user.id)))]  # noqa
         default_storage.save(path, ContentFile(data['file'].read()))
         path = '{}tmp/{}'.format(settings.MEDIA_URL, filename)
-        return HttpResponse(json.dumps({'success': True, 'path': path}))
+        return HttpResponse(json.dumps({'success': True, 'path': path,
+                                        'filename': filename}))
 
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'success': False}))
+
+
+class UpdateView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
+                 View):
+    """
+    Update personal info
+    """
+    def post_ajax(self, request, *args, **kwargs):
+        """
+        Update user profile
+        """
+        user = self.request.user
+        profile = user.profile
+        profile.preferred_style = request.POST['style']
+        profile.age_group = request.POST['age_group']
+        profile.height = request.POST['height']
+        profile.weight = request.POST['weight']
+        profile.waistline = request.POST['waistline']
+        profile.chest = request.POST['chest']
+        profile.hipline = request.POST['hipline']
+        profile.foot = request.POST['foot']
+        profile.save()
+
+        # save full body shot
+        filename = request.POST['filename']
+        name, ext = os.path.splitext(filename)
+        temp_file_path = os.path.join(settings.MEDIA_ROOT, 'tmp', filename)
+
+        fullbody_shot_root = os.path.join(settings.MEDIA_ROOT, 'fullbody-shot')
+        if not os.path.exists(fullbody_shot_root):
+            os.makedirs(fullbody_shot_root)
+
+        if os.path.exists(temp_file_path):
+            new_filename = 'user_{}_{}{}'.format(user.id, generate_str(6), ext)
+            fullbody_shot_path = os.path.join(fullbody_shot_root, new_filename)
+            shutil.copy(temp_file_path, fullbody_shot_path)
+            user.photo_set.update(is_primary=False)
+            Photo(user=user, file=new_filename, is_primary=True).save()
+
+        return self.render_json_response({'success': True})

@@ -53,13 +53,58 @@ $(document).ready(function(){
         done: function (e, data) {
             if (data.result.success) {
                 $('#files').empty();
-                $('<img>').attr('width', '500').attr('src', data.result.path + '?i=' + new Date().getTime()).appendTo($('#files'));
+                $('<img>').attr('height', '280').attr('src', data.result.path + '?i=' + new Date().getTime()).appendTo($('#files'));
+                $('#fullbody-shot').val(data.result.filename);
             }
         },
         progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css('width', progress + '%');
+            if (progress == 100) {
+                $('#progress').text('');
+            } else {
+                $('#progress').text(progress + '%');
+            }
         }
     }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+    // update image and description for size input
+    $('.size-input').focus(function(){
+        $('#sample img').attr('src', $(this).data('image'));
+        $('#sample .description').text($(this).data('description'));
+    });
+
+    $('#finish-btn').click(function() {
+        var url = $(this).data('url');
+        var style = $('#style .option.selected').data('value');
+        var age_group = $('#age-group .option.selected').data('value');
+        var height = $('#sizes input[name=height]').val();
+        var weight = $('#sizes input[name=weight]').val();
+        var waistline = $('#sizes input[name=waistline]').val();
+        var hipline = $('#sizes input[name=hipline]').val();
+        var chest = $('#sizes input[name=chest]').val();
+        var foot = $('#sizes input[name=foot]').val();
+        var filename = $('#fullbody-shot').val();
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                style: style,
+                age_group: age_group,
+                height: height,
+                weight: weight,
+                waistline: waistline,
+                chest: chest,
+                hipline: hipline,
+                foot: foot,
+                filename: filename,
+                csrfmiddlewaretoken: get_cookie('csrftoken')
+            },
+            success: function(data) {
+                console.log(data);
+            }
+        });
+    });
 
 });

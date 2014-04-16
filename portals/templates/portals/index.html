@@ -34,13 +34,13 @@
         </div>
 
         <div class="item">
-            <div class="carousel-caption">
+            <div class="carousel-caption" id="style">
                 <div class="container">
                     <h4>Choose your style</h4>
                     <div class="row selector">
                         {% for choice in STYLE_CHOICES %}
-                            <div class="{% if forloop.first %}col-sm-offset-2{% endif%} col-sm-2 {% if user.preferred_style == choice.0 %}selected{% endif %}">
-                                <div class="option" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
+                            <div class="{% if forloop.first %}col-sm-offset-2{% endif%} col-sm-2">
+                                <div class="option {% if user.profile.preferred_style == choice.0 %}selected{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
                             </div>
                         {% endfor %}
                     </div>
@@ -48,7 +48,7 @@
                         <div class="col-md-12">
                             <ul class="pager">
                                 <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next {% if not user.preferred_style %}hidden{% endif %}"><a href="javascript:void(0);">&rarr;</a></li>
+                                <li class="next {% if not user.profile.preferred_style %}hidden{% endif %}"><a href="javascript:void(0);">&rarr;</a></li>
                             </ul>
                         </div>
                     </div>
@@ -57,13 +57,13 @@
         </div>
 
         <div class="item">
-            <div class="carousel-caption">
+            <div class="carousel-caption" id="age-group">
                 <div class="container">
                     <h4>Choose your age</h4>
                     <div class="row selector">
                         {% for choice in AGE_GROUP_CHOICES %}
-                            <div class="{% if forloop.first %}col-sm-offset-2{% endif%} col-sm-2 {% if user.preferred_style == choice.0 %}selected{% endif %}">
-                                <div class="option" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
+                            <div class="{% if forloop.first %}col-sm-offset-2{% endif%} col-sm-2">
+                                <div class="option {% if user.profile.age_group == choice.0 %}selected{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
                             </div>
                         {% endfor %}
                     </div>
@@ -71,7 +71,7 @@
                         <div class="col-md-12">
                             <ul class="pager">
                                 <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next {% if not user.age_group %}hidden{% endif %}"><a href="javascript:void(0);">&rarr;</a></li>
+                                <li class="next {% if not user.profile.age_group %}hidden{% endif %}"><a href="javascript:void(0);">&rarr;</a></li>
                             </ul>
                         </div>
                     </div>
@@ -171,66 +171,147 @@
 
         <div class="item">
             <div class="item">
-                <div class="carousel-caption">
+                <div class="carousel-caption" id="sizes">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <form class="form-horizontal" role="form">
                                     <div class="form-group">
-                                        <span class="col-sm-3 control-label">身高：</span>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control">
+                                        <span class="col-sm-4 control-label">身高：</span>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="text" name="height" class="form-control text-right size-input" value="{{ user.profile.height|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" />
+                                                <span class="input-group-addon">cm</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <span class="col-sm-3 control-label">体重：</span>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control">
+                                        <span class="col-sm-4 control-label">体重：</span>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="text" name="weight" class="form-control text-right size-input" value="{{ user.profile.weight|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" />
+                                                <span class="input-group-addon">kg</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <span class="col-sm-3 control-label">腰围：</span>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control">
+                                        <span class="col-sm-4 control-label">胸围：</span>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="text" name="chest" class="form-control text-right size-input" value="{{ user.profile.chest|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" data-description="胸围: 自然挺胸抬头。沿胸部隆起的最高点，用软尺水平围绕身体一周，软尺恰好相连，不可过松或太紧，得出的测量尺寸即为上胸围尺寸。" />
+                                                <span class="input-group-addon">cm</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <span class="col-sm-3 control-label">裤长：</span>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control">
+                                        <span class="col-sm-4 control-label">腰围：</span>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="text" name="waistline" class="form-control text-right size-input" value="{{ user.profile.waistline|default_if_none:'' }}" data-image="{% static 'image/yw.jpg' %}" data-description="腰围: 自然站直，挺胸抬头。上身与下身连接处最为纤细的部分即为腰部。用软尺沿腰部水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为腰围。" />
+                                                <span class="input-group-addon">cm</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <span class="col-sm-3 control-label">鞋码：</span>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control">
+                                        <span class="col-sm-4 control-label">臀围：</span>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="text" name="hipline" class="form-control text-right size-input" value="{{ user.profile.hipline|default_if_none:'' }}" data-image="{% static 'image/tw.jpg' %}" data-description="臀围: 自然站直，挺胸抬头。用软尺沿下身臀部自然隆起的最高点水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为臀围。" />
+                                                <span class="input-group-addon">cm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="col-sm-4 control-label">脚长：</span>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="text" name="foot" class="form-control text-right size-input" value="{{ user.profile.foot|default_if_none:'' }}" data-image="{% static 'image/jc.jpg' %}" data-description="脚长：脱去鞋子，用软尺测量最长脚指的尖端到脚后跟的距离，得出的测量尺寸即为脚长。" />
+                                                <span class="input-group-addon">cm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-8 text-right">
+                                            <span id="progress"></span>
+                                            <span class="btn btn-success fileinput-button">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                                <span>上传全身照...</span>
+                                                <input id="fileupload" type="file" name="file" data-url="{% url 'accounts:upload' %}">
+                                            </span>
+                                            <input type="hidden" id="fullbody-shot" />
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-md-6">
-                                <span class="btn btn-success fileinput-button">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                    <span>上传全身照...</span>
-                                    <input id="fileupload" type="file" name="file" data-url="{% url 'accounts:upload' %}">
-                                </span>
-                                <br>
-                                <br>
-                                <!-- The global progress bar -->
-                                <div id="progress" class="progress">
-                                    <div class="progress-bar progress-bar-success"></div>
+                            <div class="col-md-3">
+                                <div id="sample">
+                                    <img height="240" src="{% static 'image/xw.jpg' %}" />
+                                    <br />
+                                    <span class="description"></span>
                                 </div>
-                                <div id="files" class="files">
+                            </div>
+                            <div class="col-md-5">
+                                <div id="files">
+                                    {% with image_url=user.profile.get_fullbody_shot_url %}
+                                        {% if image_url %}
+                                        <img height="280" src="{{ image_url }}" />
+                                        {% endif %}
+                                    {% endwith %}
                                 </div>
-                                <br>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <ul class="pager">
                                     <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
+                                    <li class="next"><a href="javascript:void(0);">&rarr;</a></li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="carousel-caption" id="designer">
+                <div class="container">
+                    <h4>选择设计师</h4>
+                    <div class="row selector">
+                        <div class="col-sm-2">
+                            <div class="option">kapor zhu</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="option">kapor zhu</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="option">kapor zhu</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="option">kapor zhu</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="option">kapor zhu</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="option">kapor zhu</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr />
+                            <form class="form-horizontal">
+                                <p class="text-left">您有什么特殊要求，请告诉我们</p>
+                                <textarea rows="5" class="form-control" id="personal-requirement"></textarea>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="pager">
+                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
+                                <li class="finish"><a id="finish-btn" href="javascript:void(0);" data-url="{% url 'accounts:update' %}">完成</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
