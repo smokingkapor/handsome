@@ -46,8 +46,10 @@ $(document).ready(function(){
                     }
                     $('.carousel').carousel('next');
                 } else {
-                    $('.form-error .alert', $form).text(result.errors[0]);
-                    $('.form-error', $form).removeClass('hidden');
+                    if (result.errors.length > 0) {
+                        $('.form-error .alert', $form).text(result.errors[0]);
+                        $('.form-error', $form).removeClass('hidden');
+                    }
                 }
             }
         });
