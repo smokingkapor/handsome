@@ -30,6 +30,7 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(User)
+    is_designer = models.BooleanField(default=False)
     preferred_style = models.CharField(max_length=32, blank=True,
                                        choices=STYLE_CHOICES)
     age_group = models.CharField(max_length=32, blank=True,
