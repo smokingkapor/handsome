@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     $('.carousel').carousel({
         wrap: false,
         interval: false
@@ -37,6 +38,12 @@ $(document).ready(function(){
             success: function(result) {
                 $btn.button('reset');
                 if (result.success) {
+                    for (var key in result.profile) {
+                        $('#sizes input[name=' + key + ']').val(result.profile[key]);
+                    }
+                    if (result.profile && result.profile.url) {
+                        $('<img>').attr('height', 280).attr('src', result.profile.url).appendTo($('#files'));
+                    }
                     $('.carousel').carousel('next');
                 } else {
                     $('.form-error .alert', $form).text(result.errors[0]);

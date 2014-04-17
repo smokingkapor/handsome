@@ -7,6 +7,7 @@ import shutil
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse_lazy
@@ -41,7 +42,10 @@ class LoginView(JSONResponseMixin, FormView):
         auth.login(self.request, user)
 
         if self.request.is_ajax():
-            return self.render_json_response({'success': True})
+            profile_json = json.loads(serializers.serialize('json', [user.profile]))[0]['fields']  # noqa
+            profile_json['url'] = user.profile.get_fullbody_shot_url()
+            return self.render_json_response({'success': True,
+                                              'profile': profile_json})
         else:
             return super(LoginView, self).form_valid(form)
 
