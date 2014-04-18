@@ -14,10 +14,13 @@ $(document).ready(function(){
     });
 
     $('.selector .option').click(function(){
-        $(this).parents('.selector').find('.option').removeClass('selected');
+        var $selector = $(this).parents('.selector');
+        $selector.find('.option').removeClass('selected');
+        $selector.parents('.item').find('.next').removeClass('hidden');
         $(this).addClass('selected');
-        $(this).parents('.carousel-caption').find('.next').removeClass('hidden');
-        $('.carousel').carousel('next');
+        if ($selector.is('.auto-slide')) {
+            $('.carousel').carousel('next');
+        }
     });
 
     // login or register
@@ -83,7 +86,10 @@ $(document).ready(function(){
     });
 
     $('#finish-btn').click(function() {
+        var $btn = $(this);
+        $btn.button('loading');
         var url = $(this).data('url');
+        var next = $(this).data('next');
         var style = $('#style .option.selected').data('value');
         var age_group = $('#age-group .option.selected').data('value');
         var height = $('#sizes input[name=height]').val();
@@ -93,6 +99,12 @@ $(document).ready(function(){
         var chest = $('#sizes input[name=chest]').val();
         var foot = $('#sizes input[name=foot]').val();
         var filename = $('#fullbody-shot').val();
+        var requirement = $('#personal-requirement').val();
+        var price = $('#price .selector .option.selected').text();
+
+        // cache requirement and price
+        localStorage.requirement = requirement;
+        localStorage.price = price;
 
         $.ajax({
             url: url,
@@ -111,7 +123,8 @@ $(document).ready(function(){
                 csrfmiddlewaretoken: get_cookie('csrftoken')
             },
             success: function(data) {
-                console.log(data);
+                $btn.button('reset');
+                location.href = next;
             }
         });
     });

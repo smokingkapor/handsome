@@ -1,0 +1,91 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extrajs %}
+<script src="{% static 'js/order.js' %}"></script>
+{% endblock%}
+
+{% block title %}下单{% endblock %}
+
+{% block content %}
+<div class="container body" id="create-order">
+    <div class="row">
+        <h4>配送地址</h4>
+        <hr />
+        <form class="form-inline col-md-12 content" role="form">
+            <div class="form-group">
+                <small><b class="text-danger">*</b>收货人：&nbsp;&nbsp;&nbsp;</small>
+                <input class="form-control input-sm" />
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <small><b class="text-danger">*</b>所在地区：</small>
+                <select id="province" class="form-control input-sm address" data-target="#city" data-url="{% url 'orders:load_address' %}?level=city">
+                    <option value="-1">--请选择--</option>
+                    {% for province in provinces %}
+                    <option value="{{ province.id }}">{{ province.name }}</option>
+                    {% endfor %}
+                </select>
+                <select id="city" class="hidden form-control input-sm address" data-target="#country" data-url="{% url 'orders:load_address' %}?level=country">
+                    <option value="-1">--请选择--</option>
+                </select>
+                <select id="country" class="hidden form-control input-sm address" data-target="#town" data-url="{% url 'orders:load_address' %}?level=town">
+                    <option value="-1">--请选择--</option>
+                </select>
+                <select id="town" class="hidden form-control input-sm address">
+                    <option value="-1">--请选择--</option>
+                </select>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <small><b class="text-danger">*</b>详细地址：</small>
+                <span id="address"></span><input class="form-control input-sm" />
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <small><b class="text-danger">*</b>联系电话：</small>
+                <input class="form-control input-sm" />
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <br />
+        <h4>我的要求</h4>
+        <hr />
+        <form class="form-inline col-md-12 content" role="form">
+            <div class="form-group">
+                <small>风格：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
+                <span>{{ user.profile.get_preferred_style_display }}</span>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <small>年龄段：&nbsp;&nbsp;&nbsp;</small>
+                <span>{{ user.profile.get_age_group_display }}</span>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <small>设计师：&nbsp;&nbsp;&nbsp;</small>
+                <span>Kapor Zhu</span>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <small>个人要求：</small>
+                <span id="personal-requirement"></span>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <small>价格：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
+                <span id="price">299</span>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <br />
+        <div class="col-md-12 text-right">
+            <button id="create-order-btn" data-loading-text="正在创建..." data-url="{% url 'orders:create' %}" class="btn btn-primary">创建订单</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -6,4 +6,3 @@ DESIGNED = 'designed'
 PAID = 'paid'
 CANCELED = 'canceled'
 DONE = 'done'
-

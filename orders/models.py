@@ -39,3 +39,34 @@ class Order(models.Model):
 
     creator = models.ForeignKey(User, related_name='my_orders')
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Province(models.Model):
+    """
+    Province model
+    """
+    name = models.CharField(max_length=64)
+
+
+class City(models.Model):
+    """
+    City model
+    """
+    province = models.ForeignKey(Province)
+    name = models.CharField(max_length=64)
+
+
+class Country(models.Model):
+    """
+    Country model
+    """
+    city = models.ForeignKey(City)
+    name = models.CharField(max_length=64)
+
+
+class Town(models.Model):
+    """
+    Town model
+    """
+    country = models.ForeignKey(Country)
+    name = models.CharField(max_length=64)

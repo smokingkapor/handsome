@@ -170,7 +170,7 @@ class UpdateView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         if not os.path.exists(fullbody_shot_root):
             os.makedirs(fullbody_shot_root)
 
-        if os.path.exists(temp_file_path):
+        if filename and os.path.exists(temp_file_path):
             new_filename = 'user_{}_{}{}'.format(user.id, generate_str(6), ext)
             fullbody_shot_path = os.path.join(fullbody_shot_root, new_filename)
             shutil.copy(temp_file_path, fullbody_shot_path)

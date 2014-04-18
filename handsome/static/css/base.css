@@ -3,6 +3,19 @@ body {
     /*background-image: url("../image/bg.png");*/
 }
 
+.body {
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+
+.content {
+    background-color: rgba(0, 0, 0, 0.05);
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    padding: 15px;
+}
+
 #login-form {
     padding: 20px 10px 0 10px;
     width: 340px;
