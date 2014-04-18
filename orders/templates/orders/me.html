@@ -1,0 +1,44 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block title %}我的订单{% endblock %}
+
+{% block content %}
+<div class="container body">
+    <div class="row">
+        <div class="col-md-12 content">
+            <h4>我的订单</h4>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>风格</th>
+                        <th>设计师</th>
+                        <th>特殊要求</th>
+                        <th>价格</th>
+                        <th>创建日期</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in object_list %}
+                    <tr>
+                        <td>{{ obj.get_style_display }}</td>
+                        <td>{{ obj.preferred_designer.username }}</td>
+                        <td>{{ obj.message|truncatechars:"20" }}
+                            <a href="javascript:void(0)" class="pull-right popover-btn" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ obj.message }}">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                            </a>
+                        </td>
+                        <td>{{ obj.total_price }}</td>
+                        <td>{{ obj.created_at|date:"n月j日 G:i" }}</td>
+                        <td>{{ obj.get_status_display }}
+                            <span class="pull-right">{{ obj.get_operations|safe }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

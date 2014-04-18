@@ -12,7 +12,12 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a class="navbar-brand" href="{% url 'portals:index' %}">主页</a>
+                    <a href="{% url 'portals:index' %}">主页</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{% url 'orders:me' %}">我的订单</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

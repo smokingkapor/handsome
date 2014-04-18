@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from .constants import CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE
+from accounts.models import Profile
 
 
 class Order(models.Model):
@@ -23,8 +24,10 @@ class Order(models.Model):
     address = models.CharField(max_length=256)
 
     # user requirements
-    style = models.CharField(max_length=32, blank=True)
-    age_group = models.CharField(max_length=32, blank=True)
+    style = models.CharField(max_length=32, blank=True,
+                             choices=Profile.STYLE_CHOICES)
+    age_group = models.CharField(max_length=32, blank=True,
+                                 choices=Profile.AGE_GROUP_CHOICES)
     height = models.CharField(max_length=16, blank=True)
     weight = models.CharField(max_length=16, blank=True)
     waistline = models.CharField(max_length=16, blank=True)
@@ -39,6 +42,18 @@ class Order(models.Model):
 
     creator = models.ForeignKey(User, related_name='my_orders')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_operations(self):
+        """
+        Get operation buttons for current order
+        """
+        operations = ''
+        if self.status == CREATED:
+            operations = '<button class="btn btn-default btn-xs">取消订单</button>&nbsp;&nbsp;<button class="btn btn-primary btn-xs">支付定金</button>'
+        elif self.status == DESIGNED:
+            operations = '<button class="btn btn-primary btn-xs">支付尾款</button>'
+
+        return operations
 
 
 class Province(models.Model):

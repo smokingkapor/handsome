@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from django.core.urlresolvers import reverse
 from django.views.generic.base import View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django.views.generic.list import ListView
 
 from braces.views import(
     LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin
@@ -9,7 +11,6 @@ from braces.views import(
 
 from .forms import CreateOrderForm
 from .models import Order, Province, City, Country
-from django.core.urlresolvers import reverse
 
 
 class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
@@ -92,3 +93,18 @@ class CreateSuccessView(LoginRequiredMixin, DetailView):
     """
     model = Order
     template_name = 'orders/create_order_success.html'
+
+
+class MyOrderView(LoginRequiredMixin, ListView):
+    """
+    Display all my orders
+    """
+    model = Order
+    template_name = 'orders/me.html'
+
+    def get_queryset(self):
+        """
+        My orders only
+        """
+        qs = super(MyOrderView, self).get_queryset()
+        return qs.filter(creator=self.request.user).order_by('-created_at')

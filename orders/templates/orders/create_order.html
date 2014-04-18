@@ -10,9 +10,9 @@
 {% block content %}
 <div class="container body" id="create-order">
     <div class="row">
-        <h4>配送地址</h4>
-        <hr />
         <form class="form-inline col-md-12 content" role="form">
+            <h4>配送地址</h4>
+            <hr />
             <div class="form-group">
                 <small><b class="text-danger">*</b>收货人：&nbsp;&nbsp;&nbsp;</small>
                 <input class="form-control input-sm" />
@@ -51,9 +51,9 @@
 
     <div class="row">
         <br />
-        <h4>我的要求</h4>
-        <hr />
         <form class="form-inline col-md-12 content" role="form">
+            <h4>我的要求</h4>
+            <hr />
             <div class="form-group">
                 <small>风格：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
                 <span>{{ user.profile.get_preferred_style_display }}</span>

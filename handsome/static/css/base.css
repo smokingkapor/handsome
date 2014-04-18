@@ -1,6 +1,6 @@
 body {
     font: 14px "微软雅黑", "MicrosoftYahei", "宋体", "Arial Narrow", HELVETICA;
-    /*background-image: url("../image/bg.png");*/
+    background-image: url("../image/bg.png");
 }
 
 .body {
@@ -9,10 +9,10 @@ body {
 }
 
 .content {
-    background-color: rgba(0, 0, 0, 0.05);
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
+    background-color: white;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     padding: 15px;
 }
 
