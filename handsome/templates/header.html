@@ -20,6 +20,13 @@
                     <a href="{% url 'orders:me' %}">我的订单</a>
                 </li>
             </ul>
+            {% if user.is_staff %}
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{% url 'orders:list' %}">客户订单</a>
+                </li>
+            </ul>
+            {% endif %}
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li>
