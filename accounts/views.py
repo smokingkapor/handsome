@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import json
-import glob
 import os
 import shutil
 
@@ -126,14 +125,12 @@ class UploadView(CsrfExemptMixin, LoginRequiredMixin, FormView):
         data = form.cleaned_data
         user = self.request.user
         name, ext = os.path.splitext(data['file'].name)
-        filename = '{}{}'.format(user.id, ext)
+        filename = '{}.{}.{}'.format(user.id, generate_str(5), ext)
         root = os.path.join(settings.MEDIA_ROOT, 'tmp')
-        # remove the tmp files for current user
         path = os.path.join(root, filename)
-        [os.remove(p) for p in glob.glob(os.path.join(root, '{}.*'.format(user.id)))]  # noqa
         default_storage.save(path, ContentFile(data['file'].read()))
-        path = '{}tmp/{}'.format(settings.MEDIA_URL, filename)
-        return HttpResponse(json.dumps({'success': True, 'path': path,
+        url_path = '{}tmp/{}'.format(settings.MEDIA_URL, filename)
+        return HttpResponse(json.dumps({'success': True, 'path': url_path,
                                         'filename': filename}))
 
     def form_invalid(self, form):
@@ -170,7 +167,7 @@ class UpdateView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         if not os.path.exists(fullbody_shot_root):
             os.makedirs(fullbody_shot_root)
 
-        if os.path.exists(temp_file_path):
+        if filename and os.path.exists(temp_file_path):
             new_filename = 'user_{}_{}{}'.format(user.id, generate_str(6), ext)
             fullbody_shot_path = os.path.join(fullbody_shot_root, new_filename)
             shutil.copy(temp_file_path, fullbody_shot_path)

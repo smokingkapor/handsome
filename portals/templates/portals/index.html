@@ -37,9 +37,9 @@
             <div class="carousel-caption" id="style">
                 <div class="container">
                     <h4>Choose your style</h4>
-                    <div class="row selector">
+                    <div class="row selector auto-slide">
                         {% for choice in STYLE_CHOICES %}
-                            <div class="{% if forloop.first %}col-sm-offset-2{% endif%} col-sm-2">
+                            <div class="col-sm-2">
                                 <div class="option {% if user.profile.preferred_style == choice.0 %}selected{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
                             </div>
                         {% endfor %}
@@ -60,9 +60,9 @@
             <div class="carousel-caption" id="age-group">
                 <div class="container">
                     <h4>Choose your age</h4>
-                    <div class="row selector">
+                    <div class="row selector auto-slide">
                         {% for choice in AGE_GROUP_CHOICES %}
-                            <div class="{% if forloop.first %}col-sm-offset-2{% endif%} col-sm-2">
+                            <div class="col-sm-2">
                                 <div class="option {% if user.profile.age_group == choice.0 %}selected{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
                             </div>
                         {% endfor %}
@@ -242,7 +242,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 hidden-sm hidden-xs">
                             <div id="sample">
                                 <img height="240" src="{% static 'image/xw.jpg' %}" />
                                 <br />
@@ -308,13 +308,44 @@
                         <div class="col-md-12">
                             <ul class="pager">
                                 <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="finish"><a id="finish-btn" href="javascript:void(0);" data-url="{% url 'accounts:update' %}">完成</a></li>
+                                <li class="next hidden"><a href="javascript:void(0);">&rarr;</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="item">
+            <div class="carousel-caption" id="price">
+                <div class="container">
+                    <h4>价格</h4>
+                    <div class="row selector">
+                        <div class="col-sm-2">
+                            <div class="option">299</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="option">399</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="option">499</div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="option">599</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="pager">
+                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
+                                <li class="next hidden"><a class="btn" id="finish-btn" data-loading-text="正在保存..." href="javascript:void(0);" data-url="{% url 'accounts:update' %}" data-next="{% url 'orders:create' %}">完成</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}

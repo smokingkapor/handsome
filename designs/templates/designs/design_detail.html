@@ -1,0 +1,24 @@
+{% extends "page.html" %}
+
+{% block title %}查看设计方案{% endblock %}
+
+{% block content %}
+
+<div class="container body">
+    <div class="row">
+        <div class="col-md-12 content">
+            <blockquote>
+                <p>{{ object.comment }}</p>
+            </blockquote>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    {% for photo in object.photos.all %}
+                    <img width="280" src="{{ photo.get_absolute_url }}" />
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
