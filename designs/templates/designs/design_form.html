@@ -1,0 +1,44 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'jQuery-File-Upload/css/jquery.fileupload.css' %}">
+{% endblock%}
+
+{% block extrajs %}
+<script src="{% static 'jQuery-File-Upload/js/vendor/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.fileupload.js' %}"></script>
+
+<script src="{% static 'js/design.js' %}"></script>
+{% endblock%}
+
+{% block title %}设计方案{% endblock %}
+
+{% block content %}
+<div class="container body">
+    <div class="row">
+        <form class="col-md-12 content" role="form">
+            <div class="form-group">
+                <label>设计思路：</label>
+                <textarea id="comment" class="form-control" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>上传设计方案...</span>
+                    <input id="fileupload" type="file" name="file" data-url="{% url 'designs:upload' %}?order={{ order }}" multiple>
+                </span>
+                <span id="progress"></span>
+            </div>
+            <div class="form-group">
+                <input id="design-photos" type="hidden" />
+                <div id="photos"></div>
+            </div>
+            <div class="form-group">
+                <button type="button" id="create-design-btn" data-loading-text="正在创建..." data-url="{% url 'designs:create' %}?order={{ order }}" class="btn btn-primary pull-right">提交设计</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

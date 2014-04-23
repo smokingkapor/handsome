@@ -17,6 +17,7 @@
     <div class="row">
         <div class="col-md-12 content">
             <h4>客户订单</h4>
+            <hr />
             <form class="form-inline" role="form">
                 <div class="form-group">
                     <span>订单状态：</span>
@@ -71,6 +72,7 @@
                 <thead>
                     <tr>
                         <th>风格</th>
+                        <th>年龄段</th>
                         <th class="col-md-6">特殊要求</th>
                         <th>价格</th>
                         <th>创建日期</th>
@@ -81,10 +83,13 @@
                     {% for obj in object_list %}
                     <tr>
                         <td>{{ obj.get_style_display }}</td>
+                        <td>{{ obj.get_age_group_display }}</td>
                         <td>{{ obj.message }}</td>
                         <td>{{ obj.total_price }}</td>
                         <td>{{ obj.created_at|date:"n月j日 G:i" }}</td>
-                        <td>{{ obj.get_status_display }}</td>
+                        <td>{{ obj.get_status_display }}
+                            <span class="pull-right">{{ obj.get_designer_operations|safe }}</span>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

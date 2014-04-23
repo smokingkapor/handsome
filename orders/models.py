@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
 
-from .constants import CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE
+from .constants import CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT
 from accounts.models import Profile
 
 
@@ -14,7 +15,8 @@ class Order(models.Model):
         (CREATED, u'等待支付定金'),
         (PREPAID, u'设计师正在设计'),
         (DESIGNED, u'设计完成，等待支付余款'),
-        (PAID, u'支付完成，配送中'),
+        (PAID, u'支付完成，等待配送'),
+        (SENT, u'等待收货'),
         (CANCELED, u'已取消'),
         (DONE, u'已完成'),
     )
@@ -49,10 +51,33 @@ class Order(models.Model):
         """
         operations = ''
         if self.status == CREATED:
-            operations = '<button class="btn btn-default btn-xs">取消订单</button>&nbsp;&nbsp;<button class="btn btn-primary btn-xs">支付定金</button>'
+            prepay_url = reverse('orders:prepay', kwargs={'pk': self.id})
+            operations = '<button class="btn btn-default btn-xs">取消订单</button>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{}">支付定金</a>'.format(prepay_url)
         elif self.status == DESIGNED:
-            operations = '<button class="btn btn-primary btn-xs">支付尾款</button>'
+            design = self.design_set.first()
+            design_url = reverse('designs:detail', kwargs={'pk': design.id})
+            pay_url = reverse('orders:pay', kwargs={'pk': self.id})
+            operations = '<a href="{}" class="btn btn-default btn-xs">查看设计方案</a>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{}">支付尾款</a>'.format(design_url, pay_url)
+        elif self.status == SENT:
+            receive_url = reverse('orders:receive', kwargs={'pk': self.id})
+            operations = '<a href="{}" class="btn btn-default btn-xs">已收到</a>'.format(receive_url)
 
+        return operations
+
+    def get_designer_operations(self):
+        """
+        Operations for designer
+        """
+        operations = ''
+        if self.status == PREPAID:
+            operations = '<a href="{}?order={}" class="btn btn-primary btn-xs">创建搭配方案</a>'.format(reverse_lazy('designs:create'), self.id)
+        elif self.status == DESIGNED:
+            design = self.design_set.first()
+            design_url = reverse('designs:detail', kwargs={'pk': design.id})
+            operations = '<a href="{}" class="btn btn-default btn-xs">查看设计方案</a>'.format(design_url)
+        elif self.status == PAID:
+            send_url = reverse('orders:send', kwargs={'pk': self.id})
+            operations = '<a href="{}" class="btn btn-default btn-xs">已寄出</a>'.format(send_url)
         return operations
 
 

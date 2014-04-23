@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 
 LOCAL_APPS = (
     'accounts',
+    'designs',
     'handsome',
     'orders',
     'portals',

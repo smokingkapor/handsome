@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
-from django.views.generic.base import View
+from django.views.generic.base import View, RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
@@ -13,9 +13,11 @@ from braces.views import(
     StaffuserRequiredMixin
 )
 
+from .constants import PREPAID, PAID, SENT, DONE
 from .forms import CreateOrderForm
 from .models import Order, Province, City, Country
 from accounts.models import Profile
+from django.http.response import Http404
 
 
 class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
@@ -202,3 +204,81 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         qs = qs.filter(status_Q, style_Q, age_group_Q, created_time_Q)
 
         return qs.order_by('-created_at')
+
+
+class PrepayView(LoginRequiredMixin, RedirectView):
+    """
+    Go to Alipay.
+    Simply set the order to pre-paid now
+    """
+    permanent = False
+    url = reverse_lazy('orders:me')
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Update order status here
+        """
+        order = Order.objects.get(pk=kwargs['pk'])
+        if order.creator != self.request.user:
+            raise Http404
+        order.status = PREPAID
+        order.save()
+        return super(PrepayView, self).get_redirect_url(*args, **kwargs)
+
+
+class PayView(LoginRequiredMixin, RedirectView):
+    """
+    Go to Alipay.
+    Simply set the order to paid now
+    """
+    permanent = False
+    url = reverse_lazy('orders:me')
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Update order status here
+        """
+        order = Order.objects.get(pk=kwargs['pk'])
+        if order.creator != self.request.user:
+            raise Http404
+        order.status = PAID
+        order.save()
+        return super(PayView, self).get_redirect_url(*args, **kwargs)
+
+
+class SendView(StaffuserRequiredMixin, RedirectView):
+    """
+    Send package.
+    Simply set the order to sent now
+    """
+    permanent = False
+    url = reverse_lazy('orders:list')
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Update order status here
+        """
+        order = Order.objects.get(pk=kwargs['pk'])
+        order.status = SENT
+        order.save()
+        return super(SendView, self).get_redirect_url(*args, **kwargs)
+
+
+class ReceiveView(LoginRequiredMixin, RedirectView):
+    """
+    The client receive the package
+    Simply set the order to done now
+    """
+    permanent = False
+    url = reverse_lazy('orders:me')
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Update order status here
+        """
+        order = Order.objects.get(pk=kwargs['pk'])
+        if order.creator != self.request.user:
+            raise Http404
+        order.status = DONE
+        order.save()
+        return super(ReceiveView, self).get_redirect_url(*args, **kwargs)
