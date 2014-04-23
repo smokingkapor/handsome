@@ -54,5 +54,5 @@ docs/_build/
 
 local_settings.py
 .settings/
-media/
-static/
+/media/
+/static/
