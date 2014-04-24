@@ -45,7 +45,7 @@ $(document).ready(function(){
             type: 'post',
             dataType: 'json',
             data: {
-                total_price: localStorage.price,
+                total_price: parseInt(localStorage.price),
                 message: localStorage.requirement,
                 address: $('#address').text().trim() + $('#address').next('input').val(),
                 csrfmiddlewaretoken: get_cookie('csrftoken')

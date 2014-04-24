@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
 
-from .constants import CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT
+from .constants import(
+    CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT,
+    PRICE_299, PRICE_399, PRICE_499, PRICE_599
+)
 from accounts.models import Profile
 
 
@@ -21,7 +24,14 @@ class Order(models.Model):
         (DONE, u'已完成'),
     )
 
-    total_price = models.FloatField()
+    PRICE_CHOICES = (
+        (PRICE_299, '299'),
+        (PRICE_399, '399'),
+        (PRICE_499, '499'),
+        (PRICE_599, '599'),
+    )
+
+    total_price = models.FloatField(choices=PRICE_CHOICES)
     prepayment = models.FloatField()
     address = models.CharField(max_length=256)
 
