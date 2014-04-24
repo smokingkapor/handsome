@@ -23,6 +23,7 @@
     -moz-border-radius: 7px;
     border-radius: 7px;
     padding: 40px;
+    margin-top: 10px;
 }
 
 .selector .option:hover {
