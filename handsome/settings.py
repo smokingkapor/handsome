@@ -108,6 +108,7 @@ STATICFILES_FINDERS = (
 )
 
 COMPRESS_ENABLED = True
+COMPRESS_PARSER = 'compressor.parser.HtmlParser'
 
 try:
     from local_settings import *  # noqa
