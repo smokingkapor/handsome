@@ -31,9 +31,12 @@ $(document).ready(function(){
     });
 
     // load price and personal requirement from local storage
+    var designer =JSON.parse(localStorage.designer);
+    var requirement = localStorage.requirement?localStorage.requirement:'没要求';
     if ($('#create-order').size() > 0) {
         $('#price').text(localStorage.price);
-        $('#personal-requirement').text(localStorage.requirement);
+        $('#designer').text(designer.name);
+        $('#personal-requirement').text(requirement);
     }
 
     // create order
@@ -45,8 +48,9 @@ $(document).ready(function(){
             type: 'post',
             dataType: 'json',
             data: {
-                total_price: localStorage.price,
-                message: localStorage.requirement,
+                total_price: parseInt(localStorage.price),
+                message: requirement,
+                preferred_designer: designer.id,
                 address: $('#address').text().trim() + $('#address').next('input').val(),
                 csrfmiddlewaretoken: get_cookie('csrftoken')
             },

@@ -18,6 +18,10 @@ class DesignPhoto(models.Model):
     def get_absolute_url(self):
         return '{}design-photo/{}'.format(settings.MEDIA_URL, self.file)
 
+    def __unicode__(self):
+        return u'Design photo {} by {}'.format(self.file,
+                                              self.designer.username)
+
 
 class Design(models.Model):
     """
@@ -30,3 +34,7 @@ class Design(models.Model):
     comment = models.TextField(blank=True)
     photos = models.ManyToManyField(DesignPhoto)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return 'Design for {} by {}'.format(self.client.username,
+                                            self.designer.username)

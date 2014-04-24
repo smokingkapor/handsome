@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
 
-from .constants import CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT
+from .constants import(
+    CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT,
+    PRICE_299, PRICE_399, PRICE_499, PRICE_599
+)
 from accounts.models import Profile
 
 
@@ -21,7 +24,14 @@ class Order(models.Model):
         (DONE, u'已完成'),
     )
 
-    total_price = models.FloatField()
+    PRICE_CHOICES = (
+        (PRICE_299, '299'),
+        (PRICE_399, '399'),
+        (PRICE_499, '499'),
+        (PRICE_599, '599'),
+    )
+
+    total_price = models.FloatField(choices=PRICE_CHOICES)
     prepayment = models.FloatField()
     address = models.CharField(max_length=256)
 
@@ -80,12 +90,18 @@ class Order(models.Model):
             operations = '<a href="{}" class="btn btn-default btn-xs">已寄出</a>'.format(send_url)
         return operations
 
+    def __unicode__(self):
+        return '{}\'s order'.format(self.creator.username)
+
 
 class Province(models.Model):
     """
     Province model
     """
     name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
 
 
 class City(models.Model):
@@ -95,6 +111,9 @@ class City(models.Model):
     province = models.ForeignKey(Province)
     name = models.CharField(max_length=64)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Country(models.Model):
     """
@@ -103,6 +122,9 @@ class Country(models.Model):
     city = models.ForeignKey(City)
     name = models.CharField(max_length=64)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Town(models.Model):
     """
@@ -110,3 +132,6 @@ class Town(models.Model):
     """
     country = models.ForeignKey(Country)
     name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
