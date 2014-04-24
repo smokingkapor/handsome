@@ -11,19 +11,22 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="{% url 'portals:index' %}">主页</a>
+                {% url 'portals:index' as url %}
+                <li {% if request.path == url %}class="selected"{% endif %}>
+                    <a href="{{ url }}">主页</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="{% url 'orders:me' %}">我的订单</a>
+                {% url 'orders:me' as url %}
+                <li {% if request.path == url %}class="selected"{% endif %}>
+                    <a href="{{ url }}">我的订单</a>
                 </li>
             </ul>
             {% if user.is_staff %}
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="{% url 'orders:list' %}">客户订单</a>
+                {% url 'orders:list' as url %}
+                <li {% if request.path == url %}class="selected"{% endif %}>
+                    <a href="{{ url }}">客户订单</a>
                 </li>
             </ul>
             {% endif %}

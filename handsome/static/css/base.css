@@ -16,6 +16,10 @@ body {
     padding: 15px;
 }
 
+.navbar-nav li.selected {
+    border-bottom: 2px solid blue;
+}
+
 #login-form {
     padding: 20px 10px 0 10px;
     width: 340px;
