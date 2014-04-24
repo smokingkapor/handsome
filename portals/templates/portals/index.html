@@ -276,24 +276,11 @@
                 <div class="container">
                     <h4>选择设计师</h4>
                     <div class="row selector">
+                        {% for designer in designers %}
                         <div class="col-sm-2">
-                            <div class="option">kapor zhu</div>
+                            <div class="option" data-value="{{ designer.user.id }}">{{ designer.user.username }}</div>
                         </div>
-                        <div class="col-sm-2">
-                            <div class="option">kapor zhu</div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="option">kapor zhu</div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="option">kapor zhu</div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="option">kapor zhu</div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="option">kapor zhu</div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <div class="row">
                         <div class="col-md-12">

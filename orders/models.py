@@ -90,12 +90,18 @@ class Order(models.Model):
             operations = '<a href="{}" class="btn btn-default btn-xs">已寄出</a>'.format(send_url)
         return operations
 
+    def __unicode__(self):
+        return '{}\'s order'.format(self.creator.username)
+
 
 class Province(models.Model):
     """
     Province model
     """
     name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
 
 
 class City(models.Model):
@@ -105,6 +111,9 @@ class City(models.Model):
     province = models.ForeignKey(Province)
     name = models.CharField(max_length=64)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Country(models.Model):
     """
@@ -113,6 +122,9 @@ class Country(models.Model):
     city = models.ForeignKey(City)
     name = models.CharField(max_length=64)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Town(models.Model):
     """
@@ -120,3 +132,6 @@ class Town(models.Model):
     """
     country = models.ForeignKey(Country)
     name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name

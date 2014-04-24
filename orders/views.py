@@ -54,7 +54,6 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order.chest = profile.chest
         order.hipline = profile.hipline
         order.foot = profile.foot
-        order.preferred_designer = profile.user
         order.save()
 
         if self.request.is_ajax():

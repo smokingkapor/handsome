@@ -48,6 +48,9 @@ class Profile(models.Model):
             return '{}fullbody-shot/{}'.format(settings.MEDIA_URL, photo.file)
         return None
 
+    def __unicode__(self):
+        return ('designer - ' if self.is_designer else '') + self.user.username
+
 
 class Photo(models.Model):
     """
@@ -63,6 +66,9 @@ class Photo(models.Model):
     is_primary = models.BooleanField(default=False)
     tag = models.CharField(max_length=16, choices=TAG_CHOICES,
                            default=FULL_BODY_SHOT, db_index=True)
+    def __unicode__(self):
+        return u'Photo {} for {}, primary?{}'.format(
+            self.file, self.user.username,  self.is_primary)
 
 
 def create_user_profile(sender, instance, created, **kwargs):

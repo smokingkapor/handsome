@@ -118,6 +118,6 @@ class DesignDetailView(LoginRequiredMixin, DetailView):
         Override. Only the designers and the client can see the design
         """
         response = super(DesignDetailView, self).dispatch(request, *args, **kwargs)
-        if not self.request.user.is_staff or self.request.user != self.object.client:
+        if not self.request.user.is_staff and self.request.user != self.object.client:
             return HttpResponseForbidden()
         return response

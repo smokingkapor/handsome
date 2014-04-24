@@ -101,10 +101,13 @@ $(document).ready(function(){
         var filename = $('#fullbody-shot').val();
         var requirement = $('#personal-requirement').val();
         var price = $('#price .selector .option.selected').text();
+        var $selected_designer = $('#designer .selector .option.selected');
+        var designer = {id: $selected_designer.data('value'), name: $selected_designer.text()};
 
         // cache requirement and price
         localStorage.requirement = requirement;
         localStorage.price = price;
+        localStorage.designer = JSON.stringify(designer);
 
         $.ajax({
             url: url,
