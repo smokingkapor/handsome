@@ -45,7 +45,7 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
         """
         Override. Create design and save photos
         """
-        order = Order.objects.get(pk=self.request.GET['order'])
+        order = Order.objects.get(code=self.request.GET['order'])
         design = form.save(commit=False)
         design.order = order
         design.designer = self.request.user

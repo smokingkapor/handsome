@@ -57,7 +57,7 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order.save()
 
         if self.request.is_ajax():
-            url = reverse('orders:create_success', kwargs={'pk': order.id})
+            url = reverse('orders:create_success', kwargs={'code': order.code})
             return self.render_json_response({'success': True, 'next': url})
 
         return super(CreateOrderView, self).form_valid(form)
@@ -97,6 +97,8 @@ class CreateSuccessView(LoginRequiredMixin, DetailView):
     """
     Order create success page view
     """
+    slug_field = 'code'
+    slug_url_kwarg = 'code'
     model = Order
     template_name = 'orders/create_order_success.html'
 
@@ -155,8 +157,7 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         # created time
         try:
             created_from = self.request.GET.get('created-from')
-            created_from_dt = datetime.strptime(created_from,
-                                                 '%m/%d/%Y')
+            created_from_dt = datetime.strptime(created_from, '%m/%d/%Y')
         except:
             created_from_dt = None
         try:
@@ -217,7 +218,7 @@ class PrepayView(LoginRequiredMixin, RedirectView):
         """
         Update order status here
         """
-        order = Order.objects.get(pk=kwargs['pk'])
+        order = Order.objects.get(code=kwargs['code'])
         if order.creator != self.request.user:
             raise Http404
         order.status = PREPAID
@@ -237,7 +238,7 @@ class PayView(LoginRequiredMixin, RedirectView):
         """
         Update order status here
         """
-        order = Order.objects.get(pk=kwargs['pk'])
+        order = Order.objects.get(code=kwargs['code'])
         if order.creator != self.request.user:
             raise Http404
         order.status = PAID
@@ -257,7 +258,7 @@ class SendView(StaffuserRequiredMixin, RedirectView):
         """
         Update order status here
         """
-        order = Order.objects.get(pk=kwargs['pk'])
+        order = Order.objects.get(code=kwargs['code'])
         order.status = SENT
         order.save()
         return super(SendView, self).get_redirect_url(*args, **kwargs)
@@ -275,7 +276,7 @@ class ReceiveView(LoginRequiredMixin, RedirectView):
         """
         Update order status here
         """
-        order = Order.objects.get(pk=kwargs['pk'])
+        order = Order.objects.get(code=kwargs['code'])
         if order.creator != self.request.user:
             raise Http404
         order.status = DONE
