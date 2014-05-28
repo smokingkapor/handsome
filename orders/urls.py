@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url
 
 from .views import(
     CreateOrderView, LoadAddressView, CreateSuccessView, MyOrderView,
-    OrderListView, PrepayView, PayView, SendView, ReceiveView
+    OrderListView, PrepayView, PayView, SendView, ReceiveView, OrderDetailView
 )
 
 
@@ -14,6 +14,7 @@ urlpatterns = patterns(
     url(r'^load_address/$', LoadAddressView.as_view(), name='load_address'),
     url(r'^(?P<code>\d+)/create_success/$', CreateSuccessView.as_view(),
         name='create_success'),
+    url(r'^(?P<code>\d+)/$', OrderDetailView.as_view(), name='detail'),
     url(r'^list/$', OrderListView.as_view(), name='list'),
     url(r'^(?P<code>\d+)/prepay/$', PrepayView.as_view(), name='prepay'),
     url(r'^(?P<code>\d+)/pay/$', PayView.as_view(), name='pay'),

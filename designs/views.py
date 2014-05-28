@@ -94,7 +94,7 @@ class UploadView(CsrfExemptMixin, StaffuserRequiredMixin, View):
         """
         Upload shot to temple folder
         """
-        order = Order.objects.get(pk=request.GET['order'])
+        order = Order.objects.get(code=request.GET['order'])
         user = self.request.user
         photo = request.FILES['file']
         name, ext = os.path.splitext(photo.name)

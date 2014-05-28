@@ -118,6 +118,15 @@ class MyOrderView(LoginRequiredMixin, ListView):
         return qs.filter(creator=self.request.user).order_by('-created_at')
 
 
+class OrderDetailView(LoginRequiredMixin, DetailView):
+    """
+    Order detail page
+    """
+    slug_field = 'code'
+    slug_url_kwarg = 'code'
+    model = Order
+
+
 class OrderListView(StaffuserRequiredMixin, ListView):
     """
     Designer is the staff. We display all the orders assigned to the designer.

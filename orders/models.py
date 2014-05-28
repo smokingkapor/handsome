@@ -67,15 +67,15 @@ class Order(models.Model):
         operations = ''
         if self.status == CREATED:
             prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
-            operations = '<button class="btn btn-default btn-xs">取消订单</button>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{}">支付定金</a>'.format(prepay_url)
+            operations = '<a href="#">取消订单></a><br /><a href="{}">支付定金></a>'.format(prepay_url)
         elif self.status == DESIGNED:
             design = self.design_set.first()
             design_url = reverse('designs:detail', kwargs={'pk': design.id})
             pay_url = reverse('orders:pay', kwargs={'code': self.code})
-            operations = '<a href="{}" class="btn btn-default btn-xs">查看设计方案</a>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{}">支付尾款</a>'.format(design_url, pay_url)
+            operations = '<a href="{}">设计方案></a><br /><a href="{}">支付尾款></a>'.format(design_url, pay_url)
         elif self.status == SENT:
             receive_url = reverse('orders:receive', kwargs={'code': self.code})
-            operations = '<a href="{}" class="btn btn-default btn-xs">已收到</a>'.format(receive_url)
+            operations = '<a href="{}">已经收到></a>'.format(receive_url)
 
         return operations
 
@@ -85,14 +85,14 @@ class Order(models.Model):
         """
         operations = ''
         if self.status == PREPAID:
-            operations = '<a href="{}?order={}" class="btn btn-primary btn-xs">创建搭配方案</a>'.format(reverse_lazy('designs:create'), self.code)
+            operations = '<a href="{}?order={}">创建方案></a>'.format(reverse_lazy('designs:create'), self.code)
         elif self.status == DESIGNED:
             design = self.design_set.first()
             design_url = reverse('designs:detail', kwargs={'pk': design.id})
-            operations = '<a href="{}" class="btn btn-default btn-xs">查看设计方案</a>'.format(design_url)
+            operations = '<a href="{}">查看方案></a>'.format(design_url)
         elif self.status == PAID:
             send_url = reverse('orders:send', kwargs={'code': self.code})
-            operations = '<a href="{}" class="btn btn-default btn-xs">已寄出</a>'.format(send_url)
+            operations = '<a href="{}">已经寄出></a>'.format(send_url)
         return operations
 
     def __unicode__(self):
