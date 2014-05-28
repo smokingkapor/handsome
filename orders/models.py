@@ -56,7 +56,7 @@ class Order(models.Model):
 
     status = models.CharField(max_length=16, choices=STATUS_CHOICES,
                               default=CREATED)
-
+    express_info = models.CharField(max_length=128, blank=True)
     creator = models.ForeignKey(User, related_name='my_orders')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -92,7 +92,7 @@ class Order(models.Model):
             operations = '<a href="{}">查看方案></a>'.format(design_url)
         elif self.status == PAID:
             send_url = reverse('orders:send', kwargs={'code': self.code})
-            operations = '<a href="{}">已经寄出></a>'.format(send_url)
+            operations = '<a href="javascript:void(0);" data-url="{}" class="send-order-btn">已经寄出></a>'.format(send_url)
         return operations
 
     def __unicode__(self):

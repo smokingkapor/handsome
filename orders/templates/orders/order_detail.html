@@ -65,6 +65,11 @@
                     </td>
                     <td colspan="2">设计师：{{ order.preferred_designer.username }}</td>
                 </tr>
+                {% if order.status == 'sent' %}
+                <tr>
+                    <td colspan="3"><b>物流信息：</b><span>{{ order.express_info }}</span></td>
+                </tr>
+                {% endif %}
                 <tr>
                     <td colspan="3">
                         <div class="pull-right">

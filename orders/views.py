@@ -255,22 +255,21 @@ class PayView(LoginRequiredMixin, RedirectView):
         return super(PayView, self).get_redirect_url(*args, **kwargs)
 
 
-class SendView(StaffuserRequiredMixin, RedirectView):
+class SendView(StaffuserRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
+               View):
     """
     Send package.
     Simply set the order to sent now
     """
-    permanent = False
-    url = reverse_lazy('orders:list')
-
-    def get_redirect_url(self, *args, **kwargs):
+    def get_ajax(self, request, *args, **kwargs):
         """
-        Update order status here
+        Update order here
         """
         order = Order.objects.get(code=kwargs['code'])
         order.status = SENT
+        order.express_info = request.REQUEST['express_info']
         order.save()
-        return super(SendView, self).get_redirect_url(*args, **kwargs)
+        return self.render_json_response({'success': True})
 
 
 class ReceiveView(LoginRequiredMixin, RedirectView):
