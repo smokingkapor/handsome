@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
+from django.db.models.signals import post_save
 
 from .constants import(
     CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT,
@@ -31,6 +34,8 @@ class Order(models.Model):
         (PRICE_599, '599'),
     )
 
+
+    code = models.CharField(max_length=32, unique=True, blank=True, null=True)
     total_price = models.FloatField(choices=PRICE_CHOICES)
     prepayment = models.FloatField()
     address = models.CharField(max_length=256)
@@ -135,3 +140,17 @@ class Town(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+def generate_order_code(sender, instance, created, *args, **kwargs):
+    """
+    Generate order code.
+    600 + Date + User ID
+    """
+    if created:
+        now = datetime.now().strftime('%y%m%d%H%M%S')
+        instance.code = u'600{}{}'.format(now, instance.creator.id)
+        instance.save(using=False)
+
+
+post_save.connect(generate_order_code, Order)
