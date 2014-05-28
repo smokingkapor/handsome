@@ -1,0 +1,28 @@
+.order-status {
+    color: #ff4a00;
+}
+
+.sep {
+    margin: 0 5px;
+    color: #dfdfdf;
+}
+
+.column-info {
+    height: 41px;
+    font-weight: 400;
+    text-align: left;
+    background: #fafafa;
+}
+
+.order-description {
+    width: 70%;
+}
+
+#design-photos {
+    width: 400px;
+    height: 300px;
+}
+
+#design-photos img {
+    width: 400px;
+}

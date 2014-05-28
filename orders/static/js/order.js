@@ -62,4 +62,10 @@ $(document).ready(function(){
             }
         });
     });
+
+
+    // order detail photo slide
+    if ($('#design-photos').size() > 0) {
+        $('#design-photos').carousel();
+    }
 });

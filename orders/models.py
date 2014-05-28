@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
+from django.db.models.signals import post_save
 
 from .constants import(
     CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT,
@@ -31,6 +34,8 @@ class Order(models.Model):
         (PRICE_599, '599'),
     )
 
+
+    code = models.CharField(max_length=32, unique=True, blank=True, null=True)
     total_price = models.FloatField(choices=PRICE_CHOICES)
     prepayment = models.FloatField()
     address = models.CharField(max_length=256)
@@ -51,7 +56,7 @@ class Order(models.Model):
 
     status = models.CharField(max_length=16, choices=STATUS_CHOICES,
                               default=CREATED)
-
+    express_info = models.CharField(max_length=128, blank=True)
     creator = models.ForeignKey(User, related_name='my_orders')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -61,16 +66,16 @@ class Order(models.Model):
         """
         operations = ''
         if self.status == CREATED:
-            prepay_url = reverse('orders:prepay', kwargs={'pk': self.id})
-            operations = '<button class="btn btn-default btn-xs">取消订单</button>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{}">支付定金</a>'.format(prepay_url)
+            prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
+            operations = '<a href="#">取消订单></a><br /><a href="{}">支付定金></a>'.format(prepay_url)
         elif self.status == DESIGNED:
             design = self.design_set.first()
             design_url = reverse('designs:detail', kwargs={'pk': design.id})
-            pay_url = reverse('orders:pay', kwargs={'pk': self.id})
-            operations = '<a href="{}" class="btn btn-default btn-xs">查看设计方案</a>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="{}">支付尾款</a>'.format(design_url, pay_url)
+            pay_url = reverse('orders:pay', kwargs={'code': self.code})
+            operations = '<a href="{}">设计方案></a><br /><a href="{}">支付尾款></a>'.format(design_url, pay_url)
         elif self.status == SENT:
-            receive_url = reverse('orders:receive', kwargs={'pk': self.id})
-            operations = '<a href="{}" class="btn btn-default btn-xs">已收到</a>'.format(receive_url)
+            receive_url = reverse('orders:receive', kwargs={'code': self.code})
+            operations = '<a href="{}">已经收到></a>'.format(receive_url)
 
         return operations
 
@@ -80,14 +85,14 @@ class Order(models.Model):
         """
         operations = ''
         if self.status == PREPAID:
-            operations = '<a href="{}?order={}" class="btn btn-primary btn-xs">创建搭配方案</a>'.format(reverse_lazy('designs:create'), self.id)
+            operations = '<a href="{}?order={}">创建方案></a>'.format(reverse_lazy('designs:create'), self.code)
         elif self.status == DESIGNED:
             design = self.design_set.first()
             design_url = reverse('designs:detail', kwargs={'pk': design.id})
-            operations = '<a href="{}" class="btn btn-default btn-xs">查看设计方案</a>'.format(design_url)
+            operations = '<a href="{}">查看方案></a>'.format(design_url)
         elif self.status == PAID:
-            send_url = reverse('orders:send', kwargs={'pk': self.id})
-            operations = '<a href="{}" class="btn btn-default btn-xs">已寄出</a>'.format(send_url)
+            send_url = reverse('orders:send', kwargs={'code': self.code})
+            operations = '<a href="javascript:void(0);" data-url="{}" class="send-order-btn">已经寄出></a>'.format(send_url)
         return operations
 
     def __unicode__(self):
@@ -135,3 +140,17 @@ class Town(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+def generate_order_code(sender, instance, created, *args, **kwargs):
+    """
+    Generate order code.
+    600 + Date + User ID
+    """
+    if created:
+        now = datetime.now().strftime('%y%m%d%H%M%S')
+        instance.code = u'600{}{}'.format(now, instance.creator.id)
+        instance.save(using=False)
+
+
+post_save.connect(generate_order_code, Order)

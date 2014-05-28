@@ -1,0 +1,93 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock%}
+
+{% block extrajs %}
+<link rel="stylesheet" href="{% static 'js/order.js' %}">
+{% endblock%}
+
+{% block title %}订单详情{% endblock %}
+
+{% block content %}
+<div class="container body">
+    <div class="row">
+        <div class="col-md-12 content">
+            <p>订单号：{{ order.code }}</p>
+            <hr />
+            <table class="table table-bordered">
+                <tr>
+                    <td class="order-description">
+                        <span>服装风格：{{ order.get_style_display }}</span><br />
+                        <span>穿着年龄：{{ order.get_age_group_display }}</span><br />
+                        <span>更多要求：{{ order.message }}</span><br />
+                    </td>
+                    <td>{{ order.get_status_display }}</td>
+                    <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <h5>设计方案</h5>
+                        <table class="table">
+                            {% for design in order.design_set.all %}
+                            <tr>
+                                <td>
+                                    <p>{{ design.comment }}</p>
+                                    <div id="design-photos" class="carousel slide" data-ride="carousel">
+                                        <ol class="carousel-indicators">
+                                            {% for photo in design.photos.all %}
+                                            <li data-target="#design-photos" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
+                                            {% endfor %}
+                                        </ol>
+                                      <div class="carousel-inner">
+                                          {% for photo in design.photos.all %}
+                                            <div class="item {% if forloop.first %}active{% endif %}">
+                                                <img src="{{ photo.get_absolute_url }}" /><br />
+                                            </div>
+                                          {% endfor %}
+                                      </div>
+                                      <a class="left carousel-control" href="#design-photos" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                      </a>
+                                      <a class="right carousel-control" href="#design-photos" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                      </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#">选择这套方案 √</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td colspan="2">设计师：{{ order.preferred_designer.username }}</td>
+                </tr>
+                {% if order.status == 'sent' %}
+                <tr>
+                    <td colspan="3"><b>物流信息：</b><span>{{ order.express_info }}</span></td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td colspan="3">
+                        <div class="pull-right">
+                            <dl class="dl-horizontal">
+                              <dt>商品总价：</dt>
+                              <dd>{{ order.total_price }}元</dd>
+                              <dt>预付款：</dt>
+                              <dd>{{ order.prepayment }}元</dd>
+                            </dl>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <p>收货信息</p>
+            <p>姓        名：</p>
+            <p>收货地址：</p>
+            <p>联系电话：</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

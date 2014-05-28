@@ -3,6 +3,20 @@ body {
     background-image: url("../image/bg.png");
 }
 
+a:hover, a:focus {
+    color: #ff4a00;
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    outline: 0;
+}
+
+a {
+    color: #6d6d6d;
+    text-decoration: none;
+}
+
 .body {
     padding-top: 80px;
     padding-bottom: 40px;
