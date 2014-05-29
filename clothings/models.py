@@ -33,13 +33,17 @@ class Clothing(models.Model):
         (HAREM_PANTS, u'哈伦裤'),
     )
 
-    category = models.CharField(max_length=64, choices=CATEGORY_CHOICES,
+    category = models.CharField(u'类别', max_length=64, choices=CATEGORY_CHOICES,
                                 db_index=True)
-    name = models.CharField(max_length=128)
-    sku = models.CharField(max_length=128, blank=True)
-    price = models.FloatField()
-    sizes = models.CharField(max_length=128, blank=True)  # separate with comma
-    colors = models.CharField(max_length=128, blank=True)  # separate with comma
-    note = models.CharField(max_length=256, blank=True)
-    is_active = models.BooleanField(default=True)
+    name = models.CharField(u'服装名', max_length=128)
+    sku = models.CharField(u'库存编号', max_length=128, blank=True)
+    price = models.FloatField(u'价格', )
+    sizes = models.CharField(u'可选尺寸', max_length=128,
+                             blank=True)  # separate with comma
+    colors = models.CharField(u'可选颜色', max_length=128,
+                              blank=True)  # separate with comma
+    note = models.CharField(u'备注', max_length=256, blank=True)
+    image = models.ImageField(upload_to='clothings',
+                              default='clothings/default.png')
+    is_active = models.BooleanField(u'有货', default=True)
     created_at = models.DateTimeField(auto_now_add=True)

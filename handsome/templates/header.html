@@ -30,6 +30,14 @@
                 </li>
             </ul>
             {% endif %}
+            {% if user.is_superuser %}
+            <ul class="nav navbar-nav">
+                {% url 'clothings:list' as url %}
+                <li {% if request.path == url %}class="selected"{% endif %}>
+                    <a href="{{ url }}">服装管理</a>
+                </li>
+            </ul>
+            {% endif %}
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li>

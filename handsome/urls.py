@@ -8,6 +8,7 @@ urlpatterns = patterns(
     '',
     url(r'^', include('portals.urls', 'portals', 'portals')),
     url(r'^accounts/', include('accounts.urls', 'accounts', 'accounts')),
+    url(r'^clothings/', include('clothings.urls', 'clothings', 'clothings')),
     url(r'^designs/', include('designs.urls', 'designs', 'designs')),
     url(r'^orders/', include('orders.urls', 'orders', 'orders')),
 
