@@ -36,6 +36,10 @@ class Clothing(models.Model):
     category = models.CharField(max_length=64, choices=CATEGORY_CHOICES,
                                 db_index=True)
     name = models.CharField(max_length=128)
+    sku = models.CharField(max_length=128, blank=True)
     price = models.FloatField()
+    sizes = models.CharField(max_length=128, blank=True)  # separate with comma
+    colors = models.CharField(max_length=128, blank=True)  # separate with comma
+    note = models.CharField(max_length=256, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
