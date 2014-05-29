@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
+from clothings.models import Clothing
 from orders.models import Order
 
 
@@ -23,6 +24,15 @@ class DesignPhoto(models.Model):
                                               self.designer.username)
 
 
+class DesignClothing(models.Model):
+    """
+    Clothing for design
+    """
+    clothing = models.ForeignKey(Clothing)
+    size = models.CharField(max_length=32)
+    color = models.CharField(max_length=32)
+
+
 class Design(models.Model):
     """
     Design proposal for the order
@@ -33,6 +43,7 @@ class Design(models.Model):
     is_selected = models.BooleanField(default=False)
     comment = models.TextField(blank=True)
     photos = models.ManyToManyField(DesignPhoto)
+    clothings = models.ManyToManyField(DesignClothing)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
