@@ -10,6 +10,30 @@
             <blockquote>
                 <p>{{ object.comment }}</p>
             </blockquote>
+            <hr />
+            <div class="row">
+                {% for design_clothing in object.clothings.all %}
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <img width="50" src="/media/{{ design_clothing.clothing.image }}" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <span>颜色：<b>{{ design_clothing.color }}</b></span>
+                            <span>尺寸：<b>{{ design_clothing.size }}</b></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <span>{{ design_clothing.clothing.name }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <hr />
             <ul class="list-group">
                 <li class="list-group-item">
                     {% for photo in object.photos.all %}

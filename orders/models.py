@@ -67,7 +67,7 @@ class Order(models.Model):
         operations = ''
         if self.status == CREATED:
             prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
-            operations = '<a href="#">取消订单></a><br /><a href="{}">支付定金></a>'.format(prepay_url)
+            operations = '<a href="{}">支付定金></a>'.format(prepay_url)
         elif self.status == DESIGNED:
             design = self.design_set.first()
             design_url = reverse('designs:detail', kwargs={'pk': design.id})

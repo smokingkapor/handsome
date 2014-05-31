@@ -18,11 +18,12 @@ from braces.views import(
 )
 
 from .forms import DesignForm
-from .models import Design
+from .models import Design, DesignClothing
+from clothings.models import Clothing
+from designs.models import DesignPhoto
 from handsome.utils import generate_str
 from orders.constants import DESIGNED
 from orders.models import Order
-from designs.models import DesignPhoto
 
 
 class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
@@ -39,6 +40,7 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
         """
         data = super(CreateDesignView, self).get_context_data(**kwargs)
         data.update(self.request.GET.dict())
+        data.update({'clothing_choices': Clothing.CATEGORY_CHOICES})
         return data
 
     def form_valid(self, form):
@@ -51,6 +53,16 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
         design.designer = self.request.user
         design.client = order.creator
         design.save()
+
+        # clothings
+        for clothing in json.loads(form.cleaned_data['selected_clothings']):
+            design_clothing = DesignClothing(clothing=Clothing.objects.get(pk=clothing['id']))
+            design_clothing.size = clothing['size']
+            design_clothing.color = clothing['color']
+            design_clothing.save()
+            design.clothings.add(design_clothing)
+
+        # order
         order.status = DESIGNED
         order.save()
 
