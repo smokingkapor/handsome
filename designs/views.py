@@ -7,8 +7,8 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponse, HttpResponseForbidden
-from django.views.generic.base import View
+from django.http.response import HttpResponse
+from django.views.generic.base import View, RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 
@@ -18,6 +18,7 @@ from braces.views import(
 )
 
 from .forms import DesignForm
+from .mixins import DesignPermissionMixin
 from .models import Design, DesignClothing
 from clothings.models import Clothing
 from designs.models import DesignPhoto
@@ -119,17 +120,38 @@ class UploadView(CsrfExemptMixin, StaffuserRequiredMixin, View):
                                         'filename': filename}))
 
 
-class DesignDetailView(LoginRequiredMixin, DetailView):
+class DesignDetailView(LoginRequiredMixin, DesignPermissionMixin, DetailView):
     """
     Check the design
     """
     model = Design
 
-    def dispatch(self, request, *args, **kwargs):
+
+class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
+    """
+    Accept design
+    """
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
         """
-        Override. Only the designers and the client can see the design
+        Update design here
         """
-        response = super(DesignDetailView, self).dispatch(request, *args, **kwargs)
-        if not self.request.user.is_staff and self.request.user != self.object.client:
-            return HttpResponseForbidden()
-        return response
+        design = Design.objects.get(pk=kwargs['pk'])
+        design.is_selected = True
+        design.save()
+        return reverse('orders:detail', kwargs={'code': design.order.code})
+
+
+class RejectDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
+    """
+    Reject design
+    """
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Update design here
+        """
+        design = Design.objects.get(pk=kwargs['pk'])
+        return reverse('orders:detail', kwargs={'code': design.order.code})

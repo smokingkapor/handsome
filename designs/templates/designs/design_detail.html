@@ -7,6 +7,14 @@
 <div class="container body">
     <div class="row">
         <div class="col-md-12 content">
+            <p>
+                <span>订单号：{{ object.order.code }}</span>
+                <span class="pull-right">
+                    <a class="btn btn-primary" href="{% url 'designs:accept' pk=design.id %}">选择这套方案</a> or
+                    <a href="{% url 'designs:reject' pk=design.id %}">再帮我设计一套</a>
+                </span>
+            </p>
+            <hr />
             <blockquote>
                 <p>{{ object.comment }}</p>
             </blockquote>
