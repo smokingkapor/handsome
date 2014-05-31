@@ -32,7 +32,7 @@
                         {% for design in order.design_set.all %}
                         <p>
                             <span>{{ design.comment }} <span class="glyphicon glyphicon-ok"></span></span>
-                            <a class="pull-right" href="{% url 'designs:detail' pk=design.id %}">查看服装设计></a>
+                            <a class="pull-right" href="{% url 'designs:detail' code=design.code %}">查看服装设计></a>
                         </p>
                         {% endfor %}
                     </td>

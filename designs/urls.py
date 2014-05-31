@@ -11,7 +11,7 @@ urlpatterns = patterns(
     '',
     url(r'^create/$', CreateDesignView.as_view(), name='create'),
     url(r'^upload/$', UploadView.as_view(), name='upload'),
-    url(r'^(?P<pk>\d+)/$', DesignDetailView.as_view(), name='detail'),
-    url(r'^(?P<pk>\d+)/select/$', AcceptDesignView.as_view(), name='accept'),
-    url(r'^(?P<pk>\d+)/select/$', RejectDesignView.as_view(), name='reject'),
+    url(r'^(?P<code>\d+)/$', DesignDetailView.as_view(), name='detail'),
+    url(r'^(?P<code>\d+)/select/$', AcceptDesignView.as_view(), name='accept'),
+    url(r'^(?P<code>\d+)/select/$', RejectDesignView.as_view(), name='reject'),
 )

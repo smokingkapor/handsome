@@ -125,6 +125,8 @@ class DesignDetailView(LoginRequiredMixin, DesignPermissionMixin, DetailView):
     Check the design
     """
     model = Design
+    slug_field = 'code'
+    slug_url_kwarg = 'code'
 
 
 class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
@@ -137,7 +139,7 @@ class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
         """
         Update design here
         """
-        design = Design.objects.get(pk=kwargs['pk'])
+        design = Design.objects.get(code=kwargs['code'])
         design.is_selected = True
         design.save()
         return reverse('orders:detail', kwargs={'code': design.order.code})
@@ -153,5 +155,5 @@ class RejectDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
         """
         Update design here
         """
-        design = Design.objects.get(pk=kwargs['pk'])
+        design = Design.objects.get(code=kwargs['code'])
         return reverse('orders:detail', kwargs={'code': design.order.code})

@@ -69,10 +69,8 @@ class Order(models.Model):
             prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
             operations = '<a href="{}">支付定金></a>'.format(prepay_url)
         elif self.status == DESIGNED:
-            design = self.design_set.first()
-            design_url = reverse('designs:detail', kwargs={'pk': design.id})
             pay_url = reverse('orders:pay', kwargs={'code': self.code})
-            operations = '<a href="{}">支付尾款></a>'.format(design_url, pay_url)
+            operations = '<a href="{}">支付尾款></a>'.format(pay_url)
         elif self.status == SENT:
             receive_url = reverse('orders:receive', kwargs={'code': self.code})
             operations = '<a href="{}">已经收到></a>'.format(receive_url)

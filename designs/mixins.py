@@ -13,7 +13,7 @@ class DesignPermissionMixin(object):
         """
         Override. Only the designers and the client can see the design
         """
-        design = Design.objects.get(pk=kwargs['pk'])
+        design = Design.objects.get(code=kwargs['code'])
         if not self.request.user.is_staff and self.request.user != design.client:
             return HttpResponseForbidden()
         return super(DesignPermissionMixin, self).dispatch(request, *args, **kwargs)
