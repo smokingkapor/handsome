@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
+from easy_thumbnails.fields import ThumbnailerImageField
+
 from .constants import (
     T_SHIRT, SHIRT, POLO_SHIRT, JACKET, SUIT, KNITWEAR, WAISTCOAT,
     LEATHER_JACKET, COTTON_PADDED_CLOTHES, TWEED_COAT, FUR_CLOTHING,
@@ -43,7 +45,8 @@ class Clothing(models.Model):
     colors = models.CharField(u'可选颜色', max_length=128,
                               blank=True)  # separate with comma
     note = models.CharField(u'备注', max_length=256, blank=True)
-    image = models.ImageField(upload_to='clothings',
-                              default='clothings/default.png')
+    image = ThumbnailerImageField(
+        upload_to='clothings',
+        resize_source=dict(size=(1024, 1024), sharpen=True))
     is_active = models.BooleanField(u'有货', default=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles %}
+{% load staticfiles thumbnail %}
 
 {% block title %}查看设计方案{% endblock %}
 
@@ -42,7 +42,7 @@
                 <div class="col-sm-2">
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <img width="50" src="/media/{{ design_clothing.clothing.image }}" />
+                            <img src="{{ design_clothing.clothing.image|thumbnail_url:'small' }}" />
                         </div>
                     </div>
                     <div class="row">

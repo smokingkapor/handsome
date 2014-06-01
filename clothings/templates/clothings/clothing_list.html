@@ -1,4 +1,5 @@
 {% extends "page.html" %}
+{% load thumbnail %}
 
 {% block title %}服装管理{% endblock %}
 
@@ -44,7 +45,7 @@
                     {% for obj in object_list %}
                     <tr>
                         <td>{{ obj.name }}
-                            <a class="pull-right" href="{{ MEDIA_URL }}{{ obj.image }}" target="_blank"><span class="glyphicon glyphicon-picture"></span></a>
+                            <a class="pull-right" href="{{ obj.image|thumbnail_url:'medium' }}" target="_blank"><span class="glyphicon glyphicon-picture"></span></a>
                         </td>
                         <td>{{ obj.get_category_display }}</td>
                         <td>{{ obj.sku }}</td>
