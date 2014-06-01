@@ -29,10 +29,10 @@
             </p>
             <hr />
             <dl class="dl-horizontal" id="design-comments">
-                <dt>设计师说：</dt>
-                <dd>{{ object.comment }}</dd>
+                <dt><img width="50" src="{{ object.designer.profile.avatar|thumbnail_url:'small' }}" /> - </dt>
+                <dd>{{ object.comment }}</dd><br />
                 {% if object.status == 'rejected' %}
-                <dt>我说：</dt>
+                <dt><img width="50" src="{{ object.client.profile.avatar|thumbnail_url:'small' }}" /> - </dt>
                 <dd>{{ object.reject_reason }}</dd>
                 {% endif %}
             </dl>

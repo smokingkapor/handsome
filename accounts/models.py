@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 
+from easy_thumbnails.fields import ThumbnailerImageField
+
 from .constants import(
     BUSINESS, CASUAL, ENGLAND, NO_IDEA, UNDER_20, BETWEEN_20_25, ABOVE_30,
     BETWEEN_25_30, FULL_BODY_SHOT
@@ -30,6 +32,10 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(User)
+    avatar = ThumbnailerImageField(
+        upload_to='avatars',
+        default='avatars/default_avatar.png',
+        resize_source=dict(size=(1024, 1024), sharpen=True))
     is_designer = models.BooleanField(default=False, db_index=True)
     preferred_style = models.CharField(max_length=32, blank=True,
                                        choices=STYLE_CHOICES)
