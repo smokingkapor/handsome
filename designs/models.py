@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 
+from easy_thumbnails.fields import ThumbnailerImageField
+
 from .constants import WAITING, REJECTED, SELECTED
 from clothings.models import Clothing
 from orders.models import Order
@@ -16,7 +18,9 @@ class DesignPhoto(models.Model):
     Photo for design
     """
     designer = models.ForeignKey(User)
-    file = models.CharField(max_length=64)
+    file = ThumbnailerImageField(
+        upload_to='design-photo',
+        resize_source=dict(size=(1024, 1024), sharpen=True))
     description = models.CharField(max_length=128, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

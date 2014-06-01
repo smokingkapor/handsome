@@ -68,7 +68,9 @@ class Photo(models.Model):
     )
 
     user = models.ForeignKey(User)
-    file = models.CharField(max_length=64)
+    file = ThumbnailerImageField(
+        upload_to='fullbody-shot',
+        resize_source=dict(size=(1024, 1024), sharpen=True))
     is_primary = models.BooleanField(default=False)
     tag = models.CharField(max_length=16, choices=TAG_CHOICES,
                            default=FULL_BODY_SHOT, db_index=True)

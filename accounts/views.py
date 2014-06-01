@@ -17,6 +17,7 @@ from django.views.generic.edit import FormView
 from braces.views import(
     JSONResponseMixin, LoginRequiredMixin, CsrfExemptMixin, AjaxResponseMixin
 )
+from easy_thumbnails.files import get_thumbnailer
 
 from .forms import LoginForm, RegisterForm, UploadForm
 from .models import Photo
@@ -129,9 +130,11 @@ class UploadView(CsrfExemptMixin, LoginRequiredMixin, FormView):
         root = os.path.join(settings.MEDIA_ROOT, 'tmp')
         path = os.path.join(root, filename)
         default_storage.save(path, ContentFile(data['file'].read()))
-        url_path = '{}tmp/{}'.format(settings.MEDIA_URL, filename)
-        return HttpResponse(json.dumps({'success': True, 'path': url_path,
-                                        'filename': filename}))
+        thumbnailer = get_thumbnailer(u'tmp/{}'.format(filename))
+        return HttpResponse(json.dumps({
+            'success': True,
+            'path': thumbnailer.get_thumbnail({'size': (256, 256)}).url,
+            'filename': filename}))
 
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'success': False}))
@@ -172,6 +175,8 @@ class UpdateView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
             fullbody_shot_path = os.path.join(fullbody_shot_root, new_filename)
             shutil.copy(temp_file_path, fullbody_shot_path)
             user.photo_set.update(is_primary=False)
-            Photo(user=user, file=new_filename, is_primary=True).save()
+            Photo(user=user,
+                  file=u'fullbody-shot/{}'.format(new_filename),
+                  is_primary=True).save()
 
         return self.render_json_response({'success': True})

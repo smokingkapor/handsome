@@ -60,9 +60,14 @@
                 {% endfor %}
             </div>
             <hr />
-            {% for photo in object.photos.all %}
-            <img width="280" src="{{ photo.get_absolute_url }}" />
-            {% endfor %}
+            <div class="row">
+                {% for photo in object.photos.all %}
+                <div class="col-sm-2">
+                    <img src="{{ photo.file|thumbnail_url:'medium' }}" />
+                    <p class="text-center"><a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}">查看大图</a></p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

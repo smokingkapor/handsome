@@ -16,6 +16,7 @@ from braces.views import(
     StaffuserRequiredMixin, CsrfExemptMixin, AjaxResponseMixin,
     JSONResponseMixin, LoginRequiredMixin
 )
+from easy_thumbnails.files import get_thumbnailer
 
 from .constants import SELECTED, REJECTED
 from .forms import DesignForm, RejectDesignForm
@@ -81,7 +82,8 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
                 new_filename = 'design_{}_{}{}'.format(design.id, generate_str(6), ext)  # noqa
                 design_photo_path = os.path.join(design_photo_root, new_filename)
                 shutil.copy(temp_file_path, design_photo_path)
-                photo = DesignPhoto(designer=self.request.user, file=new_filename)
+                photo = DesignPhoto(designer=self.request.user,
+                                    file=u'design-photo/{}'.format(new_filename))
                 photo.save()
                 design.photos.add(photo)
 
@@ -116,9 +118,11 @@ class UploadView(CsrfExemptMixin, StaffuserRequiredMixin, View):
         root = os.path.join(settings.MEDIA_ROOT, 'tmp')
         path = os.path.join(root, filename)
         default_storage.save(path, ContentFile(photo.read()))
-        url_path = '{}tmp/{}'.format(settings.MEDIA_URL, filename)
-        return HttpResponse(json.dumps({'success': True, 'path': url_path,
-                                        'filename': filename}))
+        thumbnailer = get_thumbnailer(u'tmp/{}'.format(filename))
+        return HttpResponse(json.dumps({
+            'success': True,
+            'path': thumbnailer.get_thumbnail({'size': (150, 150)}).url,
+            'filename': filename}))
 
 
 class DesignDetailView(LoginRequiredMixin, DesignPermissionMixin, DetailView):
