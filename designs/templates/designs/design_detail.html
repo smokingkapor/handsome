@@ -1,22 +1,68 @@
 {% extends "page.html" %}
+{% load staticfiles %}
 
 {% block title %}查看设计方案{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/design.css' %}">
+{% endblock%}
+
+{% block extrajs %}
+<script src="{% static 'js/design-user.js' %}"></script>
+{% endblock%}
 
 {% block content %}
 
 <div class="container body">
     <div class="row">
         <div class="col-md-12 content">
-            <blockquote>
-                <p>{{ object.comment }}</p>
-            </blockquote>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    {% for photo in object.photos.all %}
-                    <img width="280" src="{{ photo.get_absolute_url }}" />
-                    {% endfor %}
-                </li>
-            </ul>
+            <p>
+                <span>订单号：{{ object.order.code }}</span>
+                <span class="pull-right">
+                    {% if object.status == 'waiting' and user == object.client %}
+                        <a href="javascript:void(0)" id="reject-btn" data-toggle="popover" data-html="true" data-placement="bottom" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a> 
+                        <a class="btn btn-primary" href="{% url 'designs:accept' code=design.code %}">选择这套方案</a>
+                    {% else %}
+                        <span>状态：{{ object.get_status_display }}</span>
+                    {% endif %}
+                </span>
+            </p>
+            <hr />
+            <dl class="dl-horizontal" id="design-comments">
+                <dt>设计师说：</dt>
+                <dd>{{ object.comment }}</dd>
+                {% if object.status == 'rejected' %}
+                <dt>我说：</dt>
+                <dd>{{ object.reject_reason }}</dd>
+                {% endif %}
+            </dl>
+            <hr />
+            <div class="row">
+                {% for design_clothing in object.clothings.all %}
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <img width="50" src="/media/{{ design_clothing.clothing.image }}" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <span>颜色：<b>{{ design_clothing.color }}</b></span>
+                            <span>尺寸：<b>{{ design_clothing.size }}</b></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <span>{{ design_clothing.clothing.name }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <hr />
+            {% for photo in object.photos.all %}
+            <img width="280" src="{{ photo.get_absolute_url }}" />
+            {% endfor %}
         </div>
     </div>
 </div>

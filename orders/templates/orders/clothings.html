@@ -1,0 +1,40 @@
+{% extends "page.html" %}
+
+{% block title %}配送单{% endblock %}
+
+{% block content %}
+<div class="container body">
+    <div class="row">
+        <div class="col-md-12 content">
+            <h4>配送单</h4>
+            <hr />
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>库存编号</th>
+                        <th>名字</th>
+                        <th>型号</th>
+                        <th>数量</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sku, dc in design_clothings.items %}
+                        {% for color_size, count in dc.amount.items %}
+                        <tr>
+                            {% if forloop.first %}
+                            <td rowspan="{{ dc.amount|length }}">{{ sku }}</td>
+                            <td rowspan="{{ dc.amount|length }}">{{ dc.name }}</td>
+                            {% endif %}
+                            <td>{{ color_size }}</td>
+                            <td>{{ count }}</td>
+                            <td><input type="checkbox" /></td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

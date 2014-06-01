@@ -7,22 +7,25 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponse, HttpResponseForbidden
-from django.views.generic.base import View
+from django.http.response import HttpResponse
+from django.views.generic.base import View, RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from braces.views import(
     StaffuserRequiredMixin, CsrfExemptMixin, AjaxResponseMixin,
     JSONResponseMixin, LoginRequiredMixin
 )
 
-from .forms import DesignForm
-from .models import Design
-from handsome.utils import generate_str
-from orders.constants import DESIGNED
-from orders.models import Order
+from .constants import SELECTED, REJECTED
+from .forms import DesignForm, RejectDesignForm
+from .mixins import DesignPermissionMixin
+from .models import Design, DesignClothing
+from clothings.models import Clothing
 from designs.models import DesignPhoto
+from handsome.utils import generate_str
+from orders.constants import DESIGNED, ACCEPTED, PREPAID
+from orders.models import Order
 
 
 class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
@@ -39,6 +42,7 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
         """
         data = super(CreateDesignView, self).get_context_data(**kwargs)
         data.update(self.request.GET.dict())
+        data.update({'clothing_choices': Clothing.CATEGORY_CHOICES})
         return data
 
     def form_valid(self, form):
@@ -51,6 +55,16 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
         design.designer = self.request.user
         design.client = order.creator
         design.save()
+
+        # clothings
+        for clothing in json.loads(form.cleaned_data['selected_clothings']):
+            design_clothing = DesignClothing(clothing=Clothing.objects.get(pk=clothing['id']))
+            design_clothing.size = clothing['size']
+            design_clothing.color = clothing['color']
+            design_clothing.save()
+            design.clothings.add(design_clothing)
+
+        # order
         order.status = DESIGNED
         order.save()
 
@@ -72,7 +86,7 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
                 design.photos.add(photo)
 
         if self.request.is_ajax():
-            url = reverse('designs:detail', kwargs={'pk': design.id})
+            url = reverse('designs:detail', kwargs={'code': design.code})
             return self.render_json_response({'success': True, 'next': url})
 
         return super(CreateDesignView, self).form_valid(form)
@@ -107,17 +121,55 @@ class UploadView(CsrfExemptMixin, StaffuserRequiredMixin, View):
                                         'filename': filename}))
 
 
-class DesignDetailView(LoginRequiredMixin, DetailView):
+class DesignDetailView(LoginRequiredMixin, DesignPermissionMixin, DetailView):
     """
     Check the design
     """
     model = Design
+    slug_field = 'code'
+    slug_url_kwarg = 'code'
 
-    def dispatch(self, request, *args, **kwargs):
+
+class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
+    """
+    Accept design
+    """
+    required_roles = ['owner']
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
         """
-        Override. Only the designers and the client can see the design
+        Update design here
         """
-        response = super(DesignDetailView, self).dispatch(request, *args, **kwargs)
-        if not self.request.user.is_staff and self.request.user != self.object.client:
-            return HttpResponseForbidden()
-        return response
+        design = Design.objects.get(code=kwargs['code'])
+        design.status = SELECTED
+        design.save()
+        design.order.status = ACCEPTED
+        design.order.save()
+        return reverse('orders:detail', kwargs={'code': design.order.code})
+
+
+class RejectDesignView(LoginRequiredMixin, DesignPermissionMixin, UpdateView):
+    """
+    Reject design
+    """
+    required_roles = ['owner']
+    slug_field = 'code'
+    slug_url_kwarg = 'code'
+    form_class = RejectDesignForm
+    model = Design
+
+    def form_valid(self, form):
+        """
+        Update design and order status
+        """
+        design = form.save(commit=False)
+        design.status = REJECTED
+        design.save()
+        design.order.status = PREPAID
+        design.order.save()
+        return super(RejectDesignView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('orders:detail',
+                       kwargs={'code': self.object.order.code})
