@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles %}
+{% load staticfiles thumbnail %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -251,9 +251,9 @@
                         </div>
                         <div class="col-md-5">
                             <div id="files">
-                                {% with image_url=user.profile.get_fullbody_shot_url %}
-                                    {% if image_url %}
-                                    <img height="280" src="{{ image_url }}" />
+                                {% with image=user.profile.get_fullbody_shot %}
+                                    {% if image %}
+                                    <img src="{{ image|thumbnail_url:'medium' }}" />
                                     {% endif %}
                                 {% endwith %}
                             </div>

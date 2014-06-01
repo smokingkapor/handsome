@@ -48,10 +48,10 @@ class Profile(models.Model):
     hipline = models.CharField(max_length=16, blank=True)
     foot = models.CharField(max_length=16, blank=True)
 
-    def get_fullbody_shot_url(self):
+    def get_fullbody_shot(self):
         photo = self.user.photo_set.filter(tag=FULL_BODY_SHOT, is_primary=True).first()  # noqa
         if photo:
-            return '{}fullbody-shot/{}'.format(settings.MEDIA_URL, photo.file)
+            return photo.file
         return None
 
     def __unicode__(self):
