@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
-from django.views.generic.base import View, RedirectView
+from django.views.generic.base import View, RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
@@ -18,6 +18,7 @@ from .forms import CreateOrderForm
 from .models import Order, Province, City, Country
 from accounts.models import Profile
 from django.http.response import Http404
+from designs.constants import SELECTED
 
 
 class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
@@ -290,3 +291,34 @@ class ReceiveView(LoginRequiredMixin, RedirectView):
         order.status = DONE
         order.save()
         return super(ReceiveView, self).get_redirect_url(*args, **kwargs)
+
+
+class OrderClothingsView(StaffuserRequiredMixin, TemplateView):
+    """
+    Display all the clothings for paid orders
+    """
+    template_name = 'orders/clothings.html'
+
+    def get_context_data(self, **kwargs):
+        """
+        Add extra data to context
+        """
+        data = super(OrderClothingsView, self).get_context_data(**kwargs)
+        design_clothings = []
+        for order in Order.objects.filter(status=PAID):
+            selected_design = order.design_set.get(status=SELECTED)
+            design_clothings.extend(list(selected_design.clothings.all()))
+
+        dcs_json = {}
+        for design_clothing in design_clothings:
+            dc_json = dcs_json.get(design_clothing.clothing.sku, {})
+            dc_json['name'] = design_clothing.clothing.name
+            key = u'{}、{}'.format(design_clothing.color, design_clothing.size)
+            amount = dc_json.get('amount', {})
+            count = amount.get(key, 0)
+            amount[key] = count + 1
+            dc_json['amount'] = amount
+            dcs_json[design_clothing.clothing.sku] = dc_json
+
+        data.update({'design_clothings': dcs_json})
+        return data
