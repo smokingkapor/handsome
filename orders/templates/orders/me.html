@@ -29,7 +29,7 @@
                         <td class="order-description">
                             <span>服装风格：{{ obj.get_style_display }}</span><br />
                             <span>穿着年龄：{{ obj.get_age_group_display }}</span><br />
-                            <span>更多要求：{{ obj.message }}</span><br />
+                            <span>更多要求：{{ obj.message|truncatechars:100 }}</span><br />
                         </td>
                         <td class="text-center">{{ obj.total_price }}元</td>
                         <td class="text-center">

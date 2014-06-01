@@ -3,6 +3,7 @@
 CREATED = 'created'
 PREPAID = 'prepaid'
 DESIGNED = 'designed'
+ACCEPTED = 'accepted'
 PAID = 'paid'
 SENT = 'sent'
 CANCELED = 'canceled'

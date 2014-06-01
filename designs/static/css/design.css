@@ -1,0 +1,12 @@
+#reject-form {
+    width: 250px;
+}
+
+#design-comments dt {
+    width: 80px;
+    font-weight: 300;
+}
+
+#design-comments dd {
+    margin-left: 90px;
+}

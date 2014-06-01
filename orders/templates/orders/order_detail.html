@@ -20,24 +20,43 @@
             <table class="table table-bordered">
                 <tr>
                     <td class="order-description">
-                        <span>服装风格：{{ order.get_style_display }}</span>&nbsp;&nbsp;
-                        <span>穿着年龄：{{ order.get_age_group_display }}</span>&nbsp;&nbsp;
-                        <span>更多要求：{{ order.message }}</span>
+                        <table class="table-condensed">
+                            <tr>
+                                <td class="col-sm-2">服装风格：</td>
+                                <td>{{ order.get_style_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2">穿着年龄：</td>
+                                <td>{{ order.get_age_group_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2">更多要求：</td>
+                                <td>{{ order.message }}</td>
+                            </tr>
+                        </table>
                     </td>
                     <td>{{ order.get_status_display }}</td>
                     <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
                 </tr>
+                {% if order.design_set.exists %}
                 <tr>
                     <td>
+                        <p>设计方案</p>
+                        <table class="table col-sm-12">
                         {% for design in order.design_set.all %}
-                        <p>
-                            <span>{{ design.comment }} <span class="glyphicon glyphicon-ok"></span></span>
-                            <a class="pull-right" href="{% url 'designs:detail' code=design.code %}">查看服装设计></a>
-                        </p>
+                        <tr>
+                            <td>{{ design.get_status_display }}</td>
+                            <td class="col-sm-8">{{ design.comment|truncatechars:100 }}</td>
+                            <td class="text-right">
+                                <a href="{% url 'designs:detail' code=design.code %}">查看服装设计></a>
+                            </td>
+                        </tr>
                         {% endfor %}
+                        </table>
                     </td>
                     <td colspan="2">设计师：{{ order.preferred_designer.username }}</td>
                 </tr>
+                {% endif %}
                 {% if order.status == 'sent' %}
                 <tr>
                     <td colspan="3"><b>物流信息：</b><span>{{ order.express_info }}</span></td>

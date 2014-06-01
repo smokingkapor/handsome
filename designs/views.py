@@ -10,20 +10,21 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse
 from django.views.generic.base import View, RedirectView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from braces.views import(
     StaffuserRequiredMixin, CsrfExemptMixin, AjaxResponseMixin,
     JSONResponseMixin, LoginRequiredMixin
 )
 
-from .forms import DesignForm
+from .constants import SELECTED, REJECTED
+from .forms import DesignForm, RejectDesignForm
 from .mixins import DesignPermissionMixin
 from .models import Design, DesignClothing
 from clothings.models import Clothing
 from designs.models import DesignPhoto
 from handsome.utils import generate_str
-from orders.constants import DESIGNED
+from orders.constants import DESIGNED, ACCEPTED, PREPAID
 from orders.models import Order
 
 
@@ -85,7 +86,7 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
                 design.photos.add(photo)
 
         if self.request.is_ajax():
-            url = reverse('designs:detail', kwargs={'pk': design.id})
+            url = reverse('designs:detail', kwargs={'code': design.code})
             return self.render_json_response({'success': True, 'next': url})
 
         return super(CreateDesignView, self).form_valid(form)
@@ -133,6 +134,7 @@ class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
     """
     Accept design
     """
+    required_roles = ['owner']
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
@@ -140,20 +142,34 @@ class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
         Update design here
         """
         design = Design.objects.get(code=kwargs['code'])
-        design.is_selected = True
+        design.status = SELECTED
         design.save()
+        design.order.status = ACCEPTED
+        design.order.save()
         return reverse('orders:detail', kwargs={'code': design.order.code})
 
 
-class RejectDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
+class RejectDesignView(LoginRequiredMixin, DesignPermissionMixin, UpdateView):
     """
     Reject design
     """
-    permanent = False
+    required_roles = ['owner']
+    slug_field = 'code'
+    slug_url_kwarg = 'code'
+    form_class = RejectDesignForm
+    model = Design
 
-    def get_redirect_url(self, *args, **kwargs):
+    def form_valid(self, form):
         """
-        Update design here
+        Update design and order status
         """
-        design = Design.objects.get(code=kwargs['code'])
-        return reverse('orders:detail', kwargs={'code': design.order.code})
+        design = form.save(commit=False)
+        design.status = REJECTED
+        design.save()
+        design.order.status = PREPAID
+        design.order.save()
+        return super(RejectDesignView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('orders:detail',
+                       kwargs={'code': self.object.order.code})

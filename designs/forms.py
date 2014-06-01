@@ -14,3 +14,12 @@ class DesignForm(forms.ModelForm):
     class Meta:
         model = Design
         fields = ('comment',)
+
+
+class RejectDesignForm(forms.ModelForm):
+    """
+    Model form for reject Design
+    """
+    class Meta:
+        model = Design
+        fields = ('reject_reason',)
