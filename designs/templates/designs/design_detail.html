@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles %}
+{% load staticfiles thumbnail %}
 
 {% block title %}查看设计方案{% endblock %}
 
@@ -29,10 +29,10 @@
             </p>
             <hr />
             <dl class="dl-horizontal" id="design-comments">
-                <dt>设计师说：</dt>
-                <dd>{{ object.comment }}</dd>
+                <dt><img width="50" src="{{ object.designer.profile.avatar|thumbnail_url:'small' }}" /> - </dt>
+                <dd>{{ object.comment }}</dd><br />
                 {% if object.status == 'rejected' %}
-                <dt>我说：</dt>
+                <dt><img width="50" src="{{ object.client.profile.avatar|thumbnail_url:'small' }}" /> - </dt>
                 <dd>{{ object.reject_reason }}</dd>
                 {% endif %}
             </dl>
@@ -42,7 +42,7 @@
                 <div class="col-sm-2">
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <img width="50" src="/media/{{ design_clothing.clothing.image }}" />
+                            <img src="{{ design_clothing.clothing.image|thumbnail_url:'small' }}" />
                         </div>
                     </div>
                     <div class="row">
@@ -60,9 +60,14 @@
                 {% endfor %}
             </div>
             <hr />
-            {% for photo in object.photos.all %}
-            <img width="280" src="{{ photo.get_absolute_url }}" />
-            {% endfor %}
+            <div class="row">
+                {% for photo in object.photos.all %}
+                <div class="col-sm-2">
+                    <img src="{{ photo.file|thumbnail_url:'medium' }}" />
+                    <p class="text-center"><a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}">查看大图</a></p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

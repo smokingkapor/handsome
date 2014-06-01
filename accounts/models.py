@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 
+from easy_thumbnails.fields import ThumbnailerImageField
+
 from .constants import(
     BUSINESS, CASUAL, ENGLAND, NO_IDEA, UNDER_20, BETWEEN_20_25, ABOVE_30,
     BETWEEN_25_30, FULL_BODY_SHOT
@@ -30,6 +32,10 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(User)
+    avatar = ThumbnailerImageField(
+        upload_to='avatars',
+        default='avatars/default_avatar.png',
+        resize_source=dict(size=(1024, 1024), sharpen=True))
     is_designer = models.BooleanField(default=False, db_index=True)
     preferred_style = models.CharField(max_length=32, blank=True,
                                        choices=STYLE_CHOICES)
@@ -42,10 +48,10 @@ class Profile(models.Model):
     hipline = models.CharField(max_length=16, blank=True)
     foot = models.CharField(max_length=16, blank=True)
 
-    def get_fullbody_shot_url(self):
+    def get_fullbody_shot(self):
         photo = self.user.photo_set.filter(tag=FULL_BODY_SHOT, is_primary=True).first()  # noqa
         if photo:
-            return '{}fullbody-shot/{}'.format(settings.MEDIA_URL, photo.file)
+            return photo.file
         return None
 
     def __unicode__(self):
@@ -62,7 +68,9 @@ class Photo(models.Model):
     )
 
     user = models.ForeignKey(User)
-    file = models.CharField(max_length=64)
+    file = ThumbnailerImageField(
+        upload_to='fullbody-shot',
+        resize_source=dict(size=(1024, 1024), sharpen=True))
     is_primary = models.BooleanField(default=False)
     tag = models.CharField(max_length=16, choices=TAG_CHOICES,
                            default=FULL_BODY_SHOT, db_index=True)

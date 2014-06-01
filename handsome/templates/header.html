@@ -1,3 +1,4 @@
+{% load thumbnail %}
 <nav id="header" class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -45,7 +46,9 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li>
-                    <p class="navbar-text">{{ user.username }} <a href="{% url 'accounts:logout' %}" class="navbar-link">退出</a></p>
+                    <p class="navbar-text">
+                        <span>{{ user.username }}</span>
+                        <a href="{% url 'accounts:logout' %}" class="navbar-link">退出</a></p>
                 </li>
                 {% else %}
                 <li class="dropdown">

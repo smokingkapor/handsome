@@ -48,6 +48,7 @@ INSTALLED_APPS = (
 
     # 3rd libs
     'compressor',
+    'easy_thumbnails',
     'south',
 ) + LOCAL_APPS
 
@@ -103,6 +104,24 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
 )
+
+SOUTH_MIGRATION_MODULES = {
+    'easy_thumbnails': 'easy_thumbnails.south_migrations',
+}
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'small': {
+            'size': (128, 128)
+        },
+        'medium': {
+            'size': (256, 256)
+        },
+        'large': {
+            'size': (512, 512)
+        },
+    }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
