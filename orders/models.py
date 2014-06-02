@@ -126,17 +126,6 @@ class Country(models.Model):
         return self.name
 
 
-class Town(models.Model):
-    """
-    Town model
-    """
-    country = models.ForeignKey(Country)
-    name = models.CharField(max_length=64)
-
-    def __unicode__(self):
-        return self.name
-
-
 def generate_order_code(sender, instance, created, *args, **kwargs):
     """
     Generate order code.

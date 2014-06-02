@@ -89,9 +89,6 @@ class LoadAddressView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         elif level == 'country':
             objs = City.objects.get(pk=pk).country_set.all()
             return self.render_json_object_response(objs)
-        elif level == 'town':
-            objs = Country.objects.get(pk=pk).town_set.all()
-            return self.render_json_object_response(objs)
 
 
 class CreateSuccessView(LoginRequiredMixin, DetailView):
