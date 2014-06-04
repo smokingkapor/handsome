@@ -13,6 +13,51 @@ from .constants import(
 from accounts.models import Profile
 
 
+class Province(models.Model):
+    """
+    Province model
+    """
+    name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
+
+
+class City(models.Model):
+    """
+    City model
+    """
+    province = models.ForeignKey(Province)
+    name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Country(models.Model):
+    """
+    Country model
+    """
+    city = models.ForeignKey(City)
+    name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Address(models.Model):
+    """
+    Address for user
+    """
+    user = models.ForeignKey(User)
+    name = models.CharField(max_length=64, blank=True)
+    phone = models.CharField(max_length=64, blank=True)
+    province = models.ForeignKey(Province)
+    city = models.ForeignKey(City)
+    country = models.ForeignKey(Country)
+    is_selected = models.BooleanField(default=True)
+
+
 class Order(models.Model):
     """
     Order model
@@ -39,7 +84,14 @@ class Order(models.Model):
     code = models.CharField(max_length=32, unique=True, blank=True, null=True)
     total_price = models.FloatField(choices=PRICE_CHOICES)
     prepayment = models.FloatField()
+
+    # address info
+    address_province = models.ForeignKey(Province, null=True, blank=True)
+    address_city = models.ForeignKey(City, null=True, blank=True)
+    address_country = models.ForeignKey(Country, null=True, blank=True)
     address = models.CharField(max_length=256)
+    name = models.CharField(max_length=64, blank=True)
+    phone = models.CharField(max_length=64, blank=True)
 
     # user requirements
     style = models.CharField(max_length=32, blank=True,
@@ -92,38 +144,6 @@ class Order(models.Model):
 
     def __unicode__(self):
         return '{}\'s order'.format(self.creator.username)
-
-
-class Province(models.Model):
-    """
-    Province model
-    """
-    name = models.CharField(max_length=64)
-
-    def __unicode__(self):
-        return self.name
-
-
-class City(models.Model):
-    """
-    City model
-    """
-    province = models.ForeignKey(Province)
-    name = models.CharField(max_length=64)
-
-    def __unicode__(self):
-        return self.name
-
-
-class Country(models.Model):
-    """
-    Country model
-    """
-    city = models.ForeignKey(City)
-    name = models.CharField(max_length=64)
-
-    def __unicode__(self):
-        return self.name
 
 
 def generate_order_code(sender, instance, created, *args, **kwargs):
