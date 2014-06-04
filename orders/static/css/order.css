@@ -26,3 +26,13 @@
 #design-photos img {
     width: 400px;
 }
+
+#create-order input.form-control {
+    display: inline;
+    width: 300px;
+}
+
+#create-order select {
+    width: 150px;
+    display: inline;
+}

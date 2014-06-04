@@ -4,7 +4,7 @@ from django.conf.urls import patterns, url
 from .views import(
     CreateOrderView, LoadAddressView, CreateSuccessView, MyOrderView,
     OrderListView, PrepayView, PayView, SendView, ReceiveView, OrderDetailView,
-    OrderClothingsView
+    OrderClothingsView, SaveAddressView
 )
 
 
@@ -14,6 +14,7 @@ urlpatterns = patterns(
     url(r'^clothings/$', OrderClothingsView.as_view(), name='clothings'),
     url(r'^me/$', MyOrderView.as_view(), name='me'),
     url(r'^load_address/$', LoadAddressView.as_view(), name='load_address'),
+    url(r'^save_address/$', SaveAddressView.as_view(), name='save_address'),
     url(r'^(?P<code>\d+)/create_success/$', CreateSuccessView.as_view(),
         name='create_success'),
     url(r'^(?P<code>\d+)/$', OrderDetailView.as_view(), name='detail'),
