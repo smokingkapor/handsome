@@ -24,7 +24,7 @@ from .mixins import DesignPermissionMixin
 from .models import Design, DesignClothing
 from clothings.models import Clothing
 from designs.models import DesignPhoto
-from handsome.utils import generate_str
+from handsome.utils import generate_str, send_sms
 from orders.constants import DESIGNED, ACCEPTED, PREPAID
 from orders.models import Order
 
@@ -86,6 +86,9 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
                                     file=u'design-photo/{}'.format(new_filename))
                 photo.save()
                 design.photos.add(photo)
+
+        # send SMS notification
+        send_sms(order.phone, settings.SMS_TEMPLATES['designed'].format(self.request.user.username))
 
         if self.request.is_ajax():
             url = reverse('designs:detail', kwargs={'code': design.code})

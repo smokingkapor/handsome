@@ -157,10 +157,10 @@ class Order(models.Model):
         """
         operations = ''
         if self.status == PREPAID:
-            operations = '<a href="{}?order={}">创建方案></a>'.format(reverse_lazy('designs:create'), self.code)
+            operations = '<a class="highlight" href="{}?order={}">创建方案></a>'.format(reverse_lazy('designs:create'), self.code)
         elif self.status == PAID:
             send_url = reverse('orders:send', kwargs={'code': self.code})
-            operations = '<a href="javascript:void(0);" data-url="{}" class="send-order-btn">已经寄出></a>'.format(send_url)
+            operations = '<a class="highlight" href="javascript:void(0);" data-url="{}" class="send-order-btn">已经寄出></a>'.format(send_url)
         return operations
 
     def __unicode__(self):

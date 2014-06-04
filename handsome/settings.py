@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for handsome project.
 
@@ -12,6 +13,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+
+ADMINS = (('Kapor Zhu', 'smokingkapor@gmail.com'),)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -123,6 +126,14 @@ THUMBNAIL_ALIASES = {
     }
 }
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ygrass.system.notification@gmail.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_SUBJECT_PREFIX = u'[优草]'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'ygrass.system.notification@gmail.com'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
@@ -140,6 +151,14 @@ STATICFILES_FINDERS = (
 
 COMPRESS_ENABLED = True
 COMPRESS_PARSER = 'compressor.parser.HtmlParser'
+
+SMS_NOTIFICATION_ENABLED = False
+SMS_SERVER_URL = 'http://106.ihuyi.cn/webservice/sms.php?method=Submit'
+SMS_SERVER_USERNAME = ''
+SMS_SERVER_PASSWORD = ''
+SMS_TEMPLATES = {
+    'designed': u'设计师{}已经为您量身设计了一套服装，请登录优草(ygrass.com)查看.'
+}
 
 try:
     from local_settings import *  # noqa

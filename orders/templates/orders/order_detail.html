@@ -18,7 +18,11 @@
             <p>
                 <span>订单号：{{ order.code }}</span>
                 <span class="pull-right">
+                    {% if user.is_staff %}
+                    {{ order.get_designer_operations|safe }}
+                    {% else %}
                     {{ order.get_operations|safe }}
+                    {% endif %}
                 </span>
             </p>
             <hr />
