@@ -9,7 +9,6 @@ from braces.views import(
     SuperuserRequiredMixin, StaffuserRequiredMixin, AjaxResponseMixin,
     JSONResponseMixin
 )
-from easy_thumbnails.files import get_thumbnailer
 
 from .models import Clothing
 

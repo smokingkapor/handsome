@@ -15,6 +15,7 @@ from braces.views import(
 
 from .constants import PREPAID, PAID, SENT, DONE
 from .forms import CreateOrderForm
+from .mixins import OrderPermissionMixin
 from .models import Order, Province, City, Address, Country
 from accounts.models import Profile
 from django.http.response import Http404
@@ -164,7 +165,7 @@ class MyOrderView(LoginRequiredMixin, ListView):
         return qs.filter(creator=self.request.user).order_by('-created_at')
 
 
-class OrderDetailView(LoginRequiredMixin, DetailView):
+class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
     """
     Order detail page
     """
@@ -261,13 +262,14 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         return qs.order_by('-created_at')
 
 
-class PrepayView(LoginRequiredMixin, RedirectView):
+class PrepayView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):
     """
     Go to Alipay.
     Simply set the order to pre-paid now
     """
     permanent = False
     url = reverse_lazy('orders:me')
+    required_roles = ['owner']
 
     def get_redirect_url(self, *args, **kwargs):
         """
@@ -281,13 +283,14 @@ class PrepayView(LoginRequiredMixin, RedirectView):
         return super(PrepayView, self).get_redirect_url(*args, **kwargs)
 
 
-class PayView(LoginRequiredMixin, RedirectView):
+class PayView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):
     """
     Go to Alipay.
     Simply set the order to paid now
     """
     permanent = False
     url = reverse_lazy('orders:me')
+    required_roles = ['owner']
 
     def get_redirect_url(self, *args, **kwargs):
         """
@@ -318,7 +321,7 @@ class SendView(StaffuserRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         return self.render_json_response({'success': True})
 
 
-class ReceiveView(LoginRequiredMixin, RedirectView):
+class ReceiveView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):
     """
     The client receive the package
     Simply set the order to done now
