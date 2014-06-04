@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles thumbnail %}
+{% load staticfiles thumbnail account_tags %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/order.css' %}">
@@ -31,15 +31,15 @@
                     <td class="order-description">
                         <table class="table-condensed">
                             <tr>
-                                <td class="col-sm-2">服装风格：</td>
+                                <td class="col-sm-3">服装风格:</td>
                                 <td>{{ order.get_style_display }}</td>
                             </tr>
                             <tr>
-                                <td class="col-sm-2">穿着年龄：</td>
+                                <td class="col-sm-3">穿着年龄:</td>
                                 <td>{{ order.get_age_group_display }}</td>
                             </tr>
                             <tr>
-                                <td class="col-sm-2">更多要求：</td>
+                                <td class="col-sm-3">更多要求:</td>
                                 <td>{{ order.message }}</td>
                             </tr>
                         </table>
@@ -65,7 +65,7 @@
                     </td>
                     <td colspan="2" class="text-center">
                         <img class="avatar" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
-                        <p>设计师：{{ order.preferred_designer.username }}</p>
+                        <p>设计师：{{ order.preferred_designer.get_full_name|default_if_empty:order.preferred_designer.username }}</p>
                     </td>
                 </tr>
                 {% endif %}

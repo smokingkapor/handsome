@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles thumbnail %}
+{% load staticfiles thumbnail account_tags %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
@@ -278,7 +278,12 @@
                     <div class="row selector">
                         {% for designer in designers %}
                         <div class="col-sm-2">
-                            <div class="option" data-value="{{ designer.user.id }}">{{ designer.user.username }}</div>
+                            <div class="option image-option" data-value="{{ designer.user.id }}">
+                                <p>
+                                    <img width="100" class="avatar" src="{{ designer.avatar|thumbnail_url:'small' }}" />
+                                </p>
+                                <p>{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</p>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
