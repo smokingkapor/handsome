@@ -15,7 +15,7 @@ from braces.views import(
 
 from .constants import PREPAID, PAID, SENT, DONE
 from .forms import CreateOrderForm
-from .models import Order, Province, City, Country
+from .models import Order, Province, City, Address, Country
 from accounts.models import Profile
 from django.http.response import Http404
 from designs.constants import SELECTED
@@ -35,7 +35,14 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         Override. Add extra data to context
         """
         data = super(CreateOrderView, self).get_context_data(**kwargs)
-        data.update({'provinces': Province.objects.all()})
+        try:
+            address = self.request.user.address_set.get(is_selected=True)
+        except Address.DoesNotExist:
+            address = None
+        data.update({
+            'address': address,
+            'provinces': Province.objects.all()
+        })
         return data
 
     def form_valid(self, form):
@@ -55,6 +62,16 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order.chest = profile.chest
         order.hipline = profile.hipline
         order.foot = profile.foot
+
+        # order address info
+        address = Address.objects.get(id=self.request.REQUEST['address'])
+        order.address_province = address.province
+        order.address_city = address.city
+        order.address_country = address.country
+        order.house = address.house
+        order.name = address.name
+        order.phone = address.phone
+
         order.save()
 
         if self.request.is_ajax():
@@ -89,6 +106,37 @@ class LoadAddressView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         elif level == 'country':
             objs = City.objects.get(pk=pk).country_set.all()
             return self.render_json_object_response(objs)
+
+
+class SaveAddressView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
+                      View):
+    """
+    Save address info.
+    """
+    def get_ajax(self, request, *args, **kwargs):
+        """
+        Update or create a new one.
+        """
+        address_id = request.REQUEST.get('address_id')
+        if address_id:
+            address = Address.objects.get(id=address_id)
+        else:
+            address = Address(user=request.user)
+        address.province = Province.objects.get(id=request.REQUEST['province'])
+        try:
+            address.city = City.objects.get(id=request.REQUEST.get('city'))
+        except City.DoesNotExist:
+            address.city = None
+        try:
+            address.country = Country.objects.get(id=request.REQUEST.get('country'))
+        except Country.DoesNotExist:
+            address.country = None
+        address.house = request.REQUEST['house']
+        address.name = request.REQUEST['name']
+        address.phone = request.REQUEST['phone']
+        address.save()
+        return self.render_json_response({'id': address.id,
+                                          'address': unicode(address)})
 
 
 class CreateSuccessView(LoginRequiredMixin, DetailView):

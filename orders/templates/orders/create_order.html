@@ -5,46 +5,86 @@
 <script src="{% static 'js/order.js' %}"></script>
 {% endblock%}
 
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock%}
+
 {% block title %}下单{% endblock %}
 
 {% block content %}
 <div class="container body" id="create-order">
     <div class="row">
-        <form class="form-inline col-md-12 content" role="form">
-            <h4>配送地址</h4>
+        <form class="form-horizontal col-md-12 content" role="form">
+            <h4>配送信息</h4>
             <hr />
-            <div class="form-group">
-                <small><b class="text-danger">*</b>收货人：&nbsp;&nbsp;&nbsp;</small>
-                <input class="form-control input-sm" />
-            </div>
-            <br /><br />
-            <div class="form-group">
-                <small><b class="text-danger">*</b>所在地区：</small>
-                <select id="province" class="form-control input-sm address" data-target="#city" data-url="{% url 'orders:load_address' %}?level=city">
-                    <option value="-1">--请选择--</option>
-                    {% for province in provinces %}
-                    <option value="{{ province.id }}">{{ province.name }}</option>
-                    {% endfor %}
-                </select>
-                <select id="city" class="hidden form-control input-sm address" data-target="#country" data-url="{% url 'orders:load_address' %}?level=country">
-                    <option value="-1">--请选择--</option>
-                </select>
-                <select id="country" class="hidden form-control input-sm address" data-target="#town" data-url="{% url 'orders:load_address' %}?level=town">
-                    <option value="-1">--请选择--</option>
-                </select>
-                <select id="town" class="hidden form-control input-sm address">
-                    <option value="-1">--请选择--</option>
-                </select>
-            </div>
-            <br /><br />
-            <div class="form-group">
-                <small><b class="text-danger">*</b>详细地址：</small>
-                <span id="address"></span><input class="form-control input-sm" />
-            </div>
-            <br /><br />
-            <div class="form-group">
-                <small><b class="text-danger">*</b>联系电话：</small>
-                <input class="form-control input-sm" />
+            <input type="hidden" id="address-pk" value="{{ address.id }}" />
+            <p id="full-adress" {% if not address %}class="hidden"{% endif %}>
+                <span>{{ address|default_if_none:'' }}</span>
+                <a href="javascript:void(0)" id="edit-address-btn"><span class="glyphicon glyphicon-edit"></span>修改</a>
+            </p>
+            <div id="address-edit-panel" {% if address %}class="hidden"{% endif %}>
+                <div class="form-group">
+                    <small class="col-sm-1 control-label"><b class="text-danger">*</b>收货人&nbsp;&nbsp;&nbsp;：</small>
+                    <div class="col-sm-11">
+                        <input id="name" class="form-control input-sm" value="{{ address.name }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <small class="col-sm-1 control-label"><b class="text-danger">*</b>所在地区：</small>
+                    <div class="col-sm-11">
+                        <select id="province" class="form-control input-sm address" data-target="#city" data-url="{% url 'orders:load_address' %}?level=city">
+                            <option value="-1">--请选择--</option>
+                            {% for province in provinces %}
+                                {% if province == address.province %}
+                                    <option value="{{ province.id }}" selected="selected">{{ province.name }}</option>
+                                {% else %}
+                                    <option value="{{ province.id }}">{{ province.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <select id="city" class="form-control input-sm address {% if not address.city %}hidden{% endif %}" data-target="#country" data-url="{% url 'orders:load_address' %}?level=country">
+                            <option value="-1">--请选择--</option>
+                            {% for city in address.province.city_set.all %}
+                                {% if city == address.city %}
+                                    <option value="{{ city.id }}" selected="selected">{{ city.name }}</option>
+                                {% else %}
+                                    <option value="{{ city.id }}">{{ city.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <select id="country" class="form-control input-sm address {% if not address.country %}hidden{% endif %}" data-target="#town" data-url="{% url 'orders:load_address' %}?level=town">
+                            <option value="-1">--请选择--</option>
+                            {% for country in address.city.country_set.all %}
+                                {% if country == address.country %}
+                                    <option value="{{ country.id }}" selected="selected">{{ country.name }}</option>
+                                {% else %}
+                                    <option value="{{ country.id }}">{{ country.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <small class="col-sm-1 control-label"><b class="text-danger">*</b>详细地址：</small>
+                        <div class="col-sm-11">
+                            <span id="region">{{ address.get_region }}</span>
+                            <input id="house" class="form-control input-sm" value="{{ address.house }}" />
+                        </div>
+                </div>
+                <div class="form-group">
+                    <small class="col-sm-1 control-label"><b class="text-danger">*</b>联系电话：</small>
+                    <div class="col-sm-11">
+                        <input id="phone" class="form-control input-sm" value="{{ address.phone }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-11">
+                        <button id="save-address-btn" type="button" data-url="{% url 'orders:save_address' %}" class="btn btn-default">保存配送信息</button>
+                        {% if address %}
+                        <a id="cancel-edit-address-btn" href="javascript:void(0)">取消</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </form>
     </div>
