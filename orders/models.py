@@ -55,6 +55,7 @@ class Address(models.Model):
     province = models.ForeignKey(Province)
     city = models.ForeignKey(City)
     country = models.ForeignKey(Country)
+    house = models.CharField(max_length=256, blank=True)
     is_selected = models.BooleanField(default=True)
 
 
@@ -89,7 +90,7 @@ class Order(models.Model):
     address_province = models.ForeignKey(Province, null=True, blank=True)
     address_city = models.ForeignKey(City, null=True, blank=True)
     address_country = models.ForeignKey(Country, null=True, blank=True)
-    address = models.CharField(max_length=256)
+    house = models.CharField(max_length=256, blank=True)
     name = models.CharField(max_length=64, blank=True)
     phone = models.CharField(max_length=64, blank=True)
 
