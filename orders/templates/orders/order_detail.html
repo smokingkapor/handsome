@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles %}
+{% load staticfiles thumbnail %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/order.css' %}">
@@ -15,22 +15,27 @@
 <div class="container body">
     <div class="row">
         <div class="col-md-12 content">
-            <p>订单号：{{ order.code }}</p>
+            <p>
+                <span>订单号：{{ order.code }}</span>
+                <span class="pull-right">
+                    {{ order.get_operations|safe }}
+                </span>
+            </p>
             <hr />
             <table class="table table-bordered">
                 <tr>
                     <td class="order-description">
                         <table class="table-condensed">
                             <tr>
-                                <td class="col-sm-3">服装风格：</td>
+                                <td class="col-sm-2">服装风格：</td>
                                 <td>{{ order.get_style_display }}</td>
                             </tr>
                             <tr>
-                                <td class="col-sm-3">穿着年龄：</td>
+                                <td class="col-sm-2">穿着年龄：</td>
                                 <td>{{ order.get_age_group_display }}</td>
                             </tr>
                             <tr>
-                                <td class="col-sm-3">更多要求：</td>
+                                <td class="col-sm-2">更多要求：</td>
                                 <td>{{ order.message }}</td>
                             </tr>
                         </table>
@@ -45,16 +50,19 @@
                         <table class="table col-sm-12">
                         {% for design in order.design_set.all %}
                         <tr>
-                            <td>{{ design.get_status_display }}</td>
                             <td class="col-sm-8">{{ design.comment|truncatechars:100 }}</td>
+                            <td>{{ design.get_status_display }}</td>
                             <td class="text-right">
-                                <a href="{% url 'designs:detail' code=design.code %}">查看服装设计></a>
+                                <a {% if design.status == 'waiting' %}class="highlight"{% endif %} href="{% url 'designs:detail' code=design.code %}">查看服装设计></a>
                             </td>
                         </tr>
                         {% endfor %}
                         </table>
                     </td>
-                    <td colspan="2">设计师：{{ order.preferred_designer.username }}</td>
+                    <td colspan="2" class="text-center">
+                        <img class="avatar" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
+                        <p>设计师：{{ order.preferred_designer.username }}</p>
+                    </td>
                 </tr>
                 {% endif %}
                 {% if order.status == 'sent' %}

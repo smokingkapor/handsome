@@ -20,6 +20,11 @@
         {% compress js %}
         <script src="{% static 'jquery/jquery-1.11.0.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="{% static 'js/html5shiv.min.js' %}"></script>
+          <script src="{% static 'js/respond.min.js' %}"></script>
+        <![endif]-->
         <script src="{% static 'js/base.js' %}"></script>
         {% block extrajs %}{% endblock %}
         {% endcompress %}

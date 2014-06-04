@@ -17,6 +17,10 @@ a {
     text-decoration: none;
 }
 
+a.highlight {
+    color: #ff4a00;
+}
+
 .body {
     padding-top: 80px;
     padding-bottom: 40px;
@@ -49,4 +53,11 @@ a {
 
 .eye_conversion.glyphicon-eye-open {
     color: #428bca;
+}
+
+.avatar {
+    background-color: #F5F5F5;
+    border: 1px solid #DDDDDD;
+    border-radius: 50% 50% 50% 50%;
+    padding: 4px;
 }
