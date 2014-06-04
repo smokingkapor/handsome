@@ -28,51 +28,54 @@
                 </span>
             </p>
             <hr />
-            <div id="design-comments">
-                <p>
-                    <img width="50" class="avatar" src="{{ object.designer.profile.avatar|thumbnail_url:'small' }}" />
-                    <span>{{ object.comment }}</span>
-                </p>
-                {% if object.status == 'rejected' %}
-                <p>
-                    <img width="50" class="avatar" src="{{ object.client.profile.avatar|thumbnail_url:'small' }}" />
-                    <span>{{ object.reject_reason }}</span>
-                </p>
-                {% endif %}
-            </div>
-            <hr />
-            <div class="row">
-                {% for design_clothing in object.clothings.all %}
-                <div class="col-sm-3">
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <img src="{{ design_clothing.clothing.image|thumbnail_url:'small' }}" />
+            <div id="design-comments" class="row">
+                <div class="col-sm-12">
+                    <p class="row">
+                        <div class="col-sm-1">
+                            <img width="40" class="avatar" src="{{ object.designer.profile.avatar|thumbnail_url:'small' }}" />
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <span>颜色：<b>{{ design_clothing.color }}</b></span>
-                            <span>尺寸：<b>{{ design_clothing.size }}</b></span>
+                        <div class="well well-sm col-sm-10">{{ object.comment }}</div>
+                    </p>
+                    {% if object.status == 'rejected' %}
+                    <p class="row">
+                        <div class="col-sm-1">
+                            <img width="40" class="avatar" src="{{ object.client.profile.avatar|thumbnail_url:'small' }}" />
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <span>{{ design_clothing.clothing.name }}</span>
-                        </div>
-                    </div>
+                        <div class="well well-sm col-sm-10">{{ object.reject_reason }}</div>
+                    </p>
+                    {% endif %}
                 </div>
-                {% endfor %}
             </div>
+            <br /><br />
+            <p>整体效果图：</p>
             <hr />
             <div class="row">
                 {% for photo in object.photos.all %}
-                <div class="col-sm-3">
+                <div class="col-sm-3 text-center">
                     <img width="200" src="{{ photo.file|thumbnail_url:'medium' }}" />
-                    <p class="text-center"><a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}">查看大图</a></p>
+                    <p><a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}">查看大图</a></p>
                 </div>
                 {% endfor %}
             </div>
-            <hr >
+            <br /><br />
+            <p>服装：</p>
+            <table class="table">
+                {% for design_clothing in object.clothings.all %}
+                <tr>
+                    <td>
+                        <img src="{{ design_clothing.clothing.image|thumbnail_url:'small' }}" />
+                    </td>
+                    <td>
+                        <span>{{ design_clothing.clothing.name }}</span>
+                    </td>
+                    <td>
+                        <span>颜色：<b>{{ design_clothing.color }}</b></span>
+                        <span>尺寸：<b>{{ design_clothing.size }}</b></span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <hr />
             <div>
                 <span class="pull-right">
                     {% if object.status == 'waiting' and user == object.client %}
