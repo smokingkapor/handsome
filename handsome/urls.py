@@ -13,6 +13,7 @@ urlpatterns = patterns(
     url(r'^orders/', include('orders.urls', 'orders', 'orders')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('django.contrib.flatpages.urls')),
 )
 
 if settings.DEBUG:

@@ -1,0 +1,19 @@
+{% load flatpages %}
+{% get_flatpages as flatpages %}
+<div class="container">
+    <hr />
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-sm-4">
+                <span class="text-left">© 2014 ygrass.com, all rights reserved</span>
+            </div>
+            <div class="col-sm-8">
+                <ul class="list-inline text-right">
+                    {% for page in flatpages %}
+                        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
