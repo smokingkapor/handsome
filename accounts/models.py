@@ -41,12 +41,12 @@ class Profile(models.Model):
                                        choices=STYLE_CHOICES)
     age_group = models.CharField(max_length=32, blank=True,
                                  choices=AGE_GROUP_CHOICES)
-    height = models.CharField(max_length=16, blank=True)
-    weight = models.CharField(max_length=16, blank=True)
-    waistline = models.CharField(max_length=16, blank=True)
-    chest = models.CharField(max_length=16, blank=True)
-    hipline = models.CharField(max_length=16, blank=True)
-    foot = models.CharField(max_length=16, blank=True)
+    height = models.CharField(u'身高', max_length=16, blank=True)
+    weight = models.CharField(u'体重', max_length=16, blank=True)
+    waistline = models.CharField(u'腰围', max_length=16, blank=True)
+    chest = models.CharField(u'胸围', max_length=16, blank=True)
+    hipline = models.CharField(u'臀围', max_length=16, blank=True)
+    foot = models.CharField(u'脚长', max_length=16, blank=True)
 
     def get_fullbody_shot(self):
         photo = self.user.photo_set.filter(tag=FULL_BODY_SHOT, is_primary=True).first()  # noqa

@@ -1,336 +1,46 @@
 {% extends "page.html" %}
-{% load staticfiles thumbnail account_tags %}
+{% load staticfiles %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
-<link rel="stylesheet" href="{% static 'jQuery-File-Upload/css/jquery.fileupload.css' %}">
 {% endblock%}
 
-{% block extrajs %}
-<script src="{% static 'js/portal.js' %}"></script>
-<!--[if lte IE 9]>       
-    <script src="{% static 'ie-bootstrap-carousel/ie-bootstrap-carousel.min.js' %}"></script>
-<![endif]-->
-<script src="{% static 'jQuery-File-Upload/js/vendor/jquery.ui.widget.js' %}"></script>
-<script src="{% static 'jQuery-File-Upload/js/jquery.iframe-transport.js' %}"></script>
-<script src="{% static 'jQuery-File-Upload/js/jquery.fileupload.js' %}"></script>
-{% endblock%}
-
-{% block title %}Mr-Handsome{% endblock %}
+{% block title %}优草{% endblock %}
 
 {% block content %}
-<div class="carousel slide">
-    <div class="carousel-inner">
-        <div class="item active">
-            <div class="carousel-caption" id="home">
-                <div class="container">
-                    <div class="row">
-                        <p><strong>Mr. Handsome.</strong>Your personal Fashion Consultant</p>
-                    </div>
-                    <br /><br />
-                    <a href="javascript:void(0)" class="btn btn-default next">马上开始</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="carousel-caption" id="style">
-                <div class="container">
-                    <h4>Choose your style</h4>
-                    <div class="row selector auto-slide">
-                        {% for choice in STYLE_CHOICES %}
-                            <div class="col-sm-2">
-                                <div class="option {% if user.profile.preferred_style == choice.0 %}selected{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pager">
-                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next {% if not user.profile.preferred_style %}hidden{% endif %}"><a href="javascript:void(0);">&rarr;</a></li>
-                            </ul>
-                        </div>
+<div id="home">
+    <div class="overlay">
+        <div class="column">
+            <div class="container text-center">
+                <h2>优草</h2>
+                <p>个性化的私人服装搭配</p>
+                <div class="action">
+                    <div class="bg-transparent box center">
+                        <a href="{% url 'portals:survey' %}" class="btn btn-primary btn-lg">我们开始吧</a>
+                        <ul class="list-unstyled text-left">
+                            <li>
+                                <div class="text-white">
+                                    <span class="text-primary  glyphicon glyphicon-ok"></span>
+                                    <span>完美协调的衣服</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="text-white">
+                                    <span class="text-primary  glyphicon glyphicon-ok"></span>
+                                    <span>尝试变得从容</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="text-white">
+                                    <span class="text-primary  glyphicon glyphicon-ok"></span>
+                                    <span>免费咨询及送货</span>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="item">
-            <div class="carousel-caption" id="age-group">
-                <div class="container">
-                    <h4>Choose your age</h4>
-                    <div class="row selector auto-slide">
-                        {% for choice in AGE_GROUP_CHOICES %}
-                            <div class="col-sm-2">
-                                <div class="option {% if user.profile.age_group == choice.0 %}selected{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pager">
-                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next {% if not user.profile.age_group %}hidden{% endif %}"><a href="javascript:void(0);">&rarr;</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {% if not user.is_authenticated %}
-        <div class="item">
-            <div class="carousel-caption" id="auth">
-                <div class="container">
-                    <div class="col-md-6">
-                        <h4>马上注册</h4>
-                        <form class="form-horizontal" role="form" action="{% url 'accounts:register' %}">
-                            <div class="form-group">
-                                <span class="col-md-3 control-label">用户名：</span>
-                                <div class="col-md-7">
-                                    <div class="input-group">
-                                        <input type="text" name="username" class="form-control" id="register-username">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user" data-input-id="register-username"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <span class="col-md-3 control-label">密码：</span>
-                                <div class="col-md-7">
-                                    <div class="input-group">
-                                        <input type="password" name="password" class="form-control" id="register-password">
-                                        <span class="input-group-addon">
-                                            <span class="eye_conversion glyphicon glyphicon-eye-close" data-input-id="register-password"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group hidden form-error">
-                                <div class="col-md-7 col-md-offset-3">
-                                    <div class="alert alert-danger"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-7 text-right">
-                                    <input id="register-btn" data-loading-text="正在注册..." type="button" class="btn btn-default" value="注册">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-6">
-                        <form class="form-horizontal" role="form" action="{% url 'accounts:login' %}">
-                            <h4>快速登录</h4>
-                            <div class="form-group">
-                                <span class="col-md-3 control-label">用户名：</span>
-                                <div class="col-md-7">
-                                    <div class="input-group">
-                                        <input type="text" name="username" class="form-control" id="login-username">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user" data-input-id="login-username"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <span class="col-md-3 control-label">密码：</span>
-                                <div class="col-md-7">
-                                    <div class="input-group">
-                                        <input type="password" name="password" class="form-control" id="login-password">
-                                        <span class="input-group-addon">
-                                            <span class="eye_conversion glyphicon glyphicon-eye-close" data-input-id="login-password"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group hidden form-error">
-                                <div class="col-md-7 col-md-offset-3">
-                                    <div class="alert alert-danger"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-7 text-right">
-                                    <input id="login-btn" data-loading-text="登录中..." type="button" class="btn btn-default" value="登录">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pager">
-                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
-        <div class="item">
-            <div class="carousel-caption" id="sizes">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <span class="col-sm-4 control-label">身高：</span>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <input type="text" name="height" class="form-control text-right size-input" value="{{ user.profile.height|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" />
-                                            <span class="input-group-addon">cm</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <span class="col-sm-4 control-label">体重：</span>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <input type="text" name="weight" class="form-control text-right size-input" value="{{ user.profile.weight|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" />
-                                            <span class="input-group-addon">kg</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <span class="col-sm-4 control-label">胸围：</span>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <input type="text" name="chest" class="form-control text-right size-input" value="{{ user.profile.chest|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" data-description="胸围: 自然挺胸抬头。沿胸部隆起的最高点，用软尺水平围绕身体一周，软尺恰好相连，不可过松或太紧，得出的测量尺寸即为上胸围尺寸。" />
-                                            <span class="input-group-addon">cm</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <span class="col-sm-4 control-label">腰围：</span>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <input type="text" name="waistline" class="form-control text-right size-input" value="{{ user.profile.waistline|default_if_none:'' }}" data-image="{% static 'image/yw.jpg' %}" data-description="腰围: 自然站直，挺胸抬头。上身与下身连接处最为纤细的部分即为腰部。用软尺沿腰部水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为腰围。" />
-                                            <span class="input-group-addon">cm</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <span class="col-sm-4 control-label">臀围：</span>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <input type="text" name="hipline" class="form-control text-right size-input" value="{{ user.profile.hipline|default_if_none:'' }}" data-image="{% static 'image/tw.jpg' %}" data-description="臀围: 自然站直，挺胸抬头。用软尺沿下身臀部自然隆起的最高点水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为臀围。" />
-                                            <span class="input-group-addon">cm</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <span class="col-sm-4 control-label">脚长：</span>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <input type="text" name="foot" class="form-control text-right size-input" value="{{ user.profile.foot|default_if_none:'' }}" data-image="{% static 'image/jc.jpg' %}" data-description="脚长：脱去鞋子，用软尺测量最长脚指的尖端到脚后跟的距离，得出的测量尺寸即为脚长。" />
-                                            <span class="input-group-addon">cm</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-offset-4 col-md-8 text-right">
-                                        <span id="progress"></span>
-                                        <span class="btn btn-success fileinput-button">
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                            <span>上传全身照...</span>
-                                            <input id="fileupload" type="file" name="file" data-url="{% url 'accounts:upload' %}">
-                                        </span>
-                                        <input type="hidden" id="fullbody-shot" />
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-3 hidden-sm hidden-xs">
-                            <div id="sample">
-                                <img height="240" src="{% static 'image/xw.jpg' %}" />
-                                <br />
-                                <span class="description"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div id="files">
-                                {% with image=user.profile.get_fullbody_shot %}
-                                    {% if image %}
-                                    <img src="{{ image|thumbnail_url:'medium' }}" />
-                                    {% endif %}
-                                {% endwith %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pager">
-                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next"><a href="javascript:void(0);">&rarr;</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="carousel-caption" id="designer">
-                <div class="container">
-                    <h4>选择设计师</h4>
-                    <div class="row selector">
-                        {% for designer in designers %}
-                        <div class="col-sm-2">
-                            <div class="option image-option" data-value="{{ designer.user.id }}">
-                                <p>
-                                    <img width="100" class="avatar" src="{{ designer.avatar|thumbnail_url:'small' }}" />
-                                </p>
-                                <p>{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</p>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <hr />
-                            <form class="form-horizontal">
-                                <p class="text-left">您有什么特殊要求，请告诉我们</p>
-                                <textarea rows="5" class="form-control" id="personal-requirement"></textarea>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pager">
-                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next hidden"><a href="javascript:void(0);">&rarr;</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="carousel-caption" id="price">
-                <div class="container">
-                    <h4>价格</h4>
-                    <div class="row selector">
-                        {% for choice in PRICE_CHOICES %}
-                        <div class="col-sm-2">
-                            <div class="option">{{ choice.0 }}</div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pager">
-                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next hidden"><a class="btn" id="finish-btn" data-loading-text="正在保存..." href="javascript:void(0);" data-url="{% url 'accounts:update' %}" data-next="{% url 'orders:create' %}">完成</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
 {% endblock %}

@@ -89,37 +89,34 @@
         </form>
     </div>
 
-    <div class="row">
-        <br />
-        <form class="form-inline col-md-12 content" role="form">
-            <h4>我的要求</h4>
-            <hr />
-            <div class="form-group">
-                <small>风格：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
-                <span>{{ user.profile.get_preferred_style_display }}</span>
-            </div>
-            <br /><br />
-            <div class="form-group">
-                <small>年龄段：&nbsp;&nbsp;&nbsp;</small>
-                <span>{{ user.profile.get_age_group_display }}</span>
-            </div>
-            <br /><br />
-            <div class="form-group">
-                <small>设计师：&nbsp;&nbsp;&nbsp;</small>
-                <span id="designer"></span>
-            </div>
-            <br /><br />
-            <div class="form-group">
-                <small>个人要求：</small>
-                <span id="personal-requirement"></span>
-            </div>
-            <br /><br />
-            <div class="form-group">
-                <small>价格：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
-                <span id="price">299</span>
-            </div>
-        </form>
-    </div>
+    <br />
+    <h4>我的要求</h4>
+    <hr />
+    <table id="my-requirement">
+        <tr>
+            <td class="text-right title">风格：</td>
+            <td id="style"></td>
+        </tr>
+        <tr>
+            <td class="text-right title">年龄段：</td>
+            <td id="age"></td>
+        </tr>
+        <tr>
+            <td class="text-right title">价格：</td>
+            <td id="price"></td>
+        </tr>
+        <tr>
+            <td class="text-right title">更多要求：</td>
+            <td id="requirement"></td>
+        </tr>
+        <tr>
+            <td class="text-right title">设计师：</td>
+            <td id="designer">
+                <img class="avatar" width="40" src="{% static 'image/avatars/default_avatar.png' %}" />
+                <span></span>
+            </td>
+        </tr>
+    </table>
 
     <div class="row">
         <br />

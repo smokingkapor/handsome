@@ -1,3 +1,7 @@
+body, html {
+    height: 100%;
+}
+
 body {
     font: 14px "微软雅黑", "MicrosoftYahei", "宋体", "Arial Narrow", HELVETICA;
 }
@@ -21,20 +25,8 @@ a.highlight {
 }
 
 .body {
-    padding-top: 50px;
+    padding-top: 70px;
     padding-bottom: 40px;
-}
-
-.content {
-    background-color: white;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    padding: 15px;
-}
-
-.navbar-nav li.selected {
-    border-bottom: 2px solid blue;
 }
 
 #login-form {
@@ -59,4 +51,28 @@ a.highlight {
     border: 1px solid #DDDDDD;
     border-radius: 50% 50% 50% 50%;
     padding: 2px;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.text-primary {
+    color: #2880a3;
+}
+
+.bg-gray {
+    background-color: #eee;
+}
+
+#header.navbar-inverse .navbar-nav>li>a, #header.navbar-inverse .navbar-link, #header.navbar-inverse .navbar-text {
+    color: #eee;
+}
+
+#logo-name {
+    font-size: 20px;
 }

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, url
 
-from .views import LoginView, LogoutView, RegisterView, UploadView, UpdateView
+from .views import(
+    LoginView, LogoutView, RegisterView, UploadView, UpdateProfileView
+)
 
 
 urlpatterns = patterns(
@@ -10,5 +12,5 @@ urlpatterns = patterns(
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
     url(r'^upload/$', UploadView.as_view(), name='upload'),
-    url(r'^update/$', UpdateView.as_view(), name='update'),
+    url(r'^update/$', UpdateProfileView.as_view(), name='update'),
 )

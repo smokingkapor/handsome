@@ -5,10 +5,6 @@ $(document).ready(function(){
         interval: false
     });
 
-    $('.carousel .next').click(function(){
-        $('.carousel').carousel('next');
-    });
-
     $('.carousel .previous').click(function(){
         $('.carousel').carousel('prev');
     });
@@ -21,41 +17,6 @@ $(document).ready(function(){
         if ($selector.is('.auto-slide')) {
             $('.carousel').carousel('next');
         }
-    });
-
-    // login or register
-    $('#register-btn, #login-btn').click(function(){
-        var $btn = $(this);
-        var $form = $btn.parents('form');
-        $('.form-error', $form).addClass('hidden');
-        $btn.button('loading');
-        $.ajax({
-            url: $form.attr('action'),
-            type: 'post',
-            dataType: 'json',
-            data: {
-                username: $('input[name=username]', $form).val(),
-                password: $('input[name=password]', $form).val(),
-                csrfmiddlewaretoken: get_cookie('csrftoken')
-            },
-            success: function(result) {
-                $btn.button('reset');
-                if (result.success) {
-                    for (var key in result.profile) {
-                        $('#sizes input[name=' + key + ']').val(result.profile[key]);
-                    }
-                    if (result.profile && result.profile.url) {
-                        $('<img>').attr('height', 280).attr('src', result.profile.url).appendTo($('#files'));
-                    }
-                    $('.carousel').carousel('next');
-                } else {
-                    if (result.errors.length > 0) {
-                        $('.form-error .alert', $form).text(result.errors[0]);
-                        $('.form-error', $form).removeClass('hidden');
-                    }
-                }
-            }
-        });
     });
 
     // ajax upload full body shot
@@ -79,57 +40,29 @@ $(document).ready(function(){
         }
     }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-    // update image and description for size input
-    $('.size-input').focus(function(){
-        $('#sample img').attr('src', $(this).data('image'));
-        $('#sample .description').text($(this).data('description'));
-    });
-
-    $('#finish-btn').click(function() {
-        var $btn = $(this);
-        $btn.button('loading');
-        var url = $(this).data('url');
-        var next = $(this).data('next');
-        var style = $('#style .option.selected').data('value');
-        var age_group = $('#age-group .option.selected').data('value');
-        var height = $('#sizes input[name=height]').val();
-        var weight = $('#sizes input[name=weight]').val();
-        var waistline = $('#sizes input[name=waistline]').val();
-        var hipline = $('#sizes input[name=hipline]').val();
-        var chest = $('#sizes input[name=chest]').val();
-        var foot = $('#sizes input[name=foot]').val();
-        var filename = $('#fullbody-shot').val();
-        var requirement = $('#personal-requirement').val();
-        var price = $('#price .selector .option.selected').text();
-        var $selected_designer = $('#designer .selector .option.selected');
-        var designer = {id: $selected_designer.data('value'), name: $selected_designer.text()};
-
-        // cache requirement and price
-        localStorage.requirement = requirement;
-        localStorage.price = price;
-        localStorage.designer = JSON.stringify(designer);
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            dataType: 'json',
-            data: {
-                style: style,
-                age_group: age_group,
-                height: height,
-                weight: weight,
-                waistline: waistline,
-                chest: chest,
-                hipline: hipline,
-                foot: foot,
-                filename: filename,
-                csrfmiddlewaretoken: get_cookie('csrftoken')
+    // save user survey to localStorage
+    $('#survey-finish-btn').click(function(){
+        var survey = {
+            style: {
+                label: $('#style .option.selected').data('label'),
+                value: $('#style .option.selected').data('value')
             },
-            success: function(data) {
-                $btn.button('reset');
-                location.href = next;
+            age: {
+                label: $('#age .option.selected').data('label'),
+                value: $('#age .option.selected').data('value')
+            },
+            price: {
+                label: $('#price .option.selected').data('label'),
+                value: $('#price .option.selected').data('value')
+            },
+            designer: {
+                label: $('#designer .option.selected').data('label'),
+                value: $('#designer .option.selected').data('value'),
+                avatar: $('#designer .option.selected').data('avatar'),
+                requirement: $('#designer textarea').val()
             }
-        });
+        };
+        localStorage.survey = JSON.stringify(survey);
+        location.href = $(this).data('href');
     });
-
 });

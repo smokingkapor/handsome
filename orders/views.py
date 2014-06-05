@@ -3,6 +3,8 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
+from django.http.response import Http404
+from django.shortcuts import redirect
 from django.views.generic.base import View, RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
@@ -18,7 +20,6 @@ from .forms import CreateOrderForm
 from .mixins import OrderPermissionMixin
 from .models import Order, Province, City, Address, Country
 from accounts.models import Profile
-from django.http.response import Http404
 from designs.constants import SELECTED
 
 
@@ -30,6 +31,15 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
     model = Order
     form_class = CreateOrderForm
     template_name = 'orders/create_order.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Check user person size info first.
+        """
+        if request.user.is_authenticated() and not request.user.profile.weight:
+            return redirect(u'{}?next={}'.format(reverse('accounts:update'), reverse('orders:create')))
+        else:
+            return super(CreateOrderView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         """
@@ -55,8 +65,6 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order = form.save(commit=False)
         order.prepayment = order.total_price * 0.1
         order.creator = profile.user
-        order.style = profile.preferred_style
-        order.age_group = profile.age_group
         order.height = profile.height
         order.weight = profile.weight
         order.waistline = profile.waistline

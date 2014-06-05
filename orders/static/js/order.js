@@ -100,12 +100,14 @@ $(document).ready(function(){
     });
 
     // load price and personal requirement from local storage
-    var designer =JSON.parse(localStorage.designer);
-    var requirement = localStorage.requirement?localStorage.requirement:'没要求';
+    var survey =JSON.parse(localStorage.survey);
     if ($('#create-order').size() > 0) {
-        $('#price').text(localStorage.price);
-        $('#designer').text(designer.name);
-        $('#personal-requirement').text(requirement);
+        $('#style').text(survey.style.label);
+        $('#age').text(survey.age.label);
+        $('#price').text(survey.price.label + '元');
+        $('#designer span').text(survey.designer.label);
+        $('#designer img').attr('src', survey.designer.avatar);
+        $('#requirement').text(survey.designer.requirement);
     }
 
     // create order
@@ -117,9 +119,11 @@ $(document).ready(function(){
         var $btn = $(this);
         $btn.button('loading');
         var data = {
-            total_price: parseInt(localStorage.price),
-            message: requirement,
-            preferred_designer: designer.id,
+            total_price: parseInt(survey.price.value),
+            message: survey.designer.requirement,
+            preferred_designer: survey.designer.value,
+            style: survey.style.value,
+            age_group: survey.age.value,
             address: $('#address-pk').val(),
             csrfmiddlewaretoken: get_cookie('csrftoken')
         };
@@ -136,10 +140,4 @@ $(document).ready(function(){
             }
         });
     });
-
-
-    // order detail photo slide
-    if ($('#design-photos').size() > 0) {
-        $('#design-photos').carousel();
-    }
 });

@@ -1,5 +1,5 @@
-{% load thumbnail account_tags %}
-<nav id="header" class="navbar navbar-default navbar-fixed-top" role="navigation">
+{% load thumbnail account_tags staticfiles %}
+<nav id="header" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -14,17 +14,35 @@
             <ul class="nav navbar-nav">
                 {% url 'portals:index' as url %}
                 <li {% if request.path == url %}class="selected"{% endif %}>
-                    <a href="{{ url }}">主页</a>
+                    <a href="{{ url }}">
+                        <img width="35" src="{% static 'image/logo.png' %}">
+                        <b id="logo-name">优草</b>
+                    </a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li>
+                    <p class="navbar-text">
+                        <span>{{ user.get_full_name|default_if_empty:user.username }}</span>
+                        <a href="{% url 'accounts:logout' %}" class="navbar-link">退出</a></p>
+                </li>
+                {% else %}
+                <li class="dropdown">
+                    <a href="{% url 'accounts:login' %}">登录</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% if user.is_authenticated %}
+            <ul class="nav navbar-nav navbar-right">
                 {% url 'orders:me' as url %}
                 <li {% if request.path == url %}class="selected"{% endif %}>
                     <a href="{{ url }}">我的订单</a>
                 </li>
             </ul>
+            {% endif %}
             {% if user.is_staff %}
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-right">
                 {% url 'orders:list' as url %}
                 <li {% if request.path == url %}class="selected"{% endif %}>
                     <a href="{{ url }}">客户订单</a>
@@ -36,50 +54,13 @@
             </ul>
             {% endif %}
             {% if user.is_superuser %}
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-right">
                 {% url 'clothings:list' as url %}
                 <li {% if request.path == url %}class="selected"{% endif %}>
                     <a href="{{ url }}">服装管理</a>
                 </li>
             </ul>
             {% endif %}
-            <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
-                <li>
-                    <p class="navbar-text">
-                        <span>{{ user.get_full_name|default_if_empty:user.username }}</span>
-                        <a href="{% url 'accounts:logout' %}" class="navbar-link">退出</a></p>
-                </li>
-                {% else %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">登录 <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <form id="login-form" class="form-horizontal" action="{% url 'accounts:login' %}" method="post" role="form">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">用户名：</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="username" class="form-control" placeholder="用户名">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">密码：</label>
-                                    <div class="col-sm-9">
-                                        <input type="password" name="password" class="form-control" placeholder="密码">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12 text-right">
-                                        <button type="submit" class="btn btn-default">登录</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-                {% endif %}
-            </ul>
         </div>
     </div>
 </nav>

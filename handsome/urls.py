@@ -13,7 +13,6 @@ urlpatterns = patterns(
     url(r'^orders/', include('orders.urls', 'orders', 'orders')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include('django.contrib.flatpages.urls')),
 )
 
 if settings.DEBUG:
@@ -21,3 +20,8 @@ if settings.DEBUG:
         (r'^{}/(?P<path>.*)$'.format(settings.MEDIA_URL.split('/')[1]),
          'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )
+
+urlpatterns += patterns(
+    '',
+    url(r'^', include('django.contrib.flatpages.urls')),
+)

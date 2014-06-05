@@ -1,3 +1,66 @@
+#home {
+    background: url(../image/home_bg.jpg) center center no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+#home .overlay {
+    width: 100%;
+    height: 100%;
+    background-image: -webkit-gradient(radial,center center,0,center center,460,from(rgba(0,0,0,.1)),to(rgba(0,0,0,.3)));
+    background-image: -webkit-radial-gradient(circle,rgba(0,0,0,.1),rgba(0,0,0,.3));
+    background-image: -moz-radial-gradient(circle,rgba(0,0,0,.1),rgba(0,0,0,.3));
+    background-image: radial-gradient(circle,rgba(0,0,0,.1),rgba(0,0,0,.3));
+    background-repeat: no-repeat;
+    margin-top: -5px;
+}
+
+#home .column {
+    margin: 0 auto;
+    background: rgba(0,0,0,0);
+    min-width: 280px;
+    max-width: 40%;
+    z-index: 88;
+    color: #fff;
+}
+
+#home .column .container {
+    margin: 0 auto;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+#home .column h2 {
+    margin-top: 50%;
+}
+
+#home .column .action {
+    padding: 48px 0;
+}
+
+#home .column .action .box {
+    padding: 20px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    max-width: 320px;
+}
+
+#home .column .action .bg-transparent {
+    background-color: rgba(20,32,29,.8);
+}
+
+#home .column .action a {
+    padding: 10px 75px;
+}
+
+#home .column .action ul {
+    margin: 15px 30px 0;
+}
+
 .carousel .item {
     min-height: 500px;
     width: 100%;
@@ -10,35 +73,33 @@
     left: 0;
     right: 0;
     margin: 100px 20px 20px 20px;
-    background-color: white;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-}
-
-.selector .option {
-    cursor: pointer;
-    background-color: lightgray;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    padding: 40px;
-    margin-top: 10px;
 }
 
 .selector .option.image-option {
     padding: 20px;
 }
 
-.selector .option:hover {
-    text-shadow: 0 1px 2px rgba(0,0,0,.6);
-}
-
-.selector .option.selected {
-    background-color: #5cb85c;
-    color: #fff;
-}
-
 .pager li>a {
     padding: 10px 40px;
+}
+
+.carousel .selector img {
+    margin: 0 auto;
+}
+
+.carousel .active .selector .selected img {
+    background: url(../image/spot-selected.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.carousel .active .selector img:hover {
+    background: url(../image/spot.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: 100%;
 }

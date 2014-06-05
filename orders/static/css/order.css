@@ -36,3 +36,7 @@
     width: 150px;
     display: inline;
 }
+
+#my-requirement .title {
+    padding-right: 10px;
+}

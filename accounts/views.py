@@ -1,26 +1,23 @@
 # -*- coding: utf-8 -*-
 import json
 import os
-import shutil
 
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import User
-from django.core import serializers
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.http.response import HttpResponse
-from django.views.generic.base import RedirectView, View
+from django.views.generic.base import RedirectView
 from django.views.generic.edit import FormView
 
 from braces.views import(
-    JSONResponseMixin, LoginRequiredMixin, CsrfExemptMixin, AjaxResponseMixin
+    JSONResponseMixin, LoginRequiredMixin, CsrfExemptMixin
 )
 from easy_thumbnails.files import get_thumbnailer
 
-from .forms import LoginForm, RegisterForm, UploadForm
-from .models import Photo
+from .forms import LoginForm, RegisterForm, UploadForm, ProfileForm
 from handsome.utils import generate_str
 
 
@@ -30,7 +27,21 @@ class LoginView(JSONResponseMixin, FormView):
     """
     template_name = 'accounts/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('portals:index')
+
+    def get_success_url(self):
+        """
+        Check if next param exist
+        """
+        next_url = self.request.GET.get('next')
+        return next_url if next_url else reverse('portals:index')
+
+    def get_context_data(self, **kwargs):
+        """
+        Add extra data to the context
+        """
+        data = super(LoginView, self).get_context_data(**kwargs)
+        data.update({'query_string': self.request.META['QUERY_STRING']})
+        return data
 
     def form_valid(self, form):
         """
@@ -41,23 +52,7 @@ class LoginView(JSONResponseMixin, FormView):
                                  password=data['password'])
         auth.login(self.request, user)
 
-        if self.request.is_ajax():
-            profile_json = json.loads(serializers.serialize('json', [user.profile]))[0]['fields']  # noqa
-            profile_json['url'] = user.profile.get_fullbody_shot_url()
-            return self.render_json_response({'success': True,
-                                              'profile': profile_json})
-        else:
-            return super(LoginView, self).form_valid(form)
-
-    def form_invalid(self, form):
-        """
-        Form is invalid
-        """
-        if self.request.is_ajax():
-            return self.render_json_response(
-                {'success': False, 'errors': form.non_field_errors()})
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+        return super(LoginView, self).form_valid(form)
 
 
 class LogoutView(RedirectView):
@@ -81,7 +76,12 @@ class RegisterView(JSONResponseMixin, FormView):
     """
     form_class = RegisterForm
     template_name = 'accounts/register.html'
-    success_url = reverse_lazy('accounts:login')
+
+    def get_success_url(self):
+        """
+        Check if next param exist
+        """
+        return u'{}?{}'.format(reverse('accounts:login'), self.request.META['QUERY_STRING'])
 
     def form_valid(self, form):
         """
@@ -97,20 +97,7 @@ class RegisterView(JSONResponseMixin, FormView):
                                  password=data['password'])
         auth.login(self.request, user)
 
-        if self.request.is_ajax():
-            return self.render_json_response({'success': True})
-        else:
-            return super(RegisterView, self).form_valid(form)
-
-    def form_invalid(self, form):
-        """
-        Form is invalid
-        """
-        if self.request.is_ajax():
-            return self.render_json_response(
-                {'success': False, 'errors': form.non_field_errors()})
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+        return super(RegisterView, self).form_valid(form)
 
 
 class UploadView(CsrfExemptMixin, LoginRequiredMixin, FormView):
@@ -140,43 +127,31 @@ class UploadView(CsrfExemptMixin, LoginRequiredMixin, FormView):
         return HttpResponse(json.dumps({'success': False}))
 
 
-class UpdateView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
-                 View):
+class UpdateProfileView(LoginRequiredMixin, FormView):
     """
-    Update personal info
+    Update profile
     """
-    def post_ajax(self, request, *args, **kwargs):
+    form_class = ProfileForm
+    template_name = 'accounts/profile_form.html'
+
+    def get_success_url(self):
         """
-        Update user profile
+        Check if next param exist in the query string.
         """
-        user = self.request.user
-        profile = user.profile
-        profile.preferred_style = request.POST['style']
-        profile.age_group = request.POST['age_group']
-        profile.height = request.POST['height']
-        profile.weight = request.POST['weight']
-        profile.waistline = request.POST['waistline']
-        profile.chest = request.POST['chest']
-        profile.hipline = request.POST['hipline']
-        profile.foot = request.POST['foot']
-        profile.save()
+        next_url = self.request.GET.get('next')
+        return next_url if next_url else reverse('portals:index')
 
-        # save full body shot
-        filename = request.POST['filename']
-        name, ext = os.path.splitext(filename)
-        temp_file_path = os.path.join(settings.MEDIA_ROOT, 'tmp', filename)
+    def get_form_kwargs(self):
+        """
+        Add user profile to the form
+        """
+        kwargs = super(UpdateProfileView, self).get_form_kwargs()
+        kwargs.update({'instance': self.request.user.profile})
+        return kwargs
 
-        fullbody_shot_root = os.path.join(settings.MEDIA_ROOT, 'fullbody-shot')
-        if not os.path.exists(fullbody_shot_root):
-            os.makedirs(fullbody_shot_root)
-
-        if filename and os.path.exists(temp_file_path):
-            new_filename = 'user_{}_{}{}'.format(user.id, generate_str(6), ext)
-            fullbody_shot_path = os.path.join(fullbody_shot_root, new_filename)
-            shutil.copy(temp_file_path, fullbody_shot_path)
-            user.photo_set.update(is_primary=False)
-            Photo(user=user,
-                  file=u'fullbody-shot/{}'.format(new_filename),
-                  is_primary=True).save()
-
-        return self.render_json_response({'success': True})
+    def form_valid(self, form):
+        """
+        Save profile
+        """
+        form.save()
+        return super(UpdateProfileView, self).form_valid(form)

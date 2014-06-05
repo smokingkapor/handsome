@@ -11,11 +11,18 @@ class IndexView(TemplateView):
     """
     template_name = 'portals/index.html'
 
+
+class SurveyView(TemplateView):
+    """
+    User info survey
+    """
+    template_name = 'portals/survey.html'
+
     def get_context_data(self, **kwargs):
         """
         Add extra data to context
         """
-        data = super(IndexView, self).get_context_data(**kwargs)
+        data = super(SurveyView, self).get_context_data(**kwargs)
         data.update({'STYLE_CHOICES': Profile.STYLE_CHOICES,
                      'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
                      'PRICE_CHOICES': Order.PRICE_CHOICES,

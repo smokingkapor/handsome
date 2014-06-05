@@ -3,6 +3,9 @@ from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
 
+from .models import Profile
+from django.core.validators import validate_integer
+
 
 class LoginForm(forms.Form):
     """
@@ -54,3 +57,35 @@ class UploadForm(forms.Form):
     Form for uploading full body shot
     """
     file = forms.ImageField()
+
+
+class ProfileForm(forms.ModelForm):
+    """
+    Model form for update Profile model
+    """
+    class Meta:
+        model = Profile
+        fields = ('height', 'weight', 'waistline', 'chest', 'hipline', 'foot')
+
+    def _validate_field(self, field_name):
+        value = self.cleaned_data.get(field_name)
+        validate_integer(value)
+        return value
+
+    def clean_height(self):
+        return self._validate_field('height')
+
+    def clean_weight(self):
+        return self._validate_field('weight')
+
+    def clean_waistline(self):
+        return self._validate_field('waistline')
+
+    def clean_chest(self):
+        return self._validate_field('chest')
+
+    def clean_hipline(self):
+        return self._validate_field('hipline')
+
+    def clean_foot(self):
+        return self._validate_field('foot')
