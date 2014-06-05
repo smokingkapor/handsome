@@ -59,7 +59,7 @@ $(document).ready(function(){
                 label: $('#designer .option.selected').data('label'),
                 value: $('#designer .option.selected').data('value'),
                 avatar: $('#designer .option.selected').data('avatar'),
-                requirement: $('#designer textarea').val()
+                requirement: $('#designer textarea').val()?$('#designer textarea').val():''
             }
         };
         localStorage.survey = JSON.stringify(survey);
