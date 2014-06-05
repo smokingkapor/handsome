@@ -160,7 +160,7 @@ class Order(models.Model):
             operations = '<a class="highlight" href="{}?order={}">创建方案></a>'.format(reverse_lazy('designs:create'), self.code)
         elif self.status == PAID:
             send_url = reverse('orders:send', kwargs={'code': self.code})
-            operations = '<a class="highlight" href="javascript:void(0);" data-url="{}" class="send-order-btn">已经寄出></a>'.format(send_url)
+            operations = '<a class="highlight send-order-btn" href="javascript:void(0);" data-url="{}">已经寄出></a>'.format(send_url)
         return operations
 
     def __unicode__(self):
