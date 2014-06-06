@@ -10,7 +10,7 @@
             <div class="col-sm-8">
                 <ul class="list-inline text-right">
                     {% for page in flatpages %}
-                        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                        <li><a href="/flatpages{{ page.url }}">{{ page.title }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
