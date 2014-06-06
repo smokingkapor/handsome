@@ -36,18 +36,28 @@ class RegisterForm(forms.Form):
     Create new account form
     """
     username = forms.CharField(
-        label='用户名',
+        label=u'*用户名',
         widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(
-        label='密码',
+        label=u'*密码',
         widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(
+        label=u'*确认密码',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(
+        required=False,
+        label=u'邮箱',
+        help_text=u'用于找回密码（可不填）',
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     def clean(self):
         """
         Check if the user already exist
         """
-        username = self.data.get('username')
-        if User.objects.filter(username=username).exists():
+        data = self.cleaned_data
+        if data.get('password') != data.get('password2'):
+            raise forms.ValidationError(u'密码匹配')
+        if User.objects.filter(username=data.get('username')).exists():
             raise forms.ValidationError('用户名已经存在，是不是忘记了密码？')
         return self.data
 

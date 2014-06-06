@@ -1,7 +1,7 @@
 {% extends "page.html" %}
 {% load staticfiles %}
 
-{% block title %}新建账户{% endblock %}
+{% block title %}用户注册{% endblock %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/account.css' %}">
@@ -14,45 +14,57 @@
 {% block content %}
 <div class="container body">
     <div class="row">
-        <h3 class="text-center">新建账户</h3>
+        <h4>用户注册</h4>
+        <hr />
     </div>
 
     <div class="row">
-        <form method="post" class="form-horizontal col-md-offset-4 col-md-6" role="form">
+        <form method="post" class="form-horizontal col-md-4 well" role="form">
             {% csrf_token %}
             {% for field in form %}
-                <div class="form-group">
-                    <label class="col-md-2 control-label">{{ field.label }}*: </label>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            {{ field }}
-                            <span class="input-group-addon">
-                            {% if field.name == 'password' %}
-                                <span class="eye_conversion glyphicon glyphicon-eye-close" data-input-id="id_{{ field.name }}"></span>
-                            {% else %}
-                                <span class="glyphicon glyphicon-user" data-input-id="id_{{ field.name }}"></span>
-                            {% endif %}
-                            </span>
-                        </div>
-                        <span class="label label-danger">{{ field.errors.0 }}</span>
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <span class="col-sm-3 control-label">{{ field.label }}: </span>
+                    <div class="col-sm-9">
+                        {{ field }}
+                        {% if field.help_text %}
+                        <p class="help-block"><small>{{ field.help_text }}</small></p>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
 
+            <div class="form-group">
+                <span class="col-sm-3"></span>
+                <div class="col-sm-9">
+                    <div class="checkbox">
+                        <label>
+                            <input id="agreement-btn" type="checkbox"><small>我已经认真阅读并同意优草的<a href="#">《使用协议》</a></small>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             {% if form.non_field_errors %}
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-6">
-                    <div class="alert alert-danger">{{ form.non_field_errors.0 }}</div>
+                <div class="col-sm-offset-3 col-sm-9">
+                    <p class="text-danger">{{ form.non_field_errors.0 }}</p>
                 </div>
             </div>
             {% endif %}
 
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input class="btn btn-primary" type="submit" value="创建" />
+                <div class="col-sm-offset-3 col-sm-9">
+                    <input class="btn btn-primary disabled" type="submit" value="创建" />
                 </div>
             </div>
         </form>
+        <div class="col-md-6 col-md-offset-2">
+            <ul class="list-unstyled">
+                <li>一些简单的介绍</li>
+                <li>一些简单的介绍</li>
+                <li>一些简单的介绍</li>
+            </ul>
+        </div>
     </div>
 </div>
 {% endblock %}

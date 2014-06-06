@@ -4,4 +4,13 @@ $(document).ready(function(){
         $('#sample img').attr('src', $(this).data('image'));
         $('#sample .description').text($(this).data('description'));
     });
+
+    // enable submit button if the agreement is checked
+    $('#agreement-btn').on('click change', function(){
+        if ($(this).is(':checked')) {
+            $(this).parents('form').find('input:submit').removeClass('disabled');
+        } else {
+            $(this).parents('form').find('input:submit').addClass('disabled');
+        }
+    });
 });
