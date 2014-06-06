@@ -19,27 +19,6 @@ $(document).ready(function(){
         }
     });
 
-    // ajax upload full body shot
-    $('#fileupload').fileupload({
-        url: $(this).data('url'),
-        dataType: 'json',
-        done: function (e, data) {
-            if (data.result.success) {
-                $('#files').empty();
-                $('<img>').attr('height', '280').attr('src', data.result.path + '?i=' + new Date().getTime()).appendTo($('#files'));
-                $('#fullbody-shot').val(data.result.filename);
-            }
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            if (progress == 100) {
-                $('#progress').text('');
-            } else {
-                $('#progress').text(progress + '%');
-            }
-        }
-    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
-
     // save user survey to localStorage
     $('#survey-finish-btn').click(function(){
         var survey = {

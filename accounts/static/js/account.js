@@ -8,9 +8,9 @@ $(document).ready(function(){
     // enable submit button if the agreement is checked
     $('#agreement-btn').on('click change', function(){
         if ($(this).is(':checked')) {
-            $(this).parents('form').find('input:submit').removeClass('disabled');
+            $('#submit-btn').removeClass('disabled').attr('type', 'submit');
         } else {
-            $(this).parents('form').find('input:submit').addClass('disabled');
+            $('#submit-btn').addClass('disabled').attr('type', 'button');
         }
     });
 });

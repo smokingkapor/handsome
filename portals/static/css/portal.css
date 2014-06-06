@@ -90,16 +90,28 @@
     margin: 0 auto;
 }
 
-.carousel .active .selector .selected img {
+.carousel .active .selector .option.selected img {
     background: url(../image/spot-selected.png);
     background-position: top center;
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: contain;
 }
 
-.carousel .active .selector img:hover {
+.carousel .active .selector .option:hover img {
     background: url(../image/spot.png);
     background-position: top center;
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: contain;
+}
+
+.carousel .active .selector .option .avatar {
+    border-width: 3px;
+}
+
+.carousel .active .selector .option.selected .avatar {
+    border-color: yellow;
+}
+
+.carousel .active .selector .avatar:hover {
+    border-color: white
 }
