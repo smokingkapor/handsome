@@ -35,47 +35,6 @@
             </div>
         </div>
 
-        <div class="item">
-            <div class="carousel-caption">
-                <div class="container">
-                    <h4>你的职业装是什么风格？</h4>
-                    <div class="row selector auto-slide">
-                        <div class="col-sm-3 option">
-                            <a href="javascript:void(0)">
-                                <img class="img-responsive" src="{% static 'image/q2_lassig.png' %}" />
-                                <span class="text-center">随意</span>
-                            </a>
-                        </div>
-                        <div class="col-sm-3 option">
-                            <a href="javascript:void(0)">
-                                <img class="img-responsive" src="{% static 'image/casualbusiness.png' %}" />
-                                <span class="text-center">休闲时尚</span>
-                            </a>
-                        </div>
-                        <div class="col-sm-3 option">
-                            <a href="javascript:void(0)">
-                                <img class="img-responsive" src="{% static 'image/q2_anzug.png' %}" />
-                                <span class="text-center">商务</span>
-                            </a>
-                        </div>
-                        <div class="col-sm-3 option">
-                            <a href="javascript:void(0)">
-                                <img class="img-responsive" src="{% static 'image/q2_berufskleidung.png' %}" />
-                                <span class="text-center">工作服</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pager">
-                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="item" id="age">
             <div class="carousel-caption">
                 <div class="container text-center">
@@ -100,11 +59,38 @@
             </div>
         </div>
 
+        <div class="item" id="designer">
+            <div class="carousel-caption" id="designer">
+                <div class="container">
+                    <h4>你希望哪位设计师为你量身定制？</h4>
+                    <div class="row selector {% if not user.is_authenticated %}last-slide{% else %}auto-slide{% endif %}" data-url="{% url 'portals:survey_price' %}">
+                        {% for designer in designers %}
+                        <div class="col-sm-3 option" data-value="{{ designer.user.id }}", data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
+                            <a href="javascript:void(0)" class="image-option">
+                                <img class="img-responsive avatar" src="{{ designer.avatar|thumbnail_url:'small' }}" />
+                                <span class="text-center">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</span><br />
+                                <a href="#" target="_parent">设计师的作品集</a>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="pager">
+                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if user.is_authenticated %}
         <div class="item" id="price">
             <div class="carousel-caption">
                 <div class="container">
                     <h4>你希望整套搭配在什么价格？</h4>
-                    <div class="row selector auto-slide">
+                    <div class="row selector last-slide" data-url="{% url 'accounts:update' %}?next={% url 'orders:create' %}">
                         {% for choice in PRICE_CHOICES %}
                         <div class="col-sm-2 option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}">
                             <a href="javascript:void(0)">
@@ -124,42 +110,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="item" id="designer">
-            <div class="carousel-caption" id="designer">
-                <div class="container">
-                    <h4>你希望哪位设计师为你量身定制？</h4>
-                    <div class="row selector">
-                        {% for designer in designers %}
-                        <div class="col-sm-3 option" data-value="{{ designer.user.id }}", data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
-                            <a href="javascript:void(0)" class="image-option">
-                                <img class="img-responsive avatar" src="{{ designer.avatar|thumbnail_url:'small' }}" />
-                                <span class="text-center">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</span><br />
-                                <a href="#" target="_parent">设计师的作品集</a>
-                            </a>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <hr />
-                            <form class="form-horizontal">
-                                <p class="text-left">告诉设计师更多？</p>
-                                <textarea rows="5" class="form-control"></textarea>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pager">
-                                <li class="previous"><a href="javascript:void(0);">&larr;</a></li>
-                                <li class="next hidden"><a id="survey-finish-btn" href="javascript:void(0);" data-href="{% url 'orders:create' %}">&rarr;</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -100,15 +100,45 @@ $(document).ready(function(){
     });
 
     // load price and personal requirement from local storage
-    var survey =JSON.parse(localStorage.survey);
+    var survey = JSON.parse(localStorage.survey);
     if ($('#create-order').size() > 0) {
-        $('#style').text(survey.style.label);
-        $('#age').text(survey.age.label);
-        $('#price').text(survey.price.label + '元');
-        $('#designer span').text(survey.designer.label);
-        $('#designer img').attr('src', survey.designer.avatar);
-        $('#requirement').text(survey.designer.requirement);
+        $('#style .content span').text(survey.style.label).data('value', survey.style.value);
+        $('#style form select').val(survey.style.value);
+        $('#age .content span').text(survey.age.label).data('value', survey.age.value);
+        $('#age form select').val(survey.age.value);
+        $('#price .content span').text(survey.price.label).data('value', survey.price.value);
+        $('#price form select').val(survey.price.value);
+        $('#designer .content span').text(survey.designer.label).data('value', survey.designer.value);
+        $('#designer .content img').attr('src', survey.designer.avatar);
+        $('#designer form select').val(survey.designer.value);
     }
+
+    $('.edit-requirement-btn').click(function(){
+        var $content = $(this).parents('.content');
+        var $form = $(this).parents('td').find('form');
+        $form.removeClass('hidden');
+        $content.addClass('hidden');
+    });
+
+    $('.cancel-edit-btn').click(function(){
+        var $form = $(this).parents('form');
+        var $content = $(this).parents('td').find('.content');
+        $form.addClass('hidden');
+        $content.removeClass('hidden');
+    });
+
+    $('.save-btn').click(function(){
+        var $form = $(this).parents('form');
+        var $content = $(this).parents('td').find('.content');
+        $form.addClass('hidden');
+        $content.removeClass('hidden');
+
+        var $selected_option = $('option:selected', $form);
+        $('span', $content).text($selected_option.text()).data('value', $selected_option.val());
+        if ($(this).parents('td').attr('id') == 'designer') {
+            $('img', $content).attr('src', $selected_option.data('avatar'));
+        }
+    });
 
     // create order
     $('#create-order-btn').click(function(){
@@ -119,11 +149,11 @@ $(document).ready(function(){
         var $btn = $(this);
         $btn.button('loading');
         var data = {
-            total_price: parseInt(survey.price.value),
-            message: survey.designer.requirement,
-            preferred_designer: survey.designer.value,
-            style: survey.style.value,
-            age_group: survey.age.value,
+            total_price: parseInt($('#price .content span').data('value')),
+            message: $('#requirement').val() || '',
+            preferred_designer: $('#designer .content span').data('value'),
+            style: $('#style .content span').data('value'),
+            age_group: $('#age .content span').data('value'),
             address: $('#address-pk').val(),
             csrfmiddlewaretoken: get_cookie('csrftoken')
         };

@@ -1,5 +1,5 @@
 {% load thumbnail account_tags staticfiles %}
-<nav id="header" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav id="header" class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -11,12 +11,11 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" id="logo">
                 {% url 'portals:index' as url %}
                 <li {% if request.path == url %}class="selected"{% endif %}>
                     <a href="{{ url }}">
-                        <img width="35" src="{% static 'image/logo.png' %}">
-                        <b id="logo-name">优草</b>
+                        <img height="70" src="{% static 'image/logo.png' %}">
                     </a>
                 </li>
             </ul>

@@ -118,7 +118,7 @@ class Order(models.Model):
     hipline = models.CharField(max_length=16, blank=True)
     foot = models.CharField(max_length=16, blank=True)
     preferred_designer = models.ForeignKey(User, related_name='designed_orders')  # noqa
-    message = models.TextField()
+    message = models.TextField(blank=True)
 
     status = models.CharField(max_length=16, choices=STATUS_CHOICES,
                               default=CREATED)

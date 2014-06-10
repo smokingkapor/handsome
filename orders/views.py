@@ -54,6 +54,11 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
             'address': address,
             'provinces': Province.objects.all()
         })
+        data.update({'STYLE_CHOICES': Profile.STYLE_CHOICES,
+                     'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
+                     'PRICE_CHOICES': Order.PRICE_CHOICES,
+                     'designers': Profile.objects.filter(user__is_staff=True,
+                                                         is_designer=True)})
         return data
 
     def form_valid(self, form):

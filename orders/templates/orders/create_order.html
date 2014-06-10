@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles %}
+{% load staticfiles account_tags thumbnail %}
 
 {% block extrajs %}
 <script src="{% static 'js/order.js' %}"></script>
@@ -95,25 +95,85 @@
     <table id="my-requirement">
         <tr>
             <td class="text-right title">风格：</td>
-            <td id="style"></td>
+            <td id="style">
+                <div class="content">
+                    <span></span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                </div>
+                <form class="form-inline hidden" role="form">
+                    <div class="form-group">
+                        <select class="form-control input-sm">
+                            {% for choice in STYLE_CHOICES %}
+                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                    <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                </form>
+            </td>
         </tr>
         <tr>
             <td class="text-right title">年龄段：</td>
-            <td id="age"></td>
+            <td id="age">
+                <div class="content">
+                    <span></span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                </div>
+                <form class="form-inline hidden" role="form">
+                    <div class="form-group">
+                        <select class="form-control input-sm">
+                            {% for choice in AGE_GROUP_CHOICES %}
+                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                    <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                </form>
+            </td>
         </tr>
         <tr>
             <td class="text-right title">价格：</td>
-            <td id="price"></td>
-        </tr>
-        <tr>
-            <td class="text-right title">更多要求：</td>
-            <td id="requirement"></td>
+            <td id="price">
+                <div class="content">
+                    <span id="price"></span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                </div>
+                <form class="form-inline hidden" role="form">
+                    <div class="form-group">
+                        <select class="form-control input-sm">
+                            {% for choice in PRICE_CHOICES %}
+                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                    <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                </form>
+            </td>
         </tr>
         <tr>
             <td class="text-right title">设计师：</td>
             <td id="designer">
-                <img class="avatar" width="40" src="{% static 'image/avatars/default_avatar.png' %}" />
-                <span></span>
+                <div class="content">
+                    <img class="avatar" width="40" src="{% static 'image/avatars/default_avatar.png' %}" />
+                    <span></span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                </div>
+                <form class="form-inline hidden" role="form">
+                    <div class="form-group">
+                        <select class="form-control input-sm">
+                            {% for designer in designers %}
+                            <option data-avatar="{{ designer.avatar|thumbnail_url:'small' }}" value="{{ designer.user.id }}">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                    <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right title">更多设计要求：<br /><small>(可不填)</small>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>
+                <textarea id="requirement" class="form-control" cols="50" rows="4"></textarea>
             </td>
         </tr>
     </table>

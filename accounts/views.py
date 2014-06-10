@@ -81,7 +81,8 @@ class RegisterView(JSONResponseMixin, FormView):
         """
         Check if next param exist
         """
-        return u'{}?{}'.format(reverse('accounts:login'), self.request.META['QUERY_STRING'])
+        next_url = self.request.GET.get('next')
+        return next_url if next_url else reverse('portals:index')
 
     def form_valid(self, form):
         """
