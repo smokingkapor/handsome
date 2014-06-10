@@ -7,10 +7,10 @@ NO_IDEA = 'no_idea'
 
 
 # age group
-UNDER_20 = '<20'
-BETWEEN_20_25 = '20-25'
-BETWEEN_25_30 = '25-30'
-ABOVE_30 = '>30'
+AGE_GROUP_1 = '<22'
+AGE_GROUP_2 = '23-27'
+AGE_GROUP_3 = '28-33'
+AGE_GROUP_4 = '>33'
 
 
 # Photo tag

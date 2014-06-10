@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
@@ -7,8 +6,8 @@ from django.db.models.signals import post_save
 from easy_thumbnails.fields import ThumbnailerImageField
 
 from .constants import(
-    BUSINESS, CASUAL, ENGLAND, NO_IDEA, UNDER_20, BETWEEN_20_25, ABOVE_30,
-    BETWEEN_25_30, FULL_BODY_SHOT
+    BUSINESS, CASUAL, ENGLAND, NO_IDEA, AGE_GROUP_1, AGE_GROUP_2, AGE_GROUP_3,
+    AGE_GROUP_4, FULL_BODY_SHOT
 )
 
 
@@ -21,14 +20,14 @@ class Profile(models.Model):
         (BUSINESS, u'商务'),
         (CASUAL, u'休闲'),
         (ENGLAND, u'英伦'),
-        (NO_IDEA, u'不知道'),
+        (NO_IDEA, u'其他'),
     )
 
     AGE_GROUP_CHOICES = (
-        (UNDER_20, u'<20'),
-        (BETWEEN_20_25, u'20-25'),
-        (BETWEEN_25_30, u'25-30'),
-        (ABOVE_30, u'>30'),
+        (AGE_GROUP_1, u'<22'),
+        (AGE_GROUP_2, u'23-27'),
+        (AGE_GROUP_3, u'28-33'),
+        (AGE_GROUP_4, u'>34'),
     )
 
     user = models.OneToOneField(User)
