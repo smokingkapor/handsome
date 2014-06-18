@@ -43,6 +43,11 @@ $(document).ready(function(){
             }
         }
 
+        if (!/^1[3-8]\d{9}$/.test($('#phone').val())) {
+            alert('手机号码格式不正确');
+            $('#phone').parents('.form-group').addClass('has-error');
+        }
+
         $('select.address:hidden').each(function(){
             $(this).parents('.form-group').removeClass('has-error');
         });

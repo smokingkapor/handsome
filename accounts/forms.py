@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+import re
+
 from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.core.cache import cache
+from django.core.validators import validate_integer
 
 from .models import Profile
-from django.core.validators import validate_integer
 
 
 class LoginForm(forms.Form):
@@ -28,6 +31,39 @@ class LoginForm(forms.Form):
 
         if not auth.authenticate(username=username, password=password):
             raise forms.ValidationError('用户名或者密码错误，请重试')
+        return data
+
+
+class PhoneLoginForm(forms.Form):
+    """
+    Form for user login with phone
+    """
+    phone = forms.CharField(label=u'手机号')
+    password = forms.CharField(label=u'动态密码')
+
+    def clean_phone(self):
+        """
+        Check phone number
+        """
+        phone = self.data.get('phone')
+        if not re.match('^1[3-9]\d{9}$', phone):
+            raise forms.ValidationError(u'无效的手机号码')
+
+        return phone
+
+    def clean(self):
+        """
+        Check phone and password
+        """
+        data = self.data
+        phone = data.get('phone')
+        password = data.get('password')
+        if not Profile.objects.filter(phone=phone).exists():
+            raise forms.ValidationError(u'这个手机号暂未在优草注册使用')
+
+        if password not in cache.get(u'pwds_{}'.format(phone), []):
+            raise forms.ValidationError(u'动态密码错误')
+
         return data
 
 

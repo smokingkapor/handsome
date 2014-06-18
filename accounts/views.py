@@ -1,27 +1,35 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+import string
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http.response import HttpResponse
-from django.views.generic.base import RedirectView
+from django.views.generic.base import RedirectView, View
 from django.views.generic.edit import FormView
+from django.utils.crypto import get_random_string
 
 from braces.views import(
-    JSONResponseMixin, LoginRequiredMixin, CsrfExemptMixin
+    LoginRequiredMixin, CsrfExemptMixin, AjaxResponseMixin,
+    JsonRequestResponseMixin
 )
 from easy_thumbnails.files import get_thumbnailer
 
-from .forms import LoginForm, RegisterForm, UploadForm, ProfileForm
-from handsome.utils import generate_str
+from .forms import(
+    LoginForm, RegisterForm, UploadForm, ProfileForm, PhoneLoginForm
+)
+from .models import Profile
+from handsome.utils import generate_str, send_sms
 
 
-class LoginView(JSONResponseMixin, FormView):
+class LoginView(FormView):
     """
     View for user sign in.
     """
@@ -55,6 +63,53 @@ class LoginView(JSONResponseMixin, FormView):
         return super(LoginView, self).form_valid(form)
 
 
+class PhoneLoginView(FormView):
+    """
+    Allow the user to login with phone
+    """
+    template_name = 'accounts/phone_login.html'
+    form_class = PhoneLoginForm
+
+    def get_success_url(self):
+        """
+        Check if next param exist
+        """
+        next_url = self.request.GET.get('next')
+        return next_url if next_url else reverse('portals:index')
+
+    def form_valid(self, form):
+        """
+        Login the user here
+        """
+        user = Profile.objects.filter(phone=form.cleaned_data['phone'])[0].user
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth.login(self.request, user)
+        return super(PhoneLoginView, self).form_valid(form)
+
+
+class SendTemporaryPasswordView(AjaxResponseMixin, JsonRequestResponseMixin,
+                                View):
+    """
+    Send temporary password to the cell phone.
+    Only one temporary password will be sent in one minute.
+    """
+    def get_ajax(self, request, *args, **kwargs):
+        """
+        Send password
+        """
+        phone = request.REQUEST['phone']
+        last_sent = cache.get(u'pwd_last_sent_{}'.format(phone))
+        if not last_sent or (datetime.now()-last_sent).total_seconds() >= 60:
+            pwds = cache.get(u'pwds_{}'.format(phone), [])
+            new_pwd = get_random_string(6, string.digits)
+            send_sms(phone,
+                     settings.SMS_TEMPLATES['temporary_pwd'].format(new_pwd))
+            pwds.append(new_pwd)
+            cache.set(u'pwds_{}'.format(phone), pwds, 1800)
+
+        return self.render_json_response({'success': True})
+
+
 class LogoutView(RedirectView):
     """
     Logout current user and redirect to sign in page
@@ -70,7 +125,7 @@ class LogoutView(RedirectView):
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 
-class RegisterView(JSONResponseMixin, FormView):
+class RegisterView(FormView):
     """
     Register a new account
     """
@@ -99,6 +154,33 @@ class RegisterView(JSONResponseMixin, FormView):
         auth.login(self.request, user)
 
         return super(RegisterView, self).form_valid(form)
+
+
+class CreateRandomUserView(RedirectView):
+    """
+    Create a random user and login the user
+    """
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Create user here
+        """
+        next_url = self.request.GET.get('next')
+        if not next_url:
+            return reverse('accounts:register')
+
+        if not self.request.user.is_authenticated():
+            username = get_random_string()
+            password = get_random_string()
+            user = User.objects.create_user(username=username,
+                                            password=password)
+            user.profile.is_random_user = True
+            user.profile.save()
+            user = auth.authenticate(username=username, password=password)
+            auth.login(self.request, user)
+
+        return next_url
 
 
 class UploadView(CsrfExemptMixin, LoginRequiredMixin, FormView):

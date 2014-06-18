@@ -149,6 +149,11 @@ class SaveAddressView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         address.name = request.REQUEST['name']
         address.phone = request.REQUEST['phone']
         address.save()
+
+        # set the phone to user profile
+        request.user.profile.phone = request.REQUEST['phone']
+        request.user.profile.save()
+
         return self.render_json_response({'id': address.id,
                                           'address': unicode(address)})
 

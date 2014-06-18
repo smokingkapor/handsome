@@ -31,10 +31,12 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(User)
+    phone = models.CharField(max_length=16, db_index=True, blank=True)
     avatar = ThumbnailerImageField(
         upload_to='avatars',
         default='avatars/default_avatar.png',
         resize_source=dict(size=(1024, 1024), sharpen=True))
+    is_random_user = models.BooleanField(default=False)
     is_designer = models.BooleanField(default=False, db_index=True)
     preferred_style = models.CharField(max_length=32, blank=True,
                                        choices=STYLE_CHOICES)
