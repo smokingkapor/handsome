@@ -81,7 +81,7 @@ class PhoneLoginView(FormView):
         """
         Login the user here
         """
-        user = Profile.objects.filter(phone=form.cleaned_data['phone'])[0].user
+        user = Profile.objects.filter(phone=form.cleaned_data['phone']).order_by('-user__date_joined')[0].user  # noqa
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         auth.login(self.request, user)
         return super(PhoneLoginView, self).form_valid(form)
