@@ -50,7 +50,9 @@
 }
 
 #home .column .action .bg-transparent {
-    background-color: rgba(20,32,29,.8);
+    background-color: rgb(20,32,29);
+    opacity: .8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=80)";
 }
 
 #home .column .action a {
@@ -61,57 +63,57 @@
     margin: 15px 30px 0;
 }
 
-.carousel .item {
+#survey.carousel .item {
     min-height: 500px;
     width: 100%;
 }
 
-.carousel-caption {
+#survey .carousel-caption {
     color: #000;
     text-shadow: none;
     position: relative;
-    left: 0;
-    right: 0;
+    left: 0px;
+    right: 0px;
     margin: 100px 20px 20px 20px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
 
-.selector .option.image-option {
+#survey .selector .option.image-option {
     padding: 20px;
 }
 
-.pager li>a {
+#survey .pager li>a {
     padding: 10px 40px;
 }
 
-.carousel .selector img {
-    margin: 0 auto;
+#survey.carousel .selector img {
+    margin: 0px auto;
 }
 
-.carousel .active .selector .option.selected img {
+#survey.carousel .active .selector .option.selected img {
     background: url(../image/spot-selected.png);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
-.carousel .active .selector .option:hover img {
+#survey.carousel .active .selector .option:hover img {
     background: url(../image/spot.png);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
-.carousel .active .selector .option .avatar {
+#survey.carousel .active .selector .option .avatar {
     border-width: 3px;
 }
 
-.carousel .active .selector .option.selected .avatar {
+#survey.carousel .active .selector .option.selected .avatar {
     border-color: yellow;
 }
 
-.carousel .active .selector .avatar:hover {
+#survey.carousel .active .selector .avatar:hover {
     border-color: white
 }
