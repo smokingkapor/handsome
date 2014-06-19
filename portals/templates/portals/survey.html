@@ -69,7 +69,6 @@
                             <a href="javascript:void(0)" class="image-option">
                                 <img class="img-responsive avatar" src="{{ designer.avatar|thumbnail_url:'small' }}" />
                                 <span class="text-center">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</span><br />
-                                <a href="#" target="_parent">设计师的作品集</a>
                             </a>
                         </div>
                         {% endfor %}

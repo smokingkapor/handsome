@@ -21,11 +21,11 @@ $(document).ready(function(){
             alert('手机号码格式不正确');
             return;
         }
+        $('#send-password-btn').attr('disabled', 'disabled').data('seconds', 60);
         $.ajax({
             url: $(this).data('url'),
             data: {phone: phone},
             success: function() {
-                $('#send-password-btn').attr('disabled', 'disabled').data('seconds', 60);
                 send_pwd_timer();
             }
         });

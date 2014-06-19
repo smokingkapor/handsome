@@ -25,8 +25,7 @@
                         {% for choice in PRICE_CHOICES %}
                         <div class="col-sm-2 option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}">
                             <a href="javascript:void(0)">
-                                <img class="img-responsive" src="{% static 'image/age_level_1.png' %}" />
-                                <span class="text-center">{{ choice.0 }}</span>
+                                <img class="img-responsive" src="{{ STATIC_URL }}image/price_level_{{ forloop.counter }}.png" />
                             </a>
                         </div>
                         {% endfor %}
