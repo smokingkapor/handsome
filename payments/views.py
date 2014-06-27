@@ -151,6 +151,7 @@ class NotifyView(CsrfExemptMixin, View):
         payment.trade_status = request.POST.get('trade_status')
         payment.full_content = json.dumps(request.POST.dict())
         payment.order = order
+        payment.is_notify = True
         payment.save()
         if payment.trade_status == 'TRADE_SUCCESS':
             if payment_type == 'advance' and order.status == CREATED:
@@ -176,10 +177,11 @@ class RefundView(SuperuserRequiredMixin, RedirectView):
                         seller_email=settings.ALIPAY_EMAIL)
         site = get_current_site(self.request)
         detail_data = []
-        batch_no = datetime.now().strftime('%Y%m%d') + str(Refund.objects.count()).rjust(3, '0')
+        batch_no = datetime.now().strftime('%Y%m%d') + str(Refund.objects.count()+100).rjust(3, '0')
         for order in Order.objects.filter(status=REFUNDING):
             payment = order.payment_set.filter(trade_status='TRADE_SUCCESS').first()
             refund = Refund(order=order, trade_no=payment.trade_no)
+            refund.save()
             refund.batch_no = batch_no
             refund.save()
             if settings.DEBUG:

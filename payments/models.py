@@ -14,6 +14,7 @@ class Payment(models.Model):
     buyer_id = models.CharField(max_length=32)
     buyer_email = models.CharField(max_length=128)
     full_content = models.TextField()
+    is_notify = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
