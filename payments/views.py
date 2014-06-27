@@ -142,7 +142,7 @@ class NotifyView(CsrfExemptMixin, View):
                         seller_email=settings.ALIPAY_EMAIL)
         if not alipay.verify_notify(**request.POST.dict()):
             return HttpResponseForbidden()
-        code, payment_type = request.GET['out_trade_no'].split('_')
+        code, payment_type = request.POST['out_trade_no'].split('_')
         order = Order.objects.get(code=code)
         payment = Payment()
         payment.buyer_id = request.POST.get('buyer_id')
