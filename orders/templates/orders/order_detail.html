@@ -25,7 +25,7 @@
                     {% else %}
                     {{ order.get_operations|safe }}
                         {% if order.status == PREPAID %}
-                        <a data-url="{% url 'payments:refund' %}?code={{ order.code }}" data-confirm="确认要退还预付款？" class="confirm" href="#">申请退款></a>
+                        <a data-url="{% url 'orders:refund' code=order.code %}" data-confirm="确认要退还预付款？" class="confirm" href="#">申请退款></a>
                         {% endif %}
                     {% endif %}
                 </span>
