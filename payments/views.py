@@ -8,7 +8,9 @@ from django.core.urlresolvers import reverse
 from django.http.response import Http404, HttpResponseForbidden, HttpResponse
 from django.views.generic.base import RedirectView, TemplateView, View
 
-from braces.views import LoginRequiredMixin, SuperuserRequiredMixin
+from braces.views import(
+    LoginRequiredMixin, SuperuserRequiredMixin, CsrfExemptMixin
+)
 
 from .alipay import Alipay
 from .constants import BANKS
@@ -126,7 +128,7 @@ class SuccessView(LoginRequiredMixin, TemplateView):
         return data
 
 
-class NotifyView(View):
+class NotifyView(CsrfExemptMixin, View):
     """
     notify_url for Alipay.
     Alipay will post the payment info to the server.
@@ -196,7 +198,7 @@ class RefundView(SuperuserRequiredMixin, RedirectView):
         return url
 
 
-class RefundNotifyView(View):
+class RefundNotifyView(CsrfExemptMixin, View):
     """
     Refund notify from Alipay
     """
