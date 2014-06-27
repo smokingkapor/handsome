@@ -2,6 +2,12 @@ $(document).ready(function(){
 
     // enable popover
     $('.popover-btn').popover();
+
+    $('a.confirm').click(function(){
+        if(confirm($(this).data('confirm'))) {
+            location.href = $(this).data('url');
+        }
+    });
 });
 
 function get_cookie(name) {

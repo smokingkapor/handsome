@@ -15,7 +15,7 @@ from braces.views import(
     StaffuserRequiredMixin
 )
 
-from .constants import PREPAID, PAID, SENT, DONE
+from .constants import PREPAID, PAID, SENT, DONE, DESIGNED, ACCEPTED, REFUNDING
 from .forms import CreateOrderForm
 from .mixins import OrderPermissionMixin
 from .models import Order, Province, City, Address, Country
@@ -89,7 +89,7 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order.save()
 
         if self.request.is_ajax():
-            url = reverse('orders:create_success', kwargs={'code': order.code})
+            url = u'{}?code={}'.format(reverse('payments:home'), order.code)
             return self.render_json_response({'success': True, 'next': url})
 
         return super(CreateOrderView, self).form_valid(form)
@@ -191,6 +191,11 @@ class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
     slug_url_kwarg = 'code'
     model = Order
 
+    def get_context_data(self, **kwargs):
+        data = super(OrderDetailView, self).get_context_data(**kwargs)
+        data.update({'PREPAID': PREPAID})
+        return data
+
 
 class OrderListView(StaffuserRequiredMixin, ListView):
     """
@@ -248,7 +253,8 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         Override. Filter the orders
         """
         qs = super(OrderListView, self).get_queryset()
-        qs = qs.filter(preferred_designer=self.request.user)
+        if not self.request.user.is_superuser:
+            qs = qs.filter(preferred_designer=self.request.user)
 
         params = self.get_params_from_request()
 
@@ -388,3 +394,22 @@ class OrderClothingsView(StaffuserRequiredMixin, TemplateView):
 
         data.update({'design_clothings': dcs_json})
         return data
+
+
+class RefundView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):
+    """
+    User request for refund the prepayment
+    """
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Update order status here
+        """
+        order = Order.objects.get(code=kwargs['code'])
+        if order.status in [PREPAID, DESIGNED, ACCEPTED]:
+            order.status = REFUNDING
+            order.save()
+        else:
+            raise Http404()
+        return reverse('orders:detail', kwargs={'code': order.code})

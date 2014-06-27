@@ -8,6 +8,8 @@ PAID = 'paid'
 SENT = 'sent'
 CANCELED = 'canceled'
 DONE = 'done'
+REFUNDING = 'refunding'
+REFUNDED = 'refunded'
 
 # prices
 PRICE_299 = 299

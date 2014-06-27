@@ -11,6 +11,7 @@ urlpatterns = patterns(
     url(r'^clothings/', include('clothings.urls', 'clothings', 'clothings')),
     url(r'^designs/', include('designs.urls', 'designs', 'designs')),
     url(r'^orders/', include('orders.urls', 'orders', 'orders')),
+    url(r'^payments/', include('payments.urls', 'payments', 'payments')),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^flatpages/', include('django.contrib.flatpages.urls')),

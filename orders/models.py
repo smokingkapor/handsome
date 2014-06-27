@@ -8,7 +8,8 @@ from django.db.models.signals import post_save
 
 from .constants import(
     CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT,
-    PRICE_299, PRICE_399, PRICE_499, PRICE_599, ACCEPTED
+    PRICE_299, PRICE_399, PRICE_499, PRICE_599, ACCEPTED, REFUNDING,
+    REFUNDED
 )
 from accounts.models import Profile
 
@@ -76,7 +77,7 @@ class Order(models.Model):
     Order model
     """
     STATUS_CHOICES = (
-        (CREATED, u'等待支付定金'),
+        (CREATED, u'等待支付预付款'),
         (PREPAID, u'设计师正在设计'),
         (DESIGNED, u'设计完成，等待确认'),
         (ACCEPTED, u'方案确认，等待支付尾款'),
@@ -84,6 +85,8 @@ class Order(models.Model):
         (SENT, u'等待收货'),
         (CANCELED, u'已取消'),
         (DONE, u'已完成'),
+        (REFUNDING, u'退款中'),
+        (REFUNDED, u'已退款'),
     )
 
     PRICE_CHOICES = (
@@ -140,10 +143,12 @@ class Order(models.Model):
         """
         operations = ''
         if self.status == CREATED:
-            prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
-            operations = '<a class="highlight" href="{}">支付定金></a>'.format(prepay_url)
+            # prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
+            prepay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
+            operations = '<a class="highlight" href="{}">支付预付款></a>'.format(prepay_url)
         elif self.status == ACCEPTED:
-            pay_url = reverse('orders:pay', kwargs={'code': self.code})
+            # pay_url = reverse('orders:pay', kwargs={'code': self.code})
+            pay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
             operations = '<a class="highlight" href="{}">支付尾款></a>'.format(pay_url)
         elif self.status == SENT:
             receive_url = reverse('orders:receive', kwargs={'code': self.code})

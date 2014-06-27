@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+BANKS = [
+    {'code': 'BOCB2C', 'name': u'中国银行', 'pos': 0},
+    {'code': 'ICBCB2C', 'name': u'中国工商银行', 'pos': -35},
+    {'code': 'CMB', 'name': u'招商银行', 'pos': -71},
+    {'code': 'CCB', 'name': u'中国建设银行', 'pos': -109},
+    {'code': 'ABC', 'name': u'中国农业银行', 'pos': -144},
+    {'code': 'SPDB', 'name': u'上海浦东发展银行', 'pos': -180},
+    {'code': 'CIB', 'name': u'兴业银行', 'pos': -215},
+    {'code': 'GDB', 'name': u'广发银行', 'pos': -250},
+    {'code': 'SPABANK', 'name': u'平安银行', 'pos': -287},
+    {'code': 'CMBC', 'name': u'中国民生银行', 'pos': -323},
+    {'code': 'CITIC', 'name': u'中信银行', 'pos': -360},
+    {'code': 'HZCBB2C', 'name': u'杭州银行', 'pos': -397},
+    {'code': 'SHBANK', 'name': u'上海银行', 'pos': -433},
+    {'code': 'NBBANK', 'name': u'宁波银行', 'pos': -469},
+    {'code': 'BJRCB', 'name': u'北京农村商业银行', 'pos': -505},
+    {'code': 'FDB', 'name': u'富滇银行', 'pos': -540},
+    {'code': 'POSTGC', 'name': u'中国邮政储蓄银行', 'pos': -575},
+]

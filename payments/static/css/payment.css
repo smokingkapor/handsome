@@ -1,0 +1,26 @@
+label.radio-inline span {
+    display: inline-block;
+    width: 125px;
+    height: 35px;
+    border: solid 1px lightgray;
+}
+
+label.radio-inline span.bank {
+    background-image: url("../image/combo.png");
+    background-repeat: no-repeat;
+}
+
+label.radio-inline:hover span {
+    border-color: gray;
+}
+
+label.radio-inline input {
+    margin-top: 14px;
+}
+
+label.radio-inline span.third_party {
+    height: 49px;
+    width: 140px;
+    background-image: url("../image/alipay.gif");
+    background-repeat: no-repeat;
+}
