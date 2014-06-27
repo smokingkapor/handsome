@@ -212,7 +212,7 @@ class RefundNotifyView(CsrfExemptMixin, View):
                         seller_email=settings.ALIPAY_EMAIL)
         if not alipay.verify_notify(**request.POST.dict()):
             return HttpResponseForbidden()
-        refund = Refund.objects.get(batch_no=request.POST['batch_no'])
-        refund.order.status = REFUNDED
-        refund.order.save()
+        for refund in Refund.objects.filter(batch_no=request.POST['batch_no']):
+            refund.order.status = REFUNDED
+            refund.order.save()
         return HttpResponse('success')
