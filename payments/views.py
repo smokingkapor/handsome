@@ -189,7 +189,7 @@ class RefundView(SuperuserRequiredMixin, RedirectView):
              'notify_url': u'http://{}{}'.format(site.domain, reverse('payments:refund_notify')),
              'refund_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
              'batch_no': refund.batch_no,
-             'batch_num': 1,
+             'batch_num': len(detail_data),
              'detail_data': '#'.join(detail_data)
         }
         url = alipay._build_url('refund_fastpay_by_platform_pwd', **params)
