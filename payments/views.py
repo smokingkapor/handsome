@@ -176,11 +176,11 @@ class RefundView(SuperuserRequiredMixin, RedirectView):
                         seller_email=settings.ALIPAY_EMAIL)
         site = get_current_site(self.request)
         detail_data = []
+        batch_no = datetime.now().strftime('%Y%m%d') + str(Refund.objects.count()).rjust(3, '0')
         for order in Order.objects.filter(status=REFUNDING):
             payment = order.payment_set.filter(trade_status='TRADE_SUCCESS').first()
             refund = Refund(order=order, trade_no=payment.trade_no)
-            refund.save()
-            refund.batch_no = datetime.now().strftime('%Y%m%d') + str(refund.id).rjust(3, '0')
+            refund.batch_no = batch_no
             refund.save()
             if settings.DEBUG:
                 refund_amount = 0.01
@@ -190,7 +190,7 @@ class RefundView(SuperuserRequiredMixin, RedirectView):
         params = {
              'notify_url': u'http://{}{}'.format(site.domain, reverse('payments:refund_notify')),
              'refund_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-             'batch_no': refund.batch_no,
+             'batch_no': batch_no,
              'batch_num': len(detail_data),
              'detail_data': '#'.join(detail_data)
         }

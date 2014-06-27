@@ -21,7 +21,7 @@ class Refund(models.Model):
     """
     Refund prepayment
     """
-    batch_no = models.CharField(max_length=32, unique=True, blank=True, null=True)
+    batch_no = models.CharField(max_length=32, db_index=True, blank=True, null=True)
     order = models.ForeignKey(Order)
     trade_no = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now_add=True)
