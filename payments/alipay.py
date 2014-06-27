@@ -70,12 +70,7 @@ class Alipay(object):
         return url
 
     def verify_notify(self, **kw):
-        sign = kw.pop('sign')
-        kw.pop('sign_type')
-        if self._generate_sign(kw) == sign:
-            return requests.get("https://mapi.alipay.com/gateway.do?service=notify_verify&partner=%s&notify_id=%s" % (self.pid, kw['notify_id'])).text == 'true'
-        else:
-            return False
+        return requests.get("https://mapi.alipay.com/gateway.do?service=notify_verify&partner=%s&notify_id=%s" % (self.pid, kw['notify_id'])).text == 'true'
 
 
 class AlipayException(Exception):
