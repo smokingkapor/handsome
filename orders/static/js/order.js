@@ -105,18 +105,32 @@ $(document).ready(function(){
     });
 
     // load price and personal requirement from local storage
-    var survey = JSON.parse(localStorage.survey);
-    if ($('#create-order').size() > 0) {
-        $('#style .content span').text(survey.style.label).data('value', survey.style.value);
-        $('#style form select').val(survey.style.value);
-        $('#age .content span').text(survey.age.label).data('value', survey.age.value);
-        $('#age form select').val(survey.age.value);
-        $('#price .content span').text(survey.price.label).data('value', survey.price.value);
-        $('#price form select').val(survey.price.value);
-        $('#designer .content span').text(survey.designer.label).data('value', survey.designer.value);
-        $('#designer .content img').attr('src', survey.designer.avatar);
-        $('#designer form select').val(survey.designer.value);
-        $('#requirement').val(survey.requirements);
+    try {
+        var survey = JSON.parse(localStorage.survey || '{}');
+    } catch(err){
+        var survey = {};
+    }
+    if ($('#create-order').size() > 0 && !$('#create-order').is('.one-key')) {
+        if (survey.style) {
+            $('#style .content span').text(survey.style.label).data('value', survey.style.value);
+            $('#style form select').val(survey.style.value);
+        }
+        if (survey.age) {
+            $('#age .content span').text(survey.age.label).data('value', survey.age.value);
+            $('#age form select').val(survey.age.value);
+        }
+        if (survey.price) {
+            $('#price .content span').text(survey.price.label).data('value', survey.price.value);
+            $('#price form select').val(survey.price.value);
+        }
+        if (survey.designer) {
+            $('#designer .content span').text(survey.designer.label).data('value', survey.designer.value);
+            $('#designer .content img').attr('src', survey.designer.avatar);
+            $('#designer form select').val(survey.designer.value);
+        }
+        if (survey.requirements) {
+            $('#requirement').val(survey.requirements);
+        }
     }
 
     $('.edit-requirement-btn').click(function(){

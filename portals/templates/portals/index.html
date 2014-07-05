@@ -37,6 +37,11 @@
                                 </div>
                             </li>
                         </ul>
+                        {% if user.is_authenticated and not user.profile.is_freshman %}
+                        <br />
+                        <p class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;您还可以</p>
+                        <a href="{% url 'orders:create' %}?source=one-key" class="btn btn-primary btn-lg">一键下单？</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

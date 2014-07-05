@@ -48,6 +48,7 @@ class Profile(models.Model):
     chest = models.CharField(u'胸围', max_length=16, blank=True)
     hipline = models.CharField(u'臀围', max_length=16, blank=True)
     foot = models.CharField(u'脚长', max_length=16, blank=True)
+    is_freshman = models.BooleanField(default=True)
 
     def get_fullbody_shot(self):
         photo = self.user.photo_set.filter(tag=FULL_BODY_SHOT, is_primary=True).first()  # noqa

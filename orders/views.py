@@ -39,7 +39,7 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         Check user person size info first.
         """
         if request.user.is_authenticated() and not request.user.profile.weight:
-            return redirect(u'{}?next={}'.format(reverse('accounts:update'), reverse('orders:create')))
+            return redirect('portals:survey_more')
         else:
             return super(CreateOrderView, self).dispatch(request, *args, **kwargs)
 
@@ -56,11 +56,16 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
             'address': address,
             'provinces': Province.objects.all()
         })
-        data.update({'STYLE_CHOICES': Profile.STYLE_CHOICES,
-                     'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
-                     'PRICE_CHOICES': Order.PRICE_CHOICES,
-                     'designers': Profile.objects.filter(user__is_staff=True,
-                                                         is_designer=True)})
+        data.update({
+            'STYLE_CHOICES': Profile.STYLE_CHOICES,
+            'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
+            'PRICE_CHOICES': Order.PRICE_CHOICES,
+            'designers': Profile.objects.filter(user__is_staff=True,
+                                                is_designer=True)
+        })
+        if self.request.GET.get('source') == 'one-key':
+            # create order by one-key, pass the last order to the context
+            data.update({'last_order': self.request.user.my_orders.last()})
         return data
 
     def form_valid(self, form):
@@ -89,6 +94,11 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order.phone = address.phone
 
         order.save()
+
+        # if the user is not freshman, they can simply create new order without
+        # survey steps
+        profile.is_freshman = False
+        profile.save()
 
         if self.request.is_ajax():
             url = u'{}?code={}'.format(reverse('payments:home'), order.code)
