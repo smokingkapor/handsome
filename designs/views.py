@@ -18,14 +18,14 @@ from braces.views import(
 )
 from easy_thumbnails.files import get_thumbnailer
 
-from .constants import SELECTED, REJECTED
+from .constants import SELECTED, REJECTED, WAITING
 from .forms import DesignForm, RejectDesignForm
 from .mixins import DesignPermissionMixin
 from .models import Design, DesignClothing
 from clothings.models import Clothing
 from designs.models import DesignPhoto
-from handsome.utils import generate_str, send_sms
-from orders.constants import DESIGNED, ACCEPTED, PREPAID
+from handsome.utils import generate_str
+from orders.constants import ACCEPTED, PREPAID
 from orders.models import Order
 
 
@@ -42,15 +42,17 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
         Override. Add extra data to context
         """
         data = super(CreateDesignView, self).get_context_data(**kwargs)
-        data.update(self.request.GET.dict())
-        data.update({'clothing_choices': Clothing.CATEGORY_CHOICES})
+        data.update({
+            'clothing_choices': Clothing.CATEGORY_CHOICES,
+            'order': Order.objects.get(code=self.request.GET['code'])
+        })
         return data
 
     def form_valid(self, form):
         """
         Override. Create design and save photos
         """
-        order = Order.objects.get(code=self.request.GET['order'])
+        order = Order.objects.get(code=self.request.GET['code'])
         design = form.save(commit=False)
         design.order = order
         design.designer = self.request.user
@@ -65,9 +67,8 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
             design_clothing.save()
             design.clothings.add(design_clothing)
 
-        # order
-        order.status = DESIGNED
-        order.save()
+#         order.status = DESIGNED
+#         order.save()
 
         # save photos
         for filename in form.cleaned_data['photos'].split(';'):
@@ -86,9 +87,6 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
                                     file=u'design-photo/{}'.format(new_filename))
                 photo.save()
                 design.photos.add(photo)
-
-        # send SMS notification
-        send_sms(order.phone, settings.SMS_TEMPLATES['designed'].format(self.request.user.username))
 
         if self.request.is_ajax():
             url = reverse('designs:detail', kwargs={'code': design.code})
@@ -151,6 +149,7 @@ class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
         design = Design.objects.get(code=kwargs['code'])
         design.status = SELECTED
         design.save()
+        design.order.design_set.filter(status=WAITING).update(status=REJECTED)
         design.order.status = ACCEPTED
         design.order.save()
         return reverse('orders:detail', kwargs={'code': design.order.code})

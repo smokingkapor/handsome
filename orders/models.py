@@ -162,7 +162,9 @@ class Order(models.Model):
         """
         operations = ''
         if self.status == PREPAID:
-            operations = '<a class="highlight" href="{}?order={}">创建方案></a>'.format(reverse_lazy('designs:create'), self.code)
+            create_design_url = u'{}?code={}'.format(reverse_lazy('designs:create'), self.code)
+            finish_design_url = reverse_lazy('orders:finish_design', kwargs={'code': self.code})
+            operations = '<a class="highlight" href="{}">创建方案></a><br /><a class="highlight" href="{}">设计结束></a>'.format(create_design_url, finish_design_url)
         elif self.status == PAID:
             send_url = reverse('orders:send', kwargs={'code': self.code})
             operations = '<a class="highlight send-order-btn" href="javascript:void(0);" data-url="{}">已经寄出></a>'.format(send_url)

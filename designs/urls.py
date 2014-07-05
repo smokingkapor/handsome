@@ -2,8 +2,7 @@
 from django.conf.urls import patterns, url
 
 from .views import(
-    CreateDesignView, UploadView, DesignDetailView, AcceptDesignView,
-    RejectDesignView
+    CreateDesignView, UploadView, DesignDetailView, AcceptDesignView
 )
 
 
@@ -13,5 +12,5 @@ urlpatterns = patterns(
     url(r'^upload/$', UploadView.as_view(), name='upload'),
     url(r'^(?P<code>\d+)/$', DesignDetailView.as_view(), name='detail'),
     url(r'^(?P<code>\d+)/select/$', AcceptDesignView.as_view(), name='accept'),
-    url(r'^(?P<code>\d+)/reject/$', RejectDesignView.as_view(), name='reject'),
+    # url(r'^(?P<code>\d+)/reject/$', RejectDesignView.as_view(), name='reject'),
 )

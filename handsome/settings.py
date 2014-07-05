@@ -168,8 +168,8 @@ SMS_SERVER_URL = 'http://106.ihuyi.cn/webservice/sms.php?method=Submit'
 SMS_SERVER_USERNAME = ''
 SMS_SERVER_PASSWORD = ''
 SMS_TEMPLATES = {
-    'designed': u'设计师{}已经为您量身设计了一套服装，请登录优草(ygrass.com)查看.',
-    'temporary_pwd': u'您在优草的动态密码是{}，三十分钟内有效.'
+    'designed': u'设计师{}已经为您量身搭配了多套服装，请登录优草(ygrass.com)查看.',
+    'temporary_pwd': u'您的动态密码是{}，三十分钟内有效.'
 }
 
 ALIPAY_PID = ''

@@ -60,7 +60,17 @@
                         {% for design in order.design_set.all %}
                         <tr>
                             <td class="col-sm-8">{{ design.comment|truncatechars:100 }}</td>
-                            <td>{{ design.get_status_display }}</td>
+                            <td>
+                                {% if design.status == REJECTED %}
+                                <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-remove text-danger"></span>
+                                {% endif %}
+                                {% if design.status == WAITING %}
+                                <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-time text-muted"></span>
+                                {% endif %}
+                                {% if design.status == SELECTED %}
+                                <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-ok text-success"></span>
+                                {% endif %}
+                            </td>
                             <td class="text-right">
                                 <a {% if design.status == 'waiting' %}class="highlight"{% endif %} href="{% url 'designs:detail' code=design.code %}">查看服装设计></a>
                             </td>

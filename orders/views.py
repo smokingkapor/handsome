@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
+from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
 from django.http.response import Http404
@@ -20,7 +21,8 @@ from .forms import CreateOrderForm
 from .mixins import OrderPermissionMixin
 from .models import Order, Province, City, Address, Country
 from accounts.models import Profile
-from designs.constants import SELECTED
+from designs.constants import SELECTED, WAITING, REJECTED
+from handsome.utils import send_sms
 
 
 class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
@@ -193,7 +195,12 @@ class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         data = super(OrderDetailView, self).get_context_data(**kwargs)
-        data.update({'PREPAID': PREPAID})
+        data.update({
+            'PREPAID': PREPAID,
+            'SELECTED': SELECTED,
+            'WAITING': WAITING,
+            'REJECTED': REJECTED
+        })
         return data
 
 
@@ -343,6 +350,23 @@ class SendView(StaffuserRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order.express_info = request.REQUEST['express_info']
         order.save()
         return self.render_json_response({'success': True})
+
+
+class FinishDesignView(StaffuserRequiredMixin, RedirectView):
+    """
+    Update the order status to DESIGNED
+    """
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        order = Order.objects.get(code=self.kwargs['code'])
+        order.status = DESIGNED
+        order.save()
+
+        # send SMS notification
+        send_sms(order.phone, settings.SMS_TEMPLATES['designed'].format(self.request.user.username))
+
+        return self.request.META['HTTP_REFERER']
 
 
 class ReceiveView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):

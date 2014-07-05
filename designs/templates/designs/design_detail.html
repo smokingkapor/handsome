@@ -21,7 +21,9 @@
                 <span>订单号：<a href="{% url 'orders:detail' code=object.order.code %}">{{ object.order.code }}</a></span>
                 <span class="pull-right">
                     {% if object.status == 'waiting' and user == object.client %}
-                        <a href="javascript:void(0)" class="reject-btn" data-toggle="popover" data-html="true" data-placement="bottom" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a> 
+                        {% comment %}
+                        <a href="javascript:void(0)" class="reject-btn" data-toggle="popover" data-html="true" data-placement="bottom" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a>
+                        {% endcomment %} 
                         <a class="btn btn-primary" href="{% url 'designs:accept' code=design.code %}">选择这套方案</a>
                     {% else %}
                         <span>状态：{{ object.get_status_display }}</span>
@@ -37,6 +39,7 @@
                         </div>
                         <div class="well well-sm col-sm-10">{{ object.comment }}</div>
                     </p>
+                    {% comment %}
                     {% if object.status == 'rejected' %}
                     <p class="row">
                         <div class="col-sm-1">
@@ -45,6 +48,7 @@
                         <div class="well well-sm col-sm-10">{{ object.reject_reason }}</div>
                     </p>
                     {% endif %}
+                    {% endcomment %}
                 </div>
             </div>
             <br /><br />
@@ -80,7 +84,9 @@
             <div>
                 <span class="pull-right">
                     {% if object.status == 'waiting' and user == object.client %}
-                        <a href="javascript:void(0)" class="reject-btn" data-toggle="popover" data-html="true" data-placement="top" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a> 
+                        {% comment %}
+                        <a href="javascript:void(0)" class="reject-btn" data-toggle="popover" data-html="true" data-placement="top" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a>
+                        {% endcomment %}
                         <a class="btn btn-primary" href="{% url 'designs:accept' code=design.code %}">选择这套方案</a>
                     {% else %}
                         <span>状态：{{ object.get_status_display }}</span>

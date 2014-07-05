@@ -19,7 +19,13 @@
 {% block content %}
 <div class="container body">
     <div class="row">
-        <br />
+        <div class="col-md-12">
+            <p><b>客户要求：</b></p>
+            <p>服装风格: {{ order.get_style_display }}</p>
+            <p>穿着年龄: {{ order.get_age_group_display }}</p>
+            <p>更多要求: {{ order.message }}</p>
+            <hr />
+        </div>
         <form class="col-md-12 content" role="form">
             <div class="form-group">
                 <label>设计思路：</label>
@@ -134,7 +140,7 @@
                 <span class="btn btn-success fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>上传设计方案...</span>
-                    <input id="fileupload" type="file" name="file" data-url="{% url 'designs:upload' %}?order={{ order }}" multiple>
+                    <input id="fileupload" type="file" name="file" data-url="{% url 'designs:upload' %}?code={{ order.code }}" multiple>
                 </span>
                 <span id="progress"></span>
             </div>
@@ -143,7 +149,7 @@
                 <div id="photos"></div>
             </div>
             <div class="form-group">
-                <button type="button" id="create-design-btn" data-loading-text="正在创建..." data-url="{% url 'designs:create' %}?order={{ order }}" class="btn btn-primary pull-right">提交设计</button>
+                <button type="button" id="create-design-btn" data-loading-text="正在创建..." data-url="{% url 'designs:create' %}?code={{ order.code }}" class="btn btn-primary pull-right">提交设计</button>
             </div>
         </form>
     </div>
