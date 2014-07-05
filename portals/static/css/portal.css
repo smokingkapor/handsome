@@ -117,3 +117,15 @@
 #survey.carousel .active .selector .avatar:hover {
     border-color: white
 }
+
+
+#survey-more .prices .option img {
+    margin: 0px auto;
+}
+
+#survey-more .prices .option.selected img {
+    background: url(../image/spot-selected.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}

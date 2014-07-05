@@ -63,7 +63,7 @@
             <div class="carousel-caption" id="designer">
                 <div class="container">
                     <h4>你希望哪位设计师为你量身定制？</h4>
-                    <div class="row selector {% if not user.is_authenticated %}last-slide{% else %}auto-slide{% endif %}" data-url="{% url 'portals:survey_price' %}">
+                    <div class="row selector {% if not user.is_authenticated %}last-slide{% else %}auto-slide{% endif %}" data-url="{% url 'portals:survey_more' %}">
                         {% for designer in designers %}
                         <div class="col-sm-3 option" data-value="{{ designer.user.id }}", data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
                             <a href="javascript:void(0)" class="image-option">

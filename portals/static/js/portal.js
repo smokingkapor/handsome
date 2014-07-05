@@ -56,4 +56,37 @@ $(document).ready(function(){
         }
         localStorage.survey = JSON.stringify(survey);
     }
+
+    // price select in survey more page
+    $('#survey-more .prices .option').click(function(){
+        var $prices = $('#survey-more .prices');
+        $prices.find('.option').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+
+    // submit more survey data
+    $('#submit-more-survey-btn').click(function(){
+        // check price first
+        if ($('#survey-more .prices .option.selected').size() == 0) {
+            alert('请先选择价位');
+            return;
+        }
+
+        // save data to localStorage
+        try {
+            var survey = JSON.parse(localStorage.survey || '{}');
+        } catch(err){
+            var survey = {};
+        }
+        survey.price = {
+            label: $('#survey-more .prices .option.selected').data('label'),
+            value: $('#survey-more .prices .option.selected').data('value')
+        };
+        survey.requirements = $('#requirements').val();
+        localStorage.survey = JSON.stringify(survey);
+
+        // form submit
+        $('#survey-more form').submit();
+    });
 });

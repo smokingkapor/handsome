@@ -116,6 +116,7 @@ $(document).ready(function(){
         $('#designer .content span').text(survey.designer.label).data('value', survey.designer.value);
         $('#designer .content img').attr('src', survey.designer.avatar);
         $('#designer form select').val(survey.designer.value);
+        $('#requirement').val(survey.requirements);
     }
 
     $('.edit-requirement-btn').click(function(){
