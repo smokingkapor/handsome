@@ -154,7 +154,7 @@ $(document).ready(function(){
         var $btn = $(this);
         $btn.button('loading');
         var data = {
-            total_price: parseInt($('#price .content span').data('value')),
+            price_group: parseInt($('#price .content span').data('value')),
             message: $('#requirement').val() || '',
             preferred_designer: $('#designer .content span').data('value'),
             style: $('#style .content span').data('value'),

@@ -70,7 +70,7 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         profile = self.request.user.profile
 
         order = form.save(commit=False)
-        order.prepayment = order.total_price * 0.1
+        order.prepayment = order.price_group * 0.1
         order.creator = profile.user
         order.height = profile.height
         order.weight = profile.weight

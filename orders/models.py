@@ -98,7 +98,7 @@ class Order(models.Model):
 
 
     code = models.CharField(max_length=32, unique=True, blank=True, null=True)
-    total_price = models.FloatField(choices=PRICE_CHOICES)
+    total_price = models.FloatField(default=0)
     prepayment = models.FloatField()
 
     # address info
@@ -114,6 +114,7 @@ class Order(models.Model):
                              choices=Profile.STYLE_CHOICES)
     age_group = models.CharField(max_length=32, blank=True,
                                  choices=Profile.AGE_GROUP_CHOICES)
+    price_group = models.FloatField(default=PRICE_299, choices=PRICE_CHOICES)
     height = models.CharField(max_length=16, blank=True)
     weight = models.CharField(max_length=16, blank=True)
     waistline = models.CharField(max_length=16, blank=True)
@@ -153,6 +154,9 @@ class Order(models.Model):
         elif self.status == SENT:
             receive_url = reverse('orders:receive', kwargs={'code': self.code})
             operations = '<a class="highlight" href="{}">确认收货></a>'.format(receive_url)
+        elif self.status == DESIGNED:
+            choose_design_url = reverse('orders:detail', kwargs={'code': self.code})
+            operations = '<a class="highlight" href="{}">挑选设计></a>'.format(choose_design_url)
 
         return operations
 

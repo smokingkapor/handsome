@@ -21,8 +21,7 @@
     <div class="row">
         <div class="col-md-12">
             <p><b>客户要求：</b></p>
-            <p>服装风格: {{ order.get_style_display }}</p>
-            <p>穿着年龄: {{ order.get_age_group_display }}</p>
+            <p>服装风格: {{ order.get_style_display }}, 穿着年龄: {{ order.get_age_group_display }}, 价位：{{ order.price_group|floatformat }}</p>
             <p>更多要求: {{ order.message }}</p>
             <hr />
         </div>
@@ -37,6 +36,14 @@
                 <div class="row" id="selected-clothings">
                 </div>
                 <hr />
+                <div class="row">
+                    <div class="col-sm-1">
+                        <b>总价：</b>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="number" id="total_price" class="form-control input-sm" />
+                    </div>
+                </div>
                 <label>选择服装：</label>
                 <div class="row">
                     <div class="col-sm-2">

@@ -53,6 +53,7 @@ class Design(models.Model):
 
     code = models.CharField(max_length=32, unique=True, blank=True, null=True)
     order = models.ForeignKey(Order)
+    total_price = models.FloatField(default=0)
     designer = models.ForeignKey(User, related_name='my_designs')
     client = models.ForeignKey(User, related_name='designs_for_me')
     status = models.CharField(max_length=16, choices=STATUS_CHOICES,

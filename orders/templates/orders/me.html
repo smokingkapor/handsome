@@ -30,7 +30,13 @@
                             <span>穿着年龄：{{ obj.get_age_group_display }}</span><br />
                             <span>更多要求：{{ obj.message|truncatechars:100 }}</span><br />
                         </td>
-                        <td class="text-center">{{ obj.total_price }}元</td>
+                        <td class="text-center">
+                            {% if obj.total_price == 0 %}
+                            <span>价位：{{ obj.price_group|floatformat }}元</span>
+                            {% else %}
+                            <span>{{ obj.total_price|floatformat }}元</span>
+                            {% endif %}
+                        </td>
                         <td class="text-center">
                             <a href="{% url 'orders:detail' code=obj.code %}">订单详情></a><br />
                             {{ obj.get_operations|safe }}

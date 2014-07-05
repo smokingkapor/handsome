@@ -13,7 +13,7 @@ class DesignForm(forms.ModelForm):
 
     class Meta:
         model = Design
-        fields = ('comment',)
+        fields = ('comment', 'total_price')
 
 
 class RejectDesignForm(forms.ModelForm):

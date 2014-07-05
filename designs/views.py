@@ -111,7 +111,7 @@ class UploadView(CsrfExemptMixin, StaffuserRequiredMixin, View):
         """
         Upload shot to temple folder
         """
-        order = Order.objects.get(code=request.GET['order'])
+        order = Order.objects.get(code=request.GET['code'])
         user = self.request.user
         photo = request.FILES['file']
         name, ext = os.path.splitext(photo.name)
@@ -123,7 +123,8 @@ class UploadView(CsrfExemptMixin, StaffuserRequiredMixin, View):
         return HttpResponse(json.dumps({
             'success': True,
             'path': thumbnailer.get_thumbnail({'size': (150, 150)}).url,
-            'filename': filename}))
+            'filename': filename
+        }))
 
 
 class DesignDetailView(LoginRequiredMixin, DesignPermissionMixin, DetailView):
@@ -150,6 +151,7 @@ class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
         design.status = SELECTED
         design.save()
         design.order.design_set.filter(status=WAITING).update(status=REJECTED)
+        design.order.total_price = design.total_price
         design.order.status = ACCEPTED
         design.order.save()
         return reverse('orders:detail', kwargs={'code': design.order.code})
