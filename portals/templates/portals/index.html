@@ -12,11 +12,15 @@
     <div class="overlay">
         <div class="column">
             <div class="container text-center">
-                <h2>优草</h2>
-                <p>个性化的私人服装搭配</p>
+                <h2><span>个性化的</span><img src="{% static 'image/ygrass.png' %}" /></h2>
+                <h1>私人服装搭配</h1>
                 <div class="action">
-                    <div class="bg-transparent box center">
-                        <a href="{% url 'portals:survey' %}" class="btn btn-primary btn-lg">我们开始吧</a>
+                    <div class="box center">
+                        <a href="{% url 'portals:survey' %}" class="btn">我们开始吧</a>
+                        {% if user.is_authenticated and not user.profile.is_freshman %}
+                        <a href="{% url 'orders:create' %}?source=one-key" class="btn">一键下单？</a>
+                        {% endif %}
+                        {% comment %}
                         <ul class="list-unstyled text-left">
                             <li>
                                 <div class="text-white">
@@ -37,15 +41,12 @@
                                 </div>
                             </li>
                         </ul>
-                        {% if user.is_authenticated and not user.profile.is_freshman %}
-                        <br />
-                        <p class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;您还可以</p>
-                        <a href="{% url 'orders:create' %}?source=one-key" class="btn btn-primary btn-lg">一键下单？</a>
-                        {% endif %}
+                        {% endcomment %}
                     </div>
                 </div>
             </div>
         </div>
+        {% include "foot-steps.html" %}
     </div>
 </div>
 {% endblock %}

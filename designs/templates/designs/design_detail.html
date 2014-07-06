@@ -12,92 +12,93 @@
 {% endblock%}
 
 {% block content %}
-
-<div class="container body">
-    <div class="row">
-        <div class="col-md-12 content">
-            <br />
-            <p>
-                <span>订单号：<a href="{% url 'orders:detail' code=object.order.code %}">{{ object.order.code }}</a></span>
-                <span class="pull-right">
-                    {% if object.status == 'waiting' and user == object.client %}
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-12 content">
+                <br />
+                <p>
+                    <span>订单号：<a href="{% url 'orders:detail' code=object.order.code %}">{{ object.order.code }}</a></span>
+                    <span class="pull-right">
+                        {% if object.status == 'waiting' and user == object.client %}
+                            {% comment %}
+                            <a href="javascript:void(0)" class="reject-btn" data-toggle="popover" data-html="true" data-placement="bottom" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a>
+                            {% endcomment %} 
+                            <a class="btn btn-primary" href="{% url 'designs:accept' code=design.code %}">选择这套方案</a>
+                        {% else %}
+                            <span>状态：{{ object.get_status_display }}</span>
+                        {% endif %}
+                    </span>
+                </p>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>总价：{{ object.total_price|floatformat }}元</p>
+                        <hr />
+                    </div>
+                </div>
+                <div id="design-comments" class="row">
+                    <div class="col-sm-12">
+                        <p class="row">
+                            <div class="col-sm-1">
+                                <img width="40" class="avatar" src="{{ object.designer.profile.avatar|thumbnail_url:'small' }}" />
+                            </div>
+                            <div class="well well-sm col-sm-10">{{ object.comment }}</div>
+                        </p>
                         {% comment %}
-                        <a href="javascript:void(0)" class="reject-btn" data-toggle="popover" data-html="true" data-placement="bottom" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a>
-                        {% endcomment %} 
-                        <a class="btn btn-primary" href="{% url 'designs:accept' code=design.code %}">选择这套方案</a>
-                    {% else %}
-                        <span>状态：{{ object.get_status_display }}</span>
-                    {% endif %}
-                </span>
-            </p>
-            <hr />
-            <div class="row">
-                <div class="col-md-12">
-                    <p>总价：{{ object.total_price|floatformat }}元</p>
-                    <hr />
-                </div>
-            </div>
-            <div id="design-comments" class="row">
-                <div class="col-sm-12">
-                    <p class="row">
-                        <div class="col-sm-1">
-                            <img width="40" class="avatar" src="{{ object.designer.profile.avatar|thumbnail_url:'small' }}" />
-                        </div>
-                        <div class="well well-sm col-sm-10">{{ object.comment }}</div>
-                    </p>
-                    {% comment %}
-                    {% if object.status == 'rejected' %}
-                    <p class="row">
-                        <div class="col-sm-1">
-                            <img width="40" class="avatar" src="{{ object.client.profile.avatar|thumbnail_url:'small' }}" />
-                        </div>
-                        <div class="well well-sm col-sm-10">{{ object.reject_reason }}</div>
-                    </p>
-                    {% endif %}
-                    {% endcomment %}
-                </div>
-            </div>
-            <br /><br />
-            <p>整体效果图：</p>
-            <hr />
-            <div class="row">
-                {% for photo in object.photos.all %}
-                <div class="col-sm-3 text-center">
-                    <img width="200" src="{{ photo.file|thumbnail_url:'medium' }}" />
-                    <p><a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}">查看大图</a></p>
-                </div>
-                {% endfor %}
-            </div>
-            <br /><br />
-            <p>服装：</p>
-            <table class="table">
-                {% for design_clothing in object.clothings.all %}
-                <tr>
-                    <td>
-                        <img src="{{ design_clothing.clothing.image|thumbnail_url:'small' }}" />
-                    </td>
-                    <td>
-                        <span>{{ design_clothing.clothing.name }}</span>
-                    </td>
-                    <td>
-                        <span>颜色：<b>{{ design_clothing.color }}</b></span>
-                        <span>尺寸：<b>{{ design_clothing.size }}</b></span>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-            <hr />
-            <div>
-                <span class="pull-right">
-                    {% if object.status == 'waiting' and user == object.client %}
-                        {% comment %}
-                        <a href="javascript:void(0)" class="reject-btn" data-toggle="popover" data-html="true" data-placement="top" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a>
+                        {% if object.status == 'rejected' %}
+                        <p class="row">
+                            <div class="col-sm-1">
+                                <img width="40" class="avatar" src="{{ object.client.profile.avatar|thumbnail_url:'small' }}" />
+                            </div>
+                            <div class="well well-sm col-sm-10">{{ object.reject_reason }}</div>
+                        </p>
+                        {% endif %}
                         {% endcomment %}
-                        <a class="btn btn-primary" href="{% url 'designs:accept' code=design.code %}">选择这套方案</a>
-                    {% else %}
-                        <span>状态：{{ object.get_status_display }}</span>
-                    {% endif %}
-                </span>
+                    </div>
+                </div>
+                <br /><br />
+                <p>整体效果图：</p>
+                <hr />
+                <div class="row">
+                    {% for photo in object.photos.all %}
+                    <div class="col-sm-3 text-center">
+                        <img width="200" src="{{ photo.file|thumbnail_url:'medium' }}" />
+                        <p><a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}">查看大图</a></p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <br /><br />
+                <p>服装：</p>
+                <table class="table">
+                    {% for design_clothing in object.clothings.all %}
+                    <tr>
+                        <td>
+                            <img src="{{ design_clothing.clothing.image|thumbnail_url:'small' }}" />
+                        </td>
+                        <td>
+                            <span>{{ design_clothing.clothing.name }}</span>
+                        </td>
+                        <td>
+                            <span>颜色：<b>{{ design_clothing.color }}</b></span>
+                            <span>尺寸：<b>{{ design_clothing.size }}</b></span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <hr />
+                <div>
+                    <span class="pull-right">
+                        {% if object.status == 'waiting' and user == object.client %}
+                            {% comment %}
+                            <a href="javascript:void(0)" class="reject-btn" data-toggle="popover" data-html="true" data-placement="top" data-title="请告诉我们原因" data-content='<form id="reject-form" action="{% url "designs:reject" code=design.code %}" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" /><textarea name="reject_reason" class="form-control" rows="5"></textarea><br /><button type="submit" class="btn btn-default btn-sm pull-right">提交</button></form>'>再帮我设计一套</a>
+                            {% endcomment %}
+                            <a class="btn btn-primary" href="{% url 'designs:accept' code=design.code %}">选择这套方案</a>
+                        {% else %}
+                            <span>状态：{{ object.get_status_display }}</span>
+                        {% endif %}
+                    </span>
+                </div>
             </div>
         </div>
     </div>

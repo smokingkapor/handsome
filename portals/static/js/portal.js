@@ -9,6 +9,14 @@ $(document).ready(function(){
         $('.carousel').carousel('prev');
     });
 
+    $('#survey #foot-steps .style').addClass('active');
+    $('.carousel').on('slid.bs.carousel', function(){
+        // highlight foot step
+        var active_item = $('#survey .item.active').prop('id');
+        $('#survey #foot-steps .active').removeClass('active');
+        $('#survey #foot-steps .' + active_item).addClass('active');
+    });
+
     $('.selector .option').click(function(){
         var $selector = $(this).parents('.selector');
         $selector.find('.option').removeClass('selected');
@@ -58,8 +66,8 @@ $(document).ready(function(){
     }
 
     // price select in survey more page
-    $('#survey-more .prices .option').click(function(){
-        var $prices = $('#survey-more .prices');
+    $('#survey-more #price .option').click(function(){
+        var $prices = $('#survey-more #price');
         $prices.find('.option').removeClass('selected');
         $(this).addClass('selected');
     });
@@ -68,7 +76,7 @@ $(document).ready(function(){
     // submit more survey data
     $('#submit-more-survey-btn').click(function(){
         // check price first
-        if ($('#survey-more .prices .option.selected').size() == 0) {
+        if ($('#survey-more #price .option.selected').size() == 0) {
             alert('请先选择价位');
             return;
         }
@@ -80,8 +88,8 @@ $(document).ready(function(){
             var survey = {};
         }
         survey.price = {
-            label: $('#survey-more .prices .option.selected').data('label'),
-            value: $('#survey-more .prices .option.selected').data('value')
+            label: $('#survey-more #price .option.selected').data('label'),
+            value: $('#survey-more #price .option.selected').data('value')
         };
         survey.requirements = $('#requirements').val();
         localStorage.survey = JSON.stringify(survey);

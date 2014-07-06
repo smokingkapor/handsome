@@ -15,20 +15,22 @@
 {% block title %}优草{% endblock %}
 
 {% block content %}
-<div class="carousel slide bg-gray" id="survey">
-    <div class="carousel-inner">
-        <div class="item active" id="price">
-            <div class="carousel-caption">
-                <div class="container">
-                    <h4>你希望整套搭配在什么价格？</h4>
-                    <div class="row selector last-slide" data-url="{% url 'accounts:update' %}?next={% url 'orders:create' %}">
-                        {% for choice in PRICE_CHOICES %}
-                        <div class="col-sm-2 option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}">
-                            <a href="javascript:void(0)">
-                                <img class="img-responsive" src="{{ STATIC_URL }}image/price_level_{{ forloop.counter }}.png" />
-                            </a>
+<div class="page">
+    <div class="carousel slide" id="survey">
+        <div class="carousel-inner">
+            <div class="item active" id="price">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <h4>你希望整套搭配在什么价格？</h4>
+                        <div class="row selector last-slide" data-url="{% url 'accounts:update' %}?next={% url 'orders:create' %}">
+                            {% for choice in PRICE_CHOICES %}
+                            <div class="col-sm-2 option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}">
+                                <a href="javascript:void(0)">
+                                    <img class="img-responsive" src="{{ STATIC_URL }}image/price_level_{{ forloop.counter }}.png" />
+                                </a>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                 </div>
             </div>

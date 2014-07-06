@@ -12,51 +12,53 @@
 {% endblock %}
 
 {% block content %}
-<div class="container body">
-    <div class="row">
-        <h4>用户注册</h4>
-    </div>
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <h4>用户注册</h4>
+        </div>
 
-    <div class="row">
-        <form method="post" class="form-horizontal col-md-4 well well-shadow" role="form">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <span class="col-sm-3 control-label">{{ field.label }}: </span>
+        <div class="row">
+            <form method="post" class="form-horizontal col-md-4 well well-shadow" role="form">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <span class="col-sm-3 control-label">{{ field.label }}: </span>
+                        <div class="col-sm-9">
+                            {{ field }}
+                            {% if field.help_text %}
+                            <p class="help-block"><small>{{ field.help_text }}</small></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="form-group">
+                    <span class="col-sm-3"></span>
                     <div class="col-sm-9">
-                        {{ field }}
-                        {% if field.help_text %}
-                        <p class="help-block"><small>{{ field.help_text }}</small></p>
-                        {% endif %}
+                        <div class="checkbox">
+                            <label>
+                                <input id="agreement-btn" type="checkbox"><small>我已经认真阅读并同意优草的<a href="#">《使用协议》</a></small>
+                            </label>
+                        </div>
                     </div>
                 </div>
-            {% endfor %}
 
-            <div class="form-group">
-                <span class="col-sm-3"></span>
-                <div class="col-sm-9">
-                    <div class="checkbox">
-                        <label>
-                            <input id="agreement-btn" type="checkbox"><small>我已经认真阅读并同意优草的<a href="#">《使用协议》</a></small>
-                        </label>
+                {% if form.non_field_errors %}
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <p class="text-danger">{{ form.non_field_errors.0 }}</p>
                     </div>
                 </div>
-            </div>
+                {% endif %}
 
-            {% if form.non_field_errors %}
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    <p class="text-danger">{{ form.non_field_errors.0 }}</p>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <input id="submit-btn" class="btn btn-primary" disabled="disabled" type="submit" value="创建" />
+                    </div>
                 </div>
-            </div>
-            {% endif %}
-
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    <input id="submit-btn" class="btn btn-primary" disabled="disabled" type="submit" value="创建" />
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

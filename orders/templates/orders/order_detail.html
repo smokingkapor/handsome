@@ -12,105 +12,107 @@
 {% block title %}订单详情{% endblock %}
 
 {% block content %}
-<div class="container body">
-    <br />
-    <div class="row">
-        <div class="col-md-12 content">
-            <br />
-            <p>
-                <span>订单号：{{ order.code }}</span>
-                <span class="pull-right">
-                    {% if user.is_staff %}
-                    {{ order.get_designer_operations|safe }}
-                    {% else %}
-                    {{ order.get_operations|safe }}
-                        {% if order.status == PREPAID %}
-                        <a data-url="{% url 'orders:refund' code=order.code %}" data-confirm="确认要退还预付款？" class="confirm" href="#">申请退款></a>
+<div id="order-detail" class="page">
+    <div class="container body">
+        <br />
+        <div class="row">
+            <div class="col-md-12 content">
+                <br />
+                <p>
+                    <span>订单号：{{ order.code }}</span>
+                    <span class="pull-right">
+                        {% if user.is_staff %}
+                        {{ order.get_designer_operations|safe }}
+                        {% else %}
+                        {{ order.get_operations|safe }}
+                            {% if order.status == PREPAID %}
+                            <a data-url="{% url 'orders:refund' code=order.code %}" data-confirm="确认要退还预付款？" class="confirm" href="#">申请退款></a>
+                            {% endif %}
                         {% endif %}
+                    </span>
+                </p>
+                <hr />
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="order-description">
+                            <table class="table-condensed">
+                                <tr>
+                                    <td class="col-sm-3">服装风格:</td>
+                                    <td>{{ order.get_style_display }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">穿着年龄:</td>
+                                    <td>{{ order.get_age_group_display }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">更多要求:</td>
+                                    <td>{{ order.message }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>{{ order.get_status_display }}</td>
+                        <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% if order.design_set.exists %}
+                    <tr>
+                        <td>
+                            <p>设计方案</p>
+                            <table class="table col-sm-12">
+                            {% for design in order.design_set.all %}
+                            <tr>
+                                <td class="col-sm-8">{{ design.comment|truncatechars:100 }}</td>
+                                <td>
+                                    {% if design.status == REJECTED %}
+                                    <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-remove text-danger"></span>
+                                    {% endif %}
+                                    {% if design.status == WAITING %}
+                                    <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-time text-muted"></span>
+                                    {% endif %}
+                                    {% if design.status == SELECTED %}
+                                    <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-ok text-success"></span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-right">
+                                    <a {% if design.status == 'waiting' %}class="highlight"{% endif %} href="{% url 'designs:detail' code=design.code %}">查看服装设计></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </table>
+                        </td>
+                        <td colspan="2" class="text-center">
+                            <img class="avatar" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
+                            <p>设计师：{{ order.preferred_designer.get_full_name|default_if_empty:order.preferred_designer.username }}</p>
+                        </td>
+                    </tr>
                     {% endif %}
-                </span>
-            </p>
-            <hr />
-            <table class="table table-bordered">
-                <tr>
-                    <td class="order-description">
-                        <table class="table-condensed">
-                            <tr>
-                                <td class="col-sm-3">服装风格:</td>
-                                <td>{{ order.get_style_display }}</td>
-                            </tr>
-                            <tr>
-                                <td class="col-sm-3">穿着年龄:</td>
-                                <td>{{ order.get_age_group_display }}</td>
-                            </tr>
-                            <tr>
-                                <td class="col-sm-3">更多要求:</td>
-                                <td>{{ order.message }}</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>{{ order.get_status_display }}</td>
-                    <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
-                </tr>
-                {% if order.design_set.exists %}
-                <tr>
-                    <td>
-                        <p>设计方案</p>
-                        <table class="table col-sm-12">
-                        {% for design in order.design_set.all %}
-                        <tr>
-                            <td class="col-sm-8">{{ design.comment|truncatechars:100 }}</td>
-                            <td>
-                                {% if design.status == REJECTED %}
-                                <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-remove text-danger"></span>
-                                {% endif %}
-                                {% if design.status == WAITING %}
-                                <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-time text-muted"></span>
-                                {% endif %}
-                                {% if design.status == SELECTED %}
-                                <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-ok text-success"></span>
-                                {% endif %}
-                            </td>
-                            <td class="text-right">
-                                <a {% if design.status == 'waiting' %}class="highlight"{% endif %} href="{% url 'designs:detail' code=design.code %}">查看服装设计></a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        </table>
-                    </td>
-                    <td colspan="2" class="text-center">
-                        <img class="avatar" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
-                        <p>设计师：{{ order.preferred_designer.get_full_name|default_if_empty:order.preferred_designer.username }}</p>
-                    </td>
-                </tr>
-                {% endif %}
-                {% if order.status == 'sent' %}
-                <tr>
-                    <td colspan="3"><b>物流信息：</b><span>{{ order.express_info }}</span></td>
-                </tr>
-                {% endif %}
-                <tr>
-                    <td colspan="3">
-                        <div class="pull-right">
-                            <dl class="dl-horizontal">
-                                {% if order.total_price == 0 %}
-                                <dt>价位：</dt>
-                                <dd>{{ order.price_group|floatformat }}元</dd>
-                                {% else %}
-                                <dt>总价：</dt>
-                                <dd>{{ order.total_price|floatformat }}元</dd>
-                                {% endif %}
-                                <dt>预付款：</dt>
-                                <dd>{{ order.prepayment|floatformat }}元</dd>
-                            </dl>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <p>收货信息</p>
-            <p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：{{ order.name }}</p>
-            <p>收货地址：{{ order.get_address }}</p>
-            <p>联系电话：{{ order.phone }}</p>
+                    {% if order.status == 'sent' %}
+                    <tr>
+                        <td colspan="3"><b>物流信息：</b><span>{{ order.express_info }}</span></td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="pull-right">
+                                <dl class="dl-horizontal">
+                                    {% if order.total_price == 0 %}
+                                    <dt>价位：</dt>
+                                    <dd>{{ order.price_group|floatformat }}元</dd>
+                                    {% else %}
+                                    <dt>总价：</dt>
+                                    <dd>{{ order.total_price|floatformat }}元</dd>
+                                    {% endif %}
+                                    <dt>预付款：</dt>
+                                    <dd>{{ order.prepayment|floatformat }}元</dd>
+                                </dl>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <p>收货信息</p>
+                <p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：{{ order.name }}</p>
+                <p>收货地址：{{ order.get_address }}</p>
+                <p>联系电话：{{ order.phone }}</p>
+            </div>
         </div>
     </div>
 </div>

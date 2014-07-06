@@ -1,19 +1,9 @@
 #home {
-    background: url(../image/home_bg.jpg) center center no-repeat;
+    background: url(../image/home_bg_2.jpg) center center no-repeat;
     background-size: cover;
     width: 100%;
-    height: 100%;
-}
-
-#home .overlay {
-    width: 100%;
-    height: 100%;
-    background-image: -webkit-gradient(radial,center center,0,center center,460,from(rgba(0,0,0,.1)),to(rgba(0,0,0,.3)));
-    background-image: -webkit-radial-gradient(circle,rgba(0,0,0,.1),rgba(0,0,0,.3));
-    background-image: -moz-radial-gradient(circle,rgba(0,0,0,.1),rgba(0,0,0,.3));
-    background-image: radial-gradient(circle,rgba(0,0,0,.1),rgba(0,0,0,.3));
-    background-repeat: no-repeat;
-    margin-top: -5px;
+    min-height: 93%;
+    position: relative;
 }
 
 #home .column {
@@ -37,8 +27,16 @@
     margin-top: 50%;
 }
 
-#home .column .action {
-    padding: 48px 0;
+#home .column h1 {
+    margin-top: 0;
+}
+
+#home .column h2 span {
+    color: orange;
+}
+
+#home .column h2 img {
+    height: 50px;
 }
 
 #home .column .action .box {
@@ -56,7 +54,15 @@
 }
 
 #home .column .action a {
-    padding: 10px 75px;
+    background-image: url('../image/start-btn-bg.png');
+    background-repeat: no-repeat;
+    background-color: none;
+    color: white;
+    width: 132px;
+    height: 45px;
+    font-size: 16px;
+    vertical-align: middle;
+    padding-top: 10px;
 }
 
 #home .column .action ul {
@@ -80,52 +86,97 @@
     border-radius: 3px;
 }
 
-#survey .selector .option.image-option {
-    padding: 20px;
+#survey .option {
+    cursor: pointer;
+    position: relative;
 }
 
-#survey .pager li>a {
-    padding: 10px 40px;
+#survey #style li.option span {
+    display: inline-block;
+    background: url(../image/circle_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 50px;
+    height: 49px;
+    line-height: 49px;
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
 }
 
-#survey.carousel .selector img {
-    margin: 0px auto;
-}
-
-#survey.carousel .active .selector .option.selected img {
-    background: url(../image/spot-selected.png);
+#survey #style li.option:hover span, #survey #style li.option.selected span {
+    background: url(../image/circle_focus_bg.png);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
-#survey.carousel .active .selector .option:hover img {
-    background: url(../image/spot.png);
+#survey #age li.option {
+    background: url(../image/rhombus_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    margin: auto;
+    line-height: 200px;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#survey #age li.option:hover, #survey #age li.option.selected {
+    background: url(../image/rhombus_focus_bg.png);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
-#survey.carousel .active .selector .option .avatar {
-    border-width: 3px;
+#survey #designer li.option .intro {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    line-height: 100%;
+    background-color: #0F3870;
+    opacity: .7;
+    line-height: 200px;
+    font-weight: bolder;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=70)";
 }
 
-#survey.carousel .active .selector .option.selected .avatar {
-    border-color: yellow;
+#survey #designer li.option:hover .intro, #survey #designer li.option.selected .intro {
+    display: block;
 }
 
-#survey.carousel .active .selector .avatar:hover {
-    border-color: white
-}
-
-
-#survey-more .prices .option img {
-    margin: 0px auto;
-}
-
-#survey-more .prices .option.selected img {
-    background: url(../image/spot-selected.png);
+#survey-more #price li.option {
+    background: url(../image/rhombus_small_bg.png);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
+    height: 100px;
+    width: 100px;
+    margin: auto;
+    line-height: 100px;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+#survey-more #price li.option:hover, #survey-more #price li.option.selected {
+    background: url(../image/rhombus_small_focus_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#home #foot-steps .survey {
+    color: #B68B69;
 }
