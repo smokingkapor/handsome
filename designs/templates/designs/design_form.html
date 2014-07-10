@@ -22,8 +22,13 @@
         <div class="row">
             <div class="col-md-12">
                 <p><b>客户要求：</b></p>
-                <p>服装风格: {{ order.get_style_display }}, 穿着年龄: {{ order.get_age_group_display }}, 价位：{{ order.price_group|floatformat }}</p>
+                <p>{{ order.get_style_display }}, {{ order.get_age_group_display }}, {{ order.get_color_display }}, {{ order.get_hobby_display }}, {{ order.price_group|floatformat }}</p>
                 <p>更多要求: {{ order.message }}</p>
+                <hr />
+            </div>
+            <div class="col-md-12">
+                <p><b>客户数据：</b></p>
+                <p>身高{{ order.height }}cm, 体重{{ order.weight }}kg, 腰围{{ order.waistline }}cm, 胸围{{ order.chest }}cm, 臀围{{ order.hipline }}cm, 脚长{{ order.foot }}cm{% if order.is_slim %}, 修身{% endif %}</p>
                 <hr />
             </div>
             <form class="col-md-12 content" role="form">

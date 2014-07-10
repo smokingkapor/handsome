@@ -85,6 +85,7 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order.chest = profile.chest
         order.hipline = profile.hipline
         order.foot = profile.foot
+        order.is_slim = profile.is_slim
 
         # order address info
         address = Address.objects.get(id=self.request.REQUEST['address'])

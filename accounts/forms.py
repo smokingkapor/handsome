@@ -111,7 +111,8 @@ class ProfileForm(forms.ModelForm):
     """
     class Meta:
         model = Profile
-        fields = ('height', 'weight', 'waistline', 'chest', 'hipline', 'foot')
+        fields = ('height', 'weight', 'waistline', 'chest', 'hipline', 'foot',
+                  'is_slim')
 
     def _validate_field(self, field_name):
         value = self.cleaned_data.get(field_name)

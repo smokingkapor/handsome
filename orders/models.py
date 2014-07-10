@@ -141,6 +141,7 @@ class Order(models.Model):
     chest = models.CharField(max_length=16, blank=True)
     hipline = models.CharField(max_length=16, blank=True)
     foot = models.CharField(max_length=16, blank=True)
+    is_slim = models.BooleanField(default=False)
     preferred_designer = models.ForeignKey(User, related_name='designed_orders')  # noqa
     message = models.TextField(blank=True)
 
