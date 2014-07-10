@@ -12,198 +12,203 @@
 {% block title %}下单{% endblock %}
 
 {% block content %}
-<div class="container body {% if last_order %}one-key{% endif %}" id="create-order">
-    <div class="row">
-        <form class="form-horizontal col-md-12 content" role="form">
-            <h4>配送信息</h4>
-            <hr />
-            <input type="hidden" id="address-pk" value="{{ address.id }}" />
-            <p id="full-adress" {% if not address %}class="hidden"{% endif %}>
-                <span>{{ address|default_if_none:'' }}</span>
-                <a href="javascript:void(0)" id="edit-address-btn"><span class="glyphicon glyphicon-edit"></span>修改</a>
-            </p>
-            <div id="address-edit-panel" {% if address %}class="hidden"{% endif %}>
-                <div class="form-group">
-                    <small class="col-sm-1 control-label"><b class="text-danger">*</b>收货人&nbsp;&nbsp;&nbsp;：</small>
-                    <div class="col-sm-11">
-                        <input id="name" class="form-control input-sm" value="{{ address.name }}" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <small class="col-sm-1 control-label"><b class="text-danger">*</b>所在地区：</small>
-                    <div class="col-sm-11">
-                        <select id="province" class="form-control input-sm address" data-target="#city" data-url="{% url 'orders:load_address' %}?level=city">
-                            <option value="-1">--请选择--</option>
-                            {% for province in provinces %}
-                                {% if province == address.province %}
-                                    <option value="{{ province.id }}" selected="selected">{{ province.name }}</option>
-                                {% else %}
-                                    <option value="{{ province.id }}">{{ province.name }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                        <select id="city" class="form-control input-sm address {% if not address.city %}hidden{% endif %}" data-target="#country" data-url="{% url 'orders:load_address' %}?level=country">
-                            <option value="-1">--请选择--</option>
-                            {% for city in address.province.city_set.all %}
-                                {% if city == address.city %}
-                                    <option value="{{ city.id }}" selected="selected">{{ city.name }}</option>
-                                {% else %}
-                                    <option value="{{ city.id }}">{{ city.name }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                        <select id="country" class="form-control input-sm address {% if not address.country %}hidden{% endif %}" data-target="#town" data-url="{% url 'orders:load_address' %}?level=town">
-                            <option value="-1">--请选择--</option>
-                            {% for country in address.city.country_set.all %}
-                                {% if country == address.country %}
-                                    <option value="{{ country.id }}" selected="selected">{{ country.name }}</option>
-                                {% else %}
-                                    <option value="{{ country.id }}">{{ country.name }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <small class="col-sm-1 control-label"><b class="text-danger">*</b>详细地址：</small>
-                        <div class="col-sm-11">
-                            <span id="region">{{ address.get_region }}</span>
-                            <input id="house" class="form-control input-sm" value="{{ address.house }}" />
+<div id="create-order">
+    <div class="container body {% if last_order %}one-key{% endif %}">
+        <div class="row">
+            <form class="form-horizontal col-md-7 content" role="form">
+                <h4>配送信息</h4>
+                <hr />
+                <input type="hidden" id="address-pk" value="{{ address.id }}" />
+                <p id="full-adress" {% if not address %}class="hidden"{% endif %}>
+                    <span>{{ address|default_if_none:'' }}</span>
+                    <a href="javascript:void(0)" id="edit-address-btn"><span class="glyphicon glyphicon-edit"></span>修改</a>
+                </p>
+                <div id="address-edit-panel" {% if address %}class="hidden"{% endif %}>
+                    <div class="form-group">
+                        <small class="col-sm-2 control-label"><b class="text-danger">*</b>收货人&nbsp;&nbsp;&nbsp;：</small>
+                        <div class="col-sm-10">
+                            <input id="name" class="form-control input-sm" value="{{ address.name }}" />
                         </div>
-                </div>
-                <div class="form-group">
-                    <small class="col-sm-1 control-label"><b class="text-danger">*</b>手机号：</small>
-                    <div class="col-sm-11">
-                        <input id="phone" class="form-control input-sm" value="{{ address.phone }}" />
+                    </div>
+                    <div class="form-group">
+                        <small class="col-sm-2 control-label"><b class="text-danger">*</b>所在地区：</small>
+                        <div class="col-sm-10">
+                            <select id="province" class="form-control input-sm address" data-target="#city" data-url="{% url 'orders:load_address' %}?level=city">
+                                <option value="-1">--请选择--</option>
+                                {% for province in provinces %}
+                                    {% if province == address.province %}
+                                        <option value="{{ province.id }}" selected="selected">{{ province.name }}</option>
+                                    {% else %}
+                                        <option value="{{ province.id }}">{{ province.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <select id="city" class="form-control input-sm address {% if not address.city %}hidden{% endif %}" data-target="#country" data-url="{% url 'orders:load_address' %}?level=country">
+                                <option value="-1">--请选择--</option>
+                                {% for city in address.province.city_set.all %}
+                                    {% if city == address.city %}
+                                        <option value="{{ city.id }}" selected="selected">{{ city.name }}</option>
+                                    {% else %}
+                                        <option value="{{ city.id }}">{{ city.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <select id="country" class="form-control input-sm address {% if not address.country %}hidden{% endif %}" data-target="#town" data-url="{% url 'orders:load_address' %}?level=town">
+                                <option value="-1">--请选择--</option>
+                                {% for country in address.city.country_set.all %}
+                                    {% if country == address.country %}
+                                        <option value="{{ country.id }}" selected="selected">{{ country.name }}</option>
+                                    {% else %}
+                                        <option value="{{ country.id }}">{{ country.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <small class="col-sm-2 control-label"><b class="text-danger">*</b>详细地址：</small>
+                            <div class="col-sm-10">
+                                <span id="region">{{ address.get_region }}</span>
+                                <input id="house" class="form-control input-sm" value="{{ address.house }}" />
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <small class="col-sm-2 control-label"><b class="text-danger">*</b>手机号：</small>
+                        <div class="col-sm-10">
+                            <input id="phone" class="form-control input-sm" value="{{ address.phone }}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="save-address-btn" type="button" data-url="{% url 'orders:save_address' %}" class="btn btn-default">保存配送信息</button>
+                            {% if address %}
+                            <a id="cancel-edit-address-btn" href="javascript:void(0)">取消</a>
+                            {% endif %}
+                            <br />
+                            <br />
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-11">
-                        <button id="save-address-btn" type="button" data-url="{% url 'orders:save_address' %}" class="btn btn-default">保存配送信息</button>
-                        {% if address %}
-                        <a id="cancel-edit-address-btn" href="javascript:void(0)">取消</a>
-                        {% endif %}
-                    </div>
-                </div>
+            </form>
+            <div class="col-md-4">
+                <h4>我的要求</h4>
+                <hr />
+                <table id="my-requirement">
+                    <tr>
+                        <td class="text-right title">风格：</td>
+                        <td id="style">
+                            <div class="content">
+                                <span>{% if last_order %}{{ last_order.get_style_display }}{% endif %}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                            </div>
+                            <form class="form-inline hidden" role="form">
+                                <div class="form-group">
+                                    <select class="form-control input-sm">
+                                        {% for choice in STYLE_CHOICES %}
+                                            {% if last_order and last_order.style == choice.0 %}
+                                            <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% else %}
+                                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                                <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">年龄段：</td>
+                        <td id="age">
+                            <div class="content">
+                                <span>{% if last_order %}{{ last_order.get_age_group_display }}{% endif %}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                            </div>
+                            <form class="form-inline hidden" role="form">
+                                <div class="form-group">
+                                    <select class="form-control input-sm">
+                                        {% for choice in AGE_GROUP_CHOICES %}
+                                            {% if last_order and last_order.age_group == choice.0 %}
+                                            <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% else %}
+                                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                                <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">价位：</td>
+                        <td id="price">
+                            <div class="content">
+                                <span id="price">{% if last_order %}{{ last_order.get_price_group_display }}{% endif %}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                            </div>
+                            <form class="form-inline hidden" role="form">
+                                <div class="form-group">
+                                    <select class="form-control input-sm">
+                                        {% for choice in PRICE_CHOICES %}
+                                            {% if last_order and last_order.price_group == choice.0 %}
+                                            <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% else %}
+                                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                                <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">设计师：</td>
+                        <td id="designer">
+                            <div class="content">
+                                {% if last_order %}
+                                <img class="avatar" width="40" src="{{ last_order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
+                                <span>{{ last_order.preferred_designer.get_full_name|default_if_empty:last_order.preferred_designer.username }}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                                {% else %}
+                                <img class="avatar" width="40" src="{% static 'image/avatars/default_avatar.png' %}" />
+                                <span></span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                                {% endif %}
+                            </div>
+                            <form class="form-inline hidden" role="form">
+                                <div class="form-group">
+                                    <select class="form-control input-sm">
+                                        {% for designer in designers %}
+                                            {% if last_order and last_order.preferred_designer == designer.user %}
+                                            <option selected="selected" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}" value="{{ designer.user.id }}">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</option>
+                                            {% else %}
+                                            <option data-avatar="{{ designer.avatar|thumbnail_url:'small' }}" value="{{ designer.user.id }}">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                                <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">更多设计要求：</td>
+                        <td>
+                            <textarea id="requirement" class="form-control" cols="50" rows="4"></textarea>
+                        </td>
+                    </tr>
+                    <tr class="text-right">
+                        <td colspan="2">
+                            <br />
+                            <button id="create-order-btn" data-loading-text="正在创建..." data-url="{% url 'orders:create' %}" class="btn btn-primary">创建订单</button>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        </form>
-    </div>
-
-    <br />
-    <h4>我的要求</h4>
-    <hr />
-    <table id="my-requirement">
-        <tr>
-            <td class="text-right title">风格：</td>
-            <td id="style">
-                <div class="content">
-                    <span>{% if last_order %}{{ last_order.get_style_display }}{% endif %}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
-                </div>
-                <form class="form-inline hidden" role="form">
-                    <div class="form-group">
-                        <select class="form-control input-sm">
-                            {% for choice in STYLE_CHOICES %}
-                                {% if last_order and last_order.style == choice.0 %}
-                                <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
-                                {% else %}
-                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
-                    <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right title">年龄段：</td>
-            <td id="age">
-                <div class="content">
-                    <span>{% if last_order %}{{ last_order.get_age_group_display }}{% endif %}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
-                </div>
-                <form class="form-inline hidden" role="form">
-                    <div class="form-group">
-                        <select class="form-control input-sm">
-                            {% for choice in AGE_GROUP_CHOICES %}
-                                {% if last_order and last_order.age_group == choice.0 %}
-                                <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
-                                {% else %}
-                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
-                    <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right title">价位：</td>
-            <td id="price">
-                <div class="content">
-                    <span id="price">{% if last_order %}{{ last_order.get_price_group_display }}{% endif %}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
-                </div>
-                <form class="form-inline hidden" role="form">
-                    <div class="form-group">
-                        <select class="form-control input-sm">
-                            {% for choice in PRICE_CHOICES %}
-                                {% if last_order and last_order.price_group == choice.0 %}
-                                <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
-                                {% else %}
-                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
-                    <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right title">设计师：</td>
-            <td id="designer">
-                <div class="content">
-                    {% if last_order %}
-                    <img class="avatar" width="40" src="{{ last_order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
-                    <span>{{ last_order.preferred_designer.get_full_name|default_if_empty:last_order.preferred_designer.username }}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
-                    {% else %}
-                    <img class="avatar" width="40" src="{% static 'image/avatars/default_avatar.png' %}" />
-                    <span></span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
-                    {% endif %}
-                </div>
-                <form class="form-inline hidden" role="form">
-                    <div class="form-group">
-                        <select class="form-control input-sm">
-                            {% for designer in designers %}
-                                {% if last_order and last_order.preferred_designer == designer.user %}
-                                <option selected="selected" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}" value="{{ designer.user.id }}">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</option>
-                                {% else %}
-                                <option data-avatar="{{ designer.avatar|thumbnail_url:'small' }}" value="{{ designer.user.id }}">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
-                    <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right title">更多设计要求：</td>
-            <td>
-                <textarea id="requirement" class="form-control" cols="50" rows="4"></textarea>
-            </td>
-        </tr>
-    </table>
-
-    <div class="row">
-        <br />
-        <div class="col-md-12 text-right">
-            <button id="create-order-btn" data-loading-text="正在创建..." data-url="{% url 'orders:create' %}" class="btn btn-primary">创建订单</button>
         </div>
+        <br /><br />
     </div>
+    {% include "foot-steps.html" with active="order" %}
 </div>
 {% endblock %}

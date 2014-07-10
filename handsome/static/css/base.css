@@ -4,6 +4,7 @@ body, html {
 
 body {
     font: 14px "微软雅黑", "MicrosoftYahei", "宋体", "Arial Narrow", HELVETICA;
+    background-color: #D5E4F8;
 }
 
 a:hover, a:focus {
@@ -78,8 +79,17 @@ a.highlight {
     background-color: #eee;
 }
 
+.page {
+    background: url(../image/page-bg.jpg) center center no-repeat;
+    background-size: cover;
+    width: 100%;
+    min-height: 93%;
+    position: relative;
+}
+
 #header {
-    background-color: #fff;
+    background-color: #D5E4F9;
+    border-bottom: #00295E 5px solid;
 }
 
 #header #logo>li>a {
@@ -87,10 +97,28 @@ a.highlight {
     padding-bottom: 5px;
 }
 
+.nav>li>a:hover, .nav>li>a:focus {
+    background-color: #D5E4F9;
+}
+
 #header.navbar-inverse .navbar-nav>li>a, #header.navbar-inverse .navbar-link, #header.navbar-inverse .navbar-text {
     color: #eee;
 }
 
-#logo a:hover {
-    background-color: white;
+#footer {
+    padding-top: 5px;
+}
+
+#foot-steps {
+    background-color: #00224D;
+    background-image: url(../image/foot-steps-bg.png);
+    background-repeat: repeat-x;
+    color: #408BED;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#foot-steps .active {
+    color: #B68B69;
 }

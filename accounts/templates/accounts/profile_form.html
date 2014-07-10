@@ -8,84 +8,86 @@
 {% block title %}个人信息{% endblock %}
 
 {% block content %}
-<div class="container body">
-    <div class="row">
-        <h4>个人信息</h4>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <form class="form-horizontal" role="form" method="post">
-                {% csrf_token %}
-                <div class="form-group {% if form.height.errors %}has-error{% endif %}">
-                    <span class="col-sm-3 control-label">身高：</span>
-                    <div class="col-sm-8">
-                        <div class="input-group">
-                            <input type="text" name="height" class="form-control text-right size-input" value="{{ form.height.value|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" data-description="身高: 自然挺胸抬头。" />
-                            <span class="input-group-addon">厘米</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group {% if form.weight.errors %}has-error{% endif %}">
-                    <span class="col-sm-3 control-label">体重：</span>
-                    <div class="col-sm-8">
-                        <div class="input-group">
-                            <input type="text" name="weight" class="form-control text-right size-input" value="{{ form.weight.value|default_if_none:'' }}" data-image="{% static 'image/tw.jpg' %}" data-description="体重: 体重平稳后读数。" />
-                            <span class="input-group-addon">千克</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group {% if form.chest.errors %}has-error{% endif %}">
-                    <span class="col-sm-3 control-label">胸围：</span>
-                    <div class="col-sm-8">
-                        <div class="input-group">
-                            <input type="text" name="chest" class="form-control text-right size-input" value="{{ form.chest.value|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" data-description="胸围: 自然挺胸抬头。沿胸部隆起的最高点，用软尺水平围绕身体一周，软尺恰好相连，不可过松或太紧，得出的测量尺寸即为上胸围尺寸。" />
-                            <span class="input-group-addon">厘米</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group {% if form.waistline.errors %}has-error{% endif %}">
-                    <span class="col-sm-3 control-label">腰围：</span>
-                    <div class="col-sm-8">
-                        <div class="input-group">
-                            <input type="text" name="waistline" class="form-control text-right size-input" value="{{ form.waistline.value|default_if_none:'' }}" data-image="{% static 'image/yw.jpg' %}" data-description="腰围: 自然站直，挺胸抬头。上身与下身连接处最为纤细的部分即为腰部。用软尺沿腰部水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为腰围。" />
-                            <span class="input-group-addon">厘米</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group {% if form.hipline.errors %}has-error{% endif %}">
-                    <span class="col-sm-3 control-label">臀围：</span>
-                    <div class="col-sm-8">
-                        <div class="input-group">
-                            <input type="text" name="hipline" class="form-control text-right size-input" value="{{ form.hipline.value|default_if_none:'' }}" data-image="{% static 'image/tw.jpg' %}" data-description="臀围: 自然站直，挺胸抬头。用软尺沿下身臀部自然隆起的最高点水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为臀围。" />
-                            <span class="input-group-addon">厘米</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group {% if form.foot.errors %}has-error{% endif %}">
-                    <span class="col-sm-3 control-label">脚长：</span>
-                    <div class="col-sm-8">
-                        <div class="input-group">
-                            <input type="text" name="foot" class="form-control text-right size-input" value="{{ form.foot.value|default_if_none:'' }}" data-image="{% static 'image/jc.jpg' %}" data-description="脚长：脱去鞋子，用软尺测量最长脚指的尖端到脚后跟的距离，得出的测量尺寸即为脚长。" />
-                            <span class="input-group-addon">厘米</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group text-right">
-                    <br />
-                    {% if not form.height.value %}
-                    <button type="submit" class="btn btn-default">提交信息</button>
-                    {% else %}
-                    <button type="submit" class="btn btn-default">确认信息</button>
-                    {% endif %}
-                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                </div>
-            </form>
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <h4>个人信息</h4>
         </div>
-        <div class="col-md-3 hidden-sm hidden-xs">
-            <div id="sample">
-                <img height="240" src="{% static 'image/xw.jpg' %}" />
-                <br />
-                <span class="description">身高: 自然挺胸抬头。</span>
+        <div class="row">
+            <div class="col-md-3">
+                <form class="form-horizontal" role="form" method="post">
+                    {% csrf_token %}
+                    <div class="form-group {% if form.height.errors %}has-error{% endif %}">
+                        <span class="col-sm-3 control-label">身高：</span>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" name="height" class="form-control text-right size-input" value="{{ form.height.value|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" data-description="身高: 自然挺胸抬头。" />
+                                <span class="input-group-addon">厘米</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group {% if form.weight.errors %}has-error{% endif %}">
+                        <span class="col-sm-3 control-label">体重：</span>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" name="weight" class="form-control text-right size-input" value="{{ form.weight.value|default_if_none:'' }}" data-image="{% static 'image/tw.jpg' %}" data-description="体重: 体重平稳后读数。" />
+                                <span class="input-group-addon">千克</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group {% if form.chest.errors %}has-error{% endif %}">
+                        <span class="col-sm-3 control-label">胸围：</span>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" name="chest" class="form-control text-right size-input" value="{{ form.chest.value|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" data-description="胸围: 自然挺胸抬头。沿胸部隆起的最高点，用软尺水平围绕身体一周，软尺恰好相连，不可过松或太紧，得出的测量尺寸即为上胸围尺寸。" />
+                                <span class="input-group-addon">厘米</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group {% if form.waistline.errors %}has-error{% endif %}">
+                        <span class="col-sm-3 control-label">腰围：</span>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" name="waistline" class="form-control text-right size-input" value="{{ form.waistline.value|default_if_none:'' }}" data-image="{% static 'image/yw.jpg' %}" data-description="腰围: 自然站直，挺胸抬头。上身与下身连接处最为纤细的部分即为腰部。用软尺沿腰部水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为腰围。" />
+                                <span class="input-group-addon">厘米</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group {% if form.hipline.errors %}has-error{% endif %}">
+                        <span class="col-sm-3 control-label">臀围：</span>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" name="hipline" class="form-control text-right size-input" value="{{ form.hipline.value|default_if_none:'' }}" data-image="{% static 'image/tw.jpg' %}" data-description="臀围: 自然站直，挺胸抬头。用软尺沿下身臀部自然隆起的最高点水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为臀围。" />
+                                <span class="input-group-addon">厘米</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group {% if form.foot.errors %}has-error{% endif %}">
+                        <span class="col-sm-3 control-label">脚长：</span>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" name="foot" class="form-control text-right size-input" value="{{ form.foot.value|default_if_none:'' }}" data-image="{% static 'image/jc.jpg' %}" data-description="脚长：脱去鞋子，用软尺测量最长脚指的尖端到脚后跟的距离，得出的测量尺寸即为脚长。" />
+                                <span class="input-group-addon">厘米</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <br />
+                        {% if not form.height.value %}
+                        <button type="submit" class="btn btn-default">提交信息</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-default">确认信息</button>
+                        {% endif %}
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3 hidden-sm hidden-xs">
+                <div id="sample">
+                    <img height="240" src="{% static 'image/xw.jpg' %}" />
+                    <br />
+                    <span class="description">身高: 自然挺胸抬头。</span>
+                </div>
             </div>
         </div>
     </div>

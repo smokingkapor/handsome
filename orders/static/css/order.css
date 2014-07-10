@@ -18,13 +18,12 @@
     width: 70%;
 }
 
-#design-photos {
-    width: 400px;
-    height: 300px;
-}
-
-#design-photos img {
-    width: 400px;
+#create-order {
+    background: url("../image/page-bg.jpg") center center no-repeat;
+    background-size: cover;
+    width: 100%;
+    min-height: 93%;
+    position: relative;
 }
 
 #create-order input.form-control {
@@ -33,7 +32,7 @@
 }
 
 #create-order select {
-    width: 150px;
+    width: 100px;
     display: inline;
 }
 

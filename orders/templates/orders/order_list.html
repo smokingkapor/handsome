@@ -13,91 +13,93 @@
 {% endblock %}
 
 {% block content %}
-<div class="container body">
-    <div class="row">
-        <div class="col-md-12 content">
-            <h4>客户订单</h4>
-            <hr />
-            <form class="form-inline" role="form">
-                <div class="form-group">
-                    <span>订单状态：</span>
-                    <select name="status" class="form-control input-sm">
-                        <option value="all">所有状态</option>
-                        {% for choice in STATUS_CHOICES %}
-                            {% if choice.0 == status %}
-                            <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
-                            {% else %}
-                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <span>风格：</span>
-                    <select name="style" class="form-control input-sm">
-                        <option value="all">所有风格</option>
-                        {% for choice in STYLE_CHOICES %}
-                            {% if choice.0 == style %}
-                            <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
-                            {% else %}
-                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <span>年龄段：</span>
-                    <select name="age-group" class="form-control input-sm">
-                        <option value="all">所有年龄段</option>
-                        {% for choice in AGE_GROUP_CHOICES %}
-                            {% if choice.0 == age_group %}
-                            <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
-                            {% else %}
-                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <span>创建时间：</span>
-                    <input type="text" class="form-control datetime input-sm" value="{{ created_from|date:'m/d/Y' }}" name="created-from" />
-                    <label> - </label>
-                    <input type="text" class="form-control datetime input-sm" value="{{ created_to|date:'m/d/Y' }}" name="created-to" />
-                </div>
-                <button type="submit" class="btn btn-primary input-sm">查找</button>
-            </form>
-            <br />
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-12 content">
+                <h4>客户订单</h4>
+                <hr />
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <span>订单状态：</span>
+                        <select name="status" class="form-control input-sm">
+                            <option value="all">所有状态</option>
+                            {% for choice in STATUS_CHOICES %}
+                                {% if choice.0 == status %}
+                                <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span>风格：</span>
+                        <select name="style" class="form-control input-sm">
+                            <option value="all">所有风格</option>
+                            {% for choice in STYLE_CHOICES %}
+                                {% if choice.0 == style %}
+                                <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span>年龄段：</span>
+                        <select name="age-group" class="form-control input-sm">
+                            <option value="all">所有年龄段</option>
+                            {% for choice in AGE_GROUP_CHOICES %}
+                                {% if choice.0 == age_group %}
+                                <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span>创建时间：</span>
+                        <input type="text" class="form-control datetime input-sm" value="{{ created_from|date:'m/d/Y' }}" name="created-from" />
+                        <label> - </label>
+                        <input type="text" class="form-control datetime input-sm" value="{{ created_to|date:'m/d/Y' }}" name="created-to" />
+                    </div>
+                    <button type="submit" class="btn btn-primary input-sm">查找</button>
+                </form>
+                <br />
 
-            <p class="pull-right"><a href="{% url 'payments:refund' %}" class="btn btn-default">批量退款</a></p>
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>风格</th>
-                        <th>年龄段</th>
-                        <th class="col-md-6">特殊要求</th>
-                        <th>价位</th>
-                        <th>创建日期</th>
-                        <th>状态</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for obj in object_list %}
-                    <tr>
-                        <td>{{ obj.get_style_display }}</td>
-                        <td>{{ obj.get_age_group_display }}</td>
-                        <td>{{ obj.message|truncatechars:100 }}</td>
-                        <td>{{ obj.price_group|floatformat }}</td>
-                        <td>{{ obj.created_at|date:"n月j日 G:i" }}</td>
-                        <td>{{ obj.get_status_display }}</td>
-                        <td>
-                            <a href="{%url 'orders:detail' code=obj.code %}">订单详情></a><br />
-                            {{ obj.get_designer_operations|safe }}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <p class="pull-right"><a href="{% url 'payments:refund' %}" class="btn btn-default">批量退款</a></p>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>风格</th>
+                            <th>年龄段</th>
+                            <th class="col-md-6">特殊要求</th>
+                            <th>价位</th>
+                            <th>创建日期</th>
+                            <th>状态</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for obj in object_list %}
+                        <tr>
+                            <td>{{ obj.get_style_display }}</td>
+                            <td>{{ obj.get_age_group_display }}</td>
+                            <td>{{ obj.message|truncatechars:100 }}</td>
+                            <td>{{ obj.price_group|floatformat }}</td>
+                            <td>{{ obj.created_at|date:"n月j日 G:i" }}</td>
+                            <td>{{ obj.get_status_display }}</td>
+                            <td>
+                                <a href="{%url 'orders:detail' code=obj.code %}">订单详情></a><br />
+                                {{ obj.get_designer_operations|safe }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
