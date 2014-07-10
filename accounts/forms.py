@@ -58,8 +58,8 @@ class PhoneLoginForm(forms.Form):
         data = self.data
         phone = data.get('phone')
         password = data.get('password')
-        if not Profile.objects.filter(phone=phone).exists():
-            raise forms.ValidationError(u'这个手机号暂未在优草注册使用')
+#         if not Profile.objects.filter(phone=phone).exists():
+#             raise forms.ValidationError(u'这个手机号暂未在优草注册使用')
 
         if password not in cache.get(u'pwds_{}'.format(phone), []):
             raise forms.ValidationError(u'动态密码错误')

@@ -50,6 +50,7 @@
                     </div>
                 </form>
             </div>
+            {% comment %}
             <div class="col-md-4 col-md-offset-4">
                 <p>还没账号？您可以</p>
                 {% if query_string %}
@@ -58,6 +59,13 @@
                 {% endif %}
                 <h4><a href="{% url 'accounts:register' %}?{{ query_string }}">马上注册新账号</a></h4>
             </div>
+            {% endcomment %}
+            {% if query_string %}
+            <div class="col-md-4 col-md-offset-4">
+                <p>还没账号？您可以</p>
+                <p><a href="{% url 'accounts:create_random_user' %}?{{ query_string }}" class="btn btn-primary">无账号快速下单</a></p>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

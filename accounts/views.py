@@ -77,11 +77,25 @@ class PhoneLoginView(FormView):
         next_url = self.request.GET.get('next')
         return next_url if next_url else reverse('portals:index')
 
+    def get_context_data(self, **kwargs):
+        """
+        Add extra data to the context
+        """
+        data = super(PhoneLoginView, self).get_context_data(**kwargs)
+        data.update({'query_string': self.request.META['QUERY_STRING']})
+        return data
+
     def form_valid(self, form):
         """
         Login the user here
         """
-        user = Profile.objects.filter(phone=form.cleaned_data['phone']).order_by('-user__date_joined')[0].user  # noqa
+        phone = form.cleaned_data['phone']
+        if not Profile.objects.filter(phone=phone).exists():
+            user = User.objects.create_user(username=phone)
+            user.profile.phone = phone
+            user.profile.save()
+        else:
+            user = Profile.objects.filter(phone=phone).order_by('-user__date_joined')[0].user  # noqa
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         auth.login(self.request, user)
         return super(PhoneLoginView, self).form_valid(form)
@@ -115,7 +129,7 @@ class LogoutView(RedirectView):
     Logout current user and redirect to sign in page
     """
     permanent = False
-    url = reverse_lazy('accounts:login')
+    url = reverse_lazy('accounts:phone_login')
 
     def get(self, request, *args, **kwargs):
         """
