@@ -126,6 +126,7 @@ class Order(models.Model):
     house = models.CharField(max_length=256, blank=True)
     name = models.CharField(max_length=64, blank=True)
     phone = models.CharField(max_length=64, blank=True)
+    report = models.TextField(blank=True, null=True)
 
     # user requirements
     style = models.CharField(max_length=32, blank=True,

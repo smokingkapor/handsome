@@ -8,7 +8,7 @@ from django.http.response import Http404
 from django.shortcuts import redirect
 from django.views.generic.base import View, RedirectView, TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, FormView
 from django.views.generic.list import ListView
 
 from braces.views import(
@@ -17,7 +17,7 @@ from braces.views import(
 )
 
 from .constants import PREPAID, PAID, SENT, DONE, DESIGNED, ACCEPTED, REFUNDING
-from .forms import CreateOrderForm
+from .forms import CreateOrderForm, FinishDesignForm
 from .mixins import OrderPermissionMixin
 from .models import Order, Province, City, Address, Country
 from accounts.models import Profile
@@ -365,21 +365,28 @@ class SendView(StaffuserRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         return self.render_json_response({'success': True})
 
 
-class FinishDesignView(StaffuserRequiredMixin, RedirectView):
+class FinishDesignView(StaffuserRequiredMixin, FormView):
     """
     Update the order status to DESIGNED
     """
-    permanent = False
+    template_name = 'orders/finish_design.html'
+    form_class = FinishDesignForm
 
-    def get_redirect_url(self, *args, **kwargs):
+    def form_valid(self, form):
+        """
+        Save report and update order status
+        """
         order = Order.objects.get(code=self.kwargs['code'])
         order.status = DESIGNED
+        order.report = form.data['report']
         order.save()
 
         # send SMS notification
-        send_sms(order.phone, settings.SMS_TEMPLATES['designed'].format(self.request.user.username))
-
-        return self.request.META['HTTP_REFERER']
+        name = self.request.user.get_full_name()
+        name = name if name else self.request.user.username
+        sms = settings.SMS_TEMPLATES['designed'].format(name)
+        send_sms(order.phone, sms)
+        return redirect(reverse('orders:detail', kwargs={'code': order.code}))
 
 
 class ReceiveView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):

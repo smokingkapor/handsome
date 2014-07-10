@@ -12,3 +12,10 @@ class CreateOrderForm(forms.ModelForm):
         model = Order
         fields = ('message', 'preferred_designer', 'age_group', 'price_group',
                   'style')
+
+
+class FinishDesignForm(forms.Form):
+    """
+    Form for finish design and update the order status
+    """
+    report = forms.CharField(label=u'设计报告', widget=forms.Textarea)

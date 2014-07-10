@@ -37,6 +37,7 @@
                         <hr />
                     </div>
                 </div>
+                {% comment %}
                 <div id="design-comments" class="row">
                     <div class="col-sm-12">
                         <p class="row">
@@ -45,7 +46,6 @@
                             </div>
                             <div class="well well-sm col-sm-10">{{ object.comment }}</div>
                         </p>
-                        {% comment %}
                         {% if object.status == 'rejected' %}
                         <p class="row">
                             <div class="col-sm-1">
@@ -54,9 +54,9 @@
                             <div class="well well-sm col-sm-10">{{ object.reject_reason }}</div>
                         </p>
                         {% endif %}
-                        {% endcomment %}
                     </div>
                 </div>
+                {% endcomment %}
                 <br /><br />
                 <p>整体效果图：</p>
                 <hr />

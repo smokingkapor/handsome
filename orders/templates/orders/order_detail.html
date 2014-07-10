@@ -64,11 +64,13 @@
                     {% if order.design_set.exists %}
                     <tr>
                         <td>
+                            <p>设计报告</p>
+                            <p><small>{{ order.report }}</small></p>
                             <p>设计方案</p>
                             <table class="table col-sm-12">
                             {% for design in order.design_set.all %}
                             <tr>
-                                <td class="col-sm-8">{{ design.comment|truncatechars:100 }}</td>
+                                <td class="col-sm-8">方案{{ forloop.counter }} ({{ design.created_at|date:"m月d日 H:i" }})</td>
                                 <td>
                                     {% if design.status == REJECTED %}
                                     <span title="{{ design.get_status_display }}" class="glyphicon glyphicon-remove text-danger"></span>
