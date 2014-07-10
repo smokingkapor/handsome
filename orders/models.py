@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
+from accounts.models import Profile
 from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
@@ -9,9 +9,10 @@ from django.db.models.signals import post_save
 from .constants import(
     CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT,
     PRICE_299, PRICE_399, PRICE_499, PRICE_599, ACCEPTED, REFUNDING,
-    REFUNDED
+    REFUNDED, COLOR_WHITE, COLOR_BLACK, COLOR_GRAY, COLOR_ORANGE,
+    COLOR_COFFEE, COLOR_BLUE, COLOR_RED, COLOR_SILVER, HOBBY_READING,
+    HOBBY_EXERCISE, HOBBY_SURF, HOBBY_OTHER
 )
-from accounts.models import Profile
 
 
 class Province(models.Model):
@@ -96,6 +97,23 @@ class Order(models.Model):
         (PRICE_599, '599'),
     )
 
+    COLOR_CHOICES = (
+        (COLOR_WHITE, u'白色'),
+        (COLOR_BLACK, u'黑色'),
+        (COLOR_GRAY, u'灰色'),
+        (COLOR_ORANGE, u'橙色'),
+        (COLOR_COFFEE, u'咖啡色'),
+        (COLOR_BLUE, u'蓝色'),
+        (COLOR_RED, u'红色'),
+        (COLOR_SILVER, u'银色'),
+    )
+
+    HOBBY_CHOICES = (
+        (HOBBY_EXERCISE, u'运动'),
+        (HOBBY_READING, u'看书'),
+        (HOBBY_SURF, u'上网'),
+        (HOBBY_OTHER, u'其他'),
+    )
 
     code = models.CharField(max_length=32, unique=True, blank=True, null=True)
     total_price = models.FloatField(default=0)
@@ -115,6 +133,8 @@ class Order(models.Model):
     age_group = models.CharField(max_length=32, blank=True,
                                  choices=Profile.AGE_GROUP_CHOICES)
     price_group = models.FloatField(default=PRICE_299, choices=PRICE_CHOICES)
+    color = models.CharField(max_length=32, default=COLOR_BLACK, choices=COLOR_CHOICES)
+    hobby = models.CharField(max_length=32, default=HOBBY_OTHER, choices=HOBBY_CHOICES)
     height = models.CharField(max_length=16, blank=True)
     weight = models.CharField(max_length=16, blank=True)
     waistline = models.CharField(max_length=16, blank=True)

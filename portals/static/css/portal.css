@@ -113,7 +113,7 @@
     background-size: contain;
 }
 
-#survey #age li.option {
+#survey .item.rhombus li.option {
     background: url(../image/rhombus_bg.png);
     background-position: top center;
     background-repeat: no-repeat;
@@ -127,8 +127,26 @@
     font-weight: bold;
 }
 
-#survey #age li.option:hover, #survey #age li.option.selected {
+#survey .item.rhombus.small li.option {
+    background: url(../image/rhombus_small_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+    font-size: 17px;
+}
+
+#survey .item.rhombus li.option:hover, #survey .item.rhombus li.option.selected {
     background: url(../image/rhombus_focus_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#survey .item.rhombus.small li.option:hover, #survey .item.rhombus.small li.option.selected {
+    background: url(../image/rhombus_small_focus_bg.png);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;

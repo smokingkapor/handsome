@@ -49,6 +49,18 @@ $(document).ready(function(){
                 value: $('#age .option.selected').data('value')
             };
         }
+        if ($('#color').length) {
+            survey.color = {
+                label: $('#color .option.selected').data('label'),
+                value: $('#color .option.selected').data('value')
+            };
+        }
+        if ($('#hobby').length) {
+            survey.hobby = {
+                label: $('#hobby .option.selected').data('label'),
+                value: $('#hobby .option.selected').data('value')
+            };
+        }
         if ($('#price').length) {
             survey.price = {
                 label: $('#price .option.selected').data('label'),

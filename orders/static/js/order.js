@@ -119,6 +119,14 @@ $(document).ready(function(){
             $('#age .content span').text(survey.age.label).data('value', survey.age.value);
             $('#age form select').val(survey.age.value);
         }
+        if (survey.color) {
+            $('#color .content span').text(survey.color.label).data('value', survey.color.value);
+            $('#color form select').val(survey.color.value);
+        }
+        if (survey.hobby) {
+            $('#hobby .content span').text(survey.hobby.label).data('value', survey.hobby.value);
+            $('#hobby form select').val(survey.hobby.value);
+        }
         if (survey.price) {
             $('#price .content span').text(survey.price.label).data('value', survey.price.value);
             $('#price form select').val(survey.price.value);
@@ -174,6 +182,8 @@ $(document).ready(function(){
             preferred_designer: $('#designer .content span').data('value'),
             style: $('#style .content span').data('value'),
             age_group: $('#age .content span').data('value'),
+            color: $('#color .content span').data('value'),
+            hobby: $('#hobby .content span').data('value'),
             address: $('#address-pk').val(),
             csrfmiddlewaretoken: get_cookie('csrftoken')
         };

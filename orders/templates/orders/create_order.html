@@ -141,6 +141,52 @@
                         </td>
                     </tr>
                     <tr>
+                        <td class="text-right title">颜色：</td>
+                        <td id="color">
+                            <div class="content">
+                                <span>{% if last_order %}{{ last_order.get_color_display }}{% endif %}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                            </div>
+                            <form class="form-inline hidden" role="form">
+                                <div class="form-group">
+                                    <select class="form-control input-sm">
+                                        {% for choice in COLOR_CHOICES %}
+                                            {% if last_order and last_order.color == choice.0 %}
+                                            <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% else %}
+                                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                                <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">爱好：</td>
+                        <td id="hobby">
+                            <div class="content">
+                                <span>{% if last_order %}{{ last_order.get_hobby_display }}{% endif %}</span>&nbsp;&nbsp;(<a href="javascript:void(0)" class="edit-requirement-btn">修改</a>)
+                            </div>
+                            <form class="form-inline hidden" role="form">
+                                <div class="form-group">
+                                    <select class="form-control input-sm">
+                                        {% for choice in HOBBY_CHOICES %}
+                                            {% if last_order and last_order.hobby == choice.0 %}
+                                            <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% else %}
+                                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-default btn-sm save-btn">保存</button>
+                                <a href="javascript:void(0)" class="cancel-edit-btn">取消</a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="text-right title">价位：</td>
                         <td id="price">
                             <div class="content">

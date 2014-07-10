@@ -20,7 +20,7 @@
         <div class="item active" id="style">
             <div class="carousel-caption">
                 <div class="text-center">
-                    <h4>你想要哪种风格？</h4>
+                    <h4>您想要哪种风格？</h4>
                     <ul class="selector auto-slide list-inline">
                         {% for choice in STYLE_CHOICES %}
                         <li class="option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}">
@@ -33,12 +33,50 @@
             </div>
         </div>
 
-        <div class="item" id="age">
+        <div class="item rhombus" id="age">
             <div class="carousel-caption">
                 <div class="text-center">
-                    <h4>你处于哪个年龄段？</h4>
+                    <h4>您处于哪个年龄段？</h4>
                     <ul class="selector auto-slide list-inline">
                         {% for choice in AGE_GROUP_CHOICES %}
+                        <li class="option" data-value="{{ choice.0 }}" data-label="{{ choice.1 }}"><span>{{ choice.1 }}</span></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="row">
+                        <div class="col-md-11 text-right">
+                            <br /><br />
+                            <a class="previous" href="javascript:void(0);"><img src="{% static 'image/back_btn.png' %}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="item rhombus small" id="color">
+            <div class="carousel-caption">
+                <div class="text-center">
+                    <h4>您喜欢哪种颜色？</h4>
+                    <ul class="selector auto-slide list-inline">
+                        {% for choice in COLOR_CHOICES %}
+                        <li class="option" data-value="{{ choice.0 }}" data-label="{{ choice.1 }}"><span>{{ choice.1 }}</span></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="row">
+                        <div class="col-md-11 text-right">
+                            <br /><br />
+                            <a class="previous" href="javascript:void(0);"><img src="{% static 'image/back_btn.png' %}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="item rhombus" id="hobby">
+            <div class="carousel-caption">
+                <div class="text-center">
+                    <h4>您的爱好？</h4>
+                    <ul class="selector auto-slide list-inline">
+                        {% for choice in HOBBY_CHOICES %}
                         <li class="option" data-value="{{ choice.0 }}" data-label="{{ choice.1 }}"><span>{{ choice.1 }}</span></li>
                         {% endfor %}
                     </ul>
