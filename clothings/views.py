@@ -10,7 +10,7 @@ from braces.views import(
     JSONResponseMixin
 )
 
-from .models import Clothing
+from .models import Clothing, Supplier
 
 
 class CreateClothingView(SuperuserRequiredMixin, CreateView):
@@ -40,7 +40,8 @@ class ClothingListView(SuperuserRequiredMixin, ListView):
         Add extra data to context
         """
         data = super(ClothingListView, self).get_context_data(**kwargs)
-        data.update({'clothing_choices': Clothing.CATEGORY_CHOICES})
+        data.update({'clothing_choices': Clothing.CATEGORY_CHOICES,
+                     'suppliers': Supplier.objects.all()})
         data.update(self.request.GET.dict())
         return data
 
@@ -57,7 +58,14 @@ class ClothingListView(SuperuserRequiredMixin, ListView):
         else:
             category_Q = Q(category=category)
 
-        return qs.filter(category_Q)
+        # supplier
+        supplier = self.request.REQUEST.get('supplier', 'all')
+        if supplier == 'all':
+            supplier_Q = Q()
+        else:
+            supplier_Q = Q(supplier__id=supplier)
+
+        return qs.filter(category_Q, supplier_Q)
 
 
 class ClothingSearchView(StaffuserRequiredMixin, AjaxResponseMixin,
@@ -99,3 +107,26 @@ class ClothingSearchView(StaffuserRequiredMixin, AjaxResponseMixin,
         else:
             page = int(page)
         return self.render_json_object_response(self.search(category, name, page))  # noqa
+
+
+class SupplierListView(SuperuserRequiredMixin, ListView):
+    """
+    Display all suppliers
+    """
+    model = Supplier
+
+
+class CreateSupplierView(SuperuserRequiredMixin, CreateView):
+    """
+    Create new supplier
+    """
+    model = Supplier
+    success_url = reverse_lazy('clothings:supplier_list')
+
+
+class UpdateSupplierView(SuperuserRequiredMixin, UpdateView):
+    """
+    Update supplier info
+    """
+    model = Supplier
+    success_url = reverse_lazy('clothings:supplier_list')

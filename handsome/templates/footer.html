@@ -8,6 +8,7 @@
                     {% for page in flatpages %}
                         <li><a href="/flatpages{{ page.url }}">{{ page.title }}</a></li>
                     {% endfor %}
+                    <li><a href="{% url 'orders:supplier_clothings' %}">供应商</a></li>
                 </ul>
             </div>
             <div class="text-center">

@@ -46,10 +46,6 @@
                 <li {% if request.path == url %}class="selected"{% endif %}>
                     <a href="{{ url }}">客户订单</a>
                 </li>
-                {% url 'orders:clothings' as url %}
-                <li {% if request.path == url %}class="selected"{% endif %}>
-                    <a href="{{ url }}">配送单</a>
-                </li>
             </ul>
             {% endif %}
             {% if user.is_superuser %}
@@ -57,6 +53,14 @@
                 {% url 'clothings:list' as url %}
                 <li {% if request.path == url %}class="selected"{% endif %}>
                     <a href="{{ url }}">服装管理</a>
+                </li>
+                {% url 'clothings:supplier_list' as url %}
+                <li {% if request.path == url %}class="selected"{% endif %}>
+                    <a href="{{ url }}">供应商管理</a>
+                </li>
+                {% url 'orders:clothings' as url %}
+                <li {% if request.path == url %}class="selected"{% endif %}>
+                    <a href="{{ url }}">配送单</a>
                 </li>
             </ul>
             {% endif %}

@@ -6,14 +6,15 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
 from django.http.response import Http404
 from django.shortcuts import redirect
-from django.views.generic.base import View, RedirectView, TemplateView
+from django.views.generic.base import View, RedirectView, TemplateView,\
+    TemplateResponseMixin
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic.list import ListView
 
 from braces.views import(
     LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
-    StaffuserRequiredMixin
+    StaffuserRequiredMixin, SuperuserRequiredMixin
 )
 
 from .constants import PREPAID, PAID, SENT, DONE, DESIGNED, ACCEPTED, REFUNDING
@@ -23,6 +24,7 @@ from .models import Order, Province, City, Address, Country
 from accounts.models import Profile
 from designs.constants import SELECTED, WAITING, REJECTED
 from handsome.utils import send_sms
+from clothings.models import Supplier
 
 
 class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
@@ -409,7 +411,7 @@ class ReceiveView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):
         return super(ReceiveView, self).get_redirect_url(*args, **kwargs)
 
 
-class OrderClothingsView(StaffuserRequiredMixin, TemplateView):
+class OrderClothingsView(SuperuserRequiredMixin, TemplateView):
     """
     Display all the clothings for paid orders
     """
@@ -429,7 +431,8 @@ class OrderClothingsView(StaffuserRequiredMixin, TemplateView):
         for design_clothing in design_clothings:
             dc_json = dcs_json.get(design_clothing.clothing.sku, {})
             dc_json['name'] = design_clothing.clothing.name
-            key = u'{}、{}'.format(design_clothing.color, design_clothing.size)
+            dc_json['supplier'] = design_clothing.clothing.supplier.name
+            key = u'{}/{}'.format(design_clothing.color, design_clothing.size)
             amount = dc_json.get('amount', {})
             count = amount.get(key, 0)
             amount[key] = count + 1
@@ -438,6 +441,41 @@ class OrderClothingsView(StaffuserRequiredMixin, TemplateView):
 
         data.update({'design_clothings': dcs_json})
         return data
+
+
+class OrderSupplierClothingsView(TemplateResponseMixin, View):
+    """
+    Display all the clothings the supplier need to send to us.
+    """
+    template_name = 'orders/supplier_clothings.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        code = request.POST.get('code')
+        if code:
+            try:
+                supplier = Supplier.objects.get(security_code=code)
+            except Supplier.DoesNotExist:
+                return self.render_to_response({'code': code, 'error': True})
+            design_clothings = []
+            for order in Order.objects.filter(status=PAID):
+                selected_design = order.design_set.get(status=SELECTED)
+                design_clothings.extend(list(selected_design.clothings.filter(wanted=True)))  # noqa
+
+            dcs_json = {}
+            for design_clothing in design_clothings:
+                if design_clothing.clothing.supplier == supplier:
+                    dc_json = dcs_json.get(design_clothing.clothing.sku, {})
+                    dc_json['name'] = design_clothing.clothing.name
+                    key = u'{}/{}'.format(design_clothing.color, design_clothing.size)
+                    amount = dc_json.get('amount', {})
+                    count = amount.get(key, 0)
+                    amount[key] = count + 1
+                    dc_json['amount'] = amount
+                    dcs_json[design_clothing.clothing.sku] = dc_json
+            return self.render_to_response({'design_clothings': dcs_json,
+                                            'code': code})
+        else:
+            return self.render_to_response({'code': code})
 
 
 class RefundView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):

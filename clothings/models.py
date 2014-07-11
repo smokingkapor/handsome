@@ -10,6 +10,19 @@ from .constants import (
 )
 
 
+class Supplier(models.Model):
+    """
+    Clothing supplier model
+    """
+    name = models.CharField(u'名字', max_length=32)
+    phone = models.CharField(u'联系电话', max_length=16, blank=True, null=True)
+    security_code = models.CharField(u'代码', max_length=16, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Clothing(models.Model):
     """
     Clothing model
@@ -35,6 +48,7 @@ class Clothing(models.Model):
         (HAREM_PANTS, u'哈伦裤'),
     )
 
+    supplier = models.ForeignKey(Supplier, blank=True, null=True, verbose_name=u'供应商')
     category = models.CharField(u'类别', max_length=64, choices=CATEGORY_CHOICES,
                                 db_index=True)
     name = models.CharField(u'服装名', max_length=128)
