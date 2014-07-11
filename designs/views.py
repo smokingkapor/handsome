@@ -135,6 +135,11 @@ class DesignDetailView(LoginRequiredMixin, DesignPermissionMixin, DetailView):
     slug_field = 'code'
     slug_url_kwarg = 'code'
 
+    def get_context_data(self, **kwargs):
+        data = super(DesignDetailView, self).get_context_data(**kwargs)
+        data.update({'WAITING': WAITING, 'SELECTED': SELECTED})
+        return data
+
 
 class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
     """
@@ -151,8 +156,17 @@ class AcceptDesignView(LoginRequiredMixin, DesignPermissionMixin, RedirectView):
         design.status = SELECTED
         design.save()
         design.order.design_set.filter(status=WAITING).update(status=REJECTED)
-        design.order.total_price = design.total_price
         design.order.status = ACCEPTED
+        if self.request.GET['all'] == 'true':
+            design.order.total_price = design.total_price
+        else:
+            ids = self.request.GET['ids'].split(',')
+            total_price = 0
+            for design_clothing in design.clothings.in_bulk(ids).values():
+                total_price += design_clothing.clothing.price
+            design.order.total_price = total_price
+            design.clothings.filter(id__in=ids).update(wanted=True)
+            design.clothings.exclude(id__in=ids).update(wanted=False)
         design.order.save()
         return reverse('orders:detail', kwargs={'code': design.order.code})
 

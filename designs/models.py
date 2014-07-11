@@ -39,6 +39,7 @@ class DesignClothing(models.Model):
     clothing = models.ForeignKey(Clothing)
     size = models.CharField(max_length=32)
     color = models.CharField(max_length=32)
+    wanted = models.BooleanField(default=True)
 
 
 class Design(models.Model):

@@ -423,7 +423,7 @@ class OrderClothingsView(StaffuserRequiredMixin, TemplateView):
         design_clothings = []
         for order in Order.objects.filter(status=PAID):
             selected_design = order.design_set.get(status=SELECTED)
-            design_clothings.extend(list(selected_design.clothings.all()))
+            design_clothings.extend(list(selected_design.clothings.filter(wanted=True)))  # noqa
 
         dcs_json = {}
         for design_clothing in design_clothings:
