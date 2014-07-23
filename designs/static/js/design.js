@@ -56,6 +56,10 @@ $(document).ready(function(){
         });
     });
 
+    $('#search-clothing-btn').click(function(){
+        search_clothing($('#category-select').val(), $(this).val());
+    });
+
     // search clothings by category
     $('#category-select').change(function(){
         $('#search-clothing-input').val('');
@@ -63,6 +67,7 @@ $(document).ready(function(){
         search_clothing($(this).val());
     });
 
+    /*
     // search clothings by category and name
     $('#search-clothing-input').change(function(){
         search_clothing($('#category-select').val(), $(this).val());
@@ -73,6 +78,7 @@ $(document).ready(function(){
             return false;
         }
     });
+    */
 
     // search clothing
     function search_clothing(category, name, page) {
