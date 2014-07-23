@@ -233,7 +233,9 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         data.update({
             'STATUS_CHOICES': Order.STATUS_CHOICES,
             'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
-            'STYLE_CHOICES': Profile.STYLE_CHOICES
+            'STYLE_CHOICES': Profile.STYLE_CHOICES,
+            'designers': Profile.objects.filter(user__is_staff=True,
+                                                is_designer=True)
         })
         data.update(self.get_params_from_request())
 
@@ -243,6 +245,10 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         """
         Get params from request GET
         """
+        # designer
+        designer = self.request.GET.get('designer')
+        designer = designer if designer else 'all'
+
         # status
         status = self.request.GET.get('status')
         status = status if status else 'all'
@@ -268,7 +274,8 @@ class OrderListView(StaffuserRequiredMixin, ListView):
             created_to_dt = None
 
         return {'status': status, 'style': style, 'age_group': age_group,
-                'created_from': created_from_dt, 'created_to': created_to_dt}
+                'created_from': created_from_dt, 'created_to': created_to_dt,
+                'designer': designer}
 
     def get_queryset(self):
         """
@@ -279,6 +286,10 @@ class OrderListView(StaffuserRequiredMixin, ListView):
             qs = qs.filter(preferred_designer=self.request.user)
 
         params = self.get_params_from_request()
+
+        # designer
+        designer = params['designer']
+        designer_Q = Q(preferred_designer__id=designer) if designer != 'all' else Q()
 
         # status
         status = params['status']
@@ -303,7 +314,7 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         elif to_dt:
             created_time_Q = Q(created_at__lte=to_dt)
 
-        qs = qs.filter(status_Q, style_Q, age_group_Q, created_time_Q)
+        qs = qs.filter(designer_Q, status_Q, style_Q, age_group_Q, created_time_Q)
 
         return qs.order_by('-created_at')
 

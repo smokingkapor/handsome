@@ -20,6 +20,21 @@
                 <h4>客户订单</h4>
                 <hr />
                 <form class="form-inline" role="form">
+                    {% if user.is_superuser %}
+                    <div class="form-group">
+                        <span>设计师：</span>
+                        <select name="designer" class="form-control input-sm">
+                            <option value="all">所有设计师</option>
+                            {% for ds in designers %}
+                                {% if ds.user.id|lower == designer %}
+                                <option value="{{ ds.user.id }}" selected="selected">{{ ds.user.username }}</option>
+                                {% else %}
+                                <option value="{{ ds.user.id }}">{{ ds.user.username }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
                     <div class="form-group">
                         <span>订单状态：</span>
                         <select name="status" class="form-control input-sm">

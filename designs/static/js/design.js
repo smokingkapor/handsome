@@ -57,7 +57,7 @@ $(document).ready(function(){
     });
 
     $('#search-clothing-btn').click(function(){
-        search_clothing($('#category-select').val(), $(this).val());
+        search_clothing($('#category-select').val(), $('#search-clothing-input').val());
     });
 
     /*
