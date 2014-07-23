@@ -55,9 +55,9 @@ class Clothing(models.Model):
     sku = models.CharField(u'库存编号', max_length=128, blank=True)
     price = models.FloatField(u'价格', )
     sizes = models.CharField(u'可选尺寸', max_length=128,
-                             blank=True)  # separate with comma
+                             blank=True)  # separate with whitespace
     colors = models.CharField(u'可选颜色', max_length=128,
-                              blank=True)  # separate with comma
+                              blank=True)  # separate with whitespace
     note = models.CharField(u'备注', max_length=256, blank=True)
     image = ThumbnailerImageField(
         upload_to='clothings',

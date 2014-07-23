@@ -90,10 +90,14 @@ $(document).ready(function(){
                     var colors = [];
                     var sizes =[];
                     $.each(clothing.colors.split(' '), function(i, color){
-                        colors.push({pk: item.pk, color: color});
+                        if (color.trim().length > 0) {
+                            colors.push({pk: item.pk, color: color});
+                        }
                     });
                     $.each(clothing.sizes.split(' '), function(i, size){
-                        sizes.push({pk: item.pk, size: size});
+                        if (size.trim().length > 0) {
+                            sizes.push({pk: item.pk, size: size});
+                        }
                     });
                     clothing.popover_content = new Ractive({
                         template:'#select-popover-template',
