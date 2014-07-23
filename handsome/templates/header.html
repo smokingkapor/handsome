@@ -32,7 +32,7 @@
                 </li>
                 {% endif %}
             </ul>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and not user.is_staff %}
             <ul class="nav navbar-nav navbar-right">
                 {% url 'orders:me' as url %}
                 <li {% if request.path == url %}class="selected"{% endif %}>
