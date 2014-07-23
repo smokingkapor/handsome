@@ -69,7 +69,9 @@
                 </form>
                 <br />
 
+                {% if user.is_superuser %}
                 <p class="pull-right"><a href="{% url 'payments:refund' %}" class="btn btn-default">批量退款</a></p>
+                {% endif %}
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
