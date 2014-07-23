@@ -7,7 +7,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{% block title %}{% endblock %}</title>
 
+        <!--[if IE]>
+            <link media="screen" rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <![endif]-->
+        <!--[if !IE]><!-->
+            <link media="screen" rel="stylesheet" href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css">
+        <!--<![endif]-->
+        {% comment %}
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        {% endcomment %}
         {% compress css %}
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
         {% block extracss %}{% endblock %}
@@ -17,12 +25,20 @@
         {% block body %}
         {% endblock %}
 
+        <script src="http://libs.useso.com/js/jquery/1.11.1/jquery.min.js"></script>
+        <script src="http://libs.useso.com/js/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        {% comment %}
         <script src="{% static 'jquery/jquery-1.11.0.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        {% endcomment %}
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
-          <script src="{% static 'js/html5shiv.min.js' %}"></script>
-          <script src="{% static 'js/respond.min.js' %}"></script>
+            <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+            <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+            {% comment %}
+            <script src="{% static 'js/html5shiv.min.js' %}"></script>
+            <script src="{% static 'js/respond.min.js' %}"></script>
+            {% endcomment %}
         <![endif]-->
         {% compress js %}
         <script src="{% static 'js/base.js' %}"></script>
