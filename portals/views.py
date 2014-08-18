@@ -29,29 +29,9 @@ class SurveyView(TemplateView):
         """
         data = super(SurveyView, self).get_context_data(**kwargs)
         data.update({'STYLE_CHOICES': Profile.STYLE_CHOICES,
-                     'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
-                     'PRICE_CHOICES': Order.PRICE_CHOICES,
-                     'COLOR_CHOICES': Order.COLOR_CHOICES,
-                     'HOBBY_CHOICES': Order.HOBBY_CHOICES,
                      'designers': Profile.objects.filter(user__is_staff=True,
                                                          is_designer=True)})
         return data
-
-
-class SurveyPriceView(LoginRequiredMixin, TemplateView):
-    """
-    Price select view
-    """
-    template_name = 'portals/survey_price.html'
-
-    def get_context_data(self, **kwargs):
-        """
-        Add extra data to context
-        """
-        data = super(SurveyPriceView, self).get_context_data(**kwargs)
-        data.update({'PRICE_CHOICES': Order.PRICE_CHOICES})
-        return data
-
 
 
 class SurveyMoreView(LoginRequiredMixin, FormView):
@@ -75,7 +55,17 @@ class SurveyMoreView(LoginRequiredMixin, FormView):
         Add extra data to context
         """
         data = super(SurveyMoreView, self).get_context_data(**kwargs)
-        data.update({'PRICE_CHOICES': Order.PRICE_CHOICES})
+        data.update({
+            'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
+            'STYLE_CHOICES': Profile.STYLE_CHOICES,
+            'CLOTHING_SIZE_CHOICES': Profile.CLOTHING_SIZE_CHOICES,
+            'PANTS_SIZE_CHOICES': Profile.PANTS_SIZE_CHOICES,
+            'PANTS_STYLE_CHOICES': Profile.PANTS_STYLE_CHOICES,
+            'SHOE_SIZE_CHOICES': Profile.SHOE_SIZE_CHOICES,
+            'COLOR_CHOICES': Profile.COLOR_CHOICES,
+            'SITUATION_CHOICES': Order.SITUATION_CHOICES,
+            'designers': Profile.objects.filter(user__is_staff=True, is_designer=True),  # noqa
+        })
         return data
 
     def form_valid(self, form):

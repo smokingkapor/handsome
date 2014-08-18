@@ -2,11 +2,16 @@
 {% load staticfiles thumbnail account_tags %}
 
 {% block extracss %}
+<link media="screen" rel="stylesheet" href="http://libs.useso.com/js/jqueryui/1.10.4/css/jquery.ui.slider.min.css">
+<link rel="stylesheet" href="{% static 'jQuery-File-Upload/css/jquery.fileupload.css' %}">
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
 {% endblock%}
 
 {% block extrajs %}
-<script src="{% static 'js/account.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/vendor/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.fileupload.js' %}"></script>
+<script src="http://libs.useso.com/js/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script src="{% static 'js/portal.js' %}"></script>
 {% endblock%}
 
@@ -15,116 +20,175 @@
 {% block content %}
 
 <div id="survey-more" class="page">
-    <div class="container body">
-        <form class="form-horizontal row" role="form" method="post">
-            {% csrf_token %}
-            <div class="col-sm-6">
-                <h4>个人信息</h4>
-                <hr />
-                <div class="row">
-                    <div class="col-sm-7">
-                        <div class="form-group {% if form.height.errors %}has-error{% endif %}">
-                            <span class="col-sm-4 control-label">身高：</span>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" name="height" class="form-control text-right size-input" value="{{ form.height.value|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" data-description="身高: 自然挺胸抬头。" />
-                                    <span class="input-group-addon">厘米</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group {% if form.weight.errors %}has-error{% endif %}">
-                            <span class="col-sm-4 control-label">体重：</span>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" name="weight" class="form-control text-right size-input" value="{{ form.weight.value|default_if_none:'' }}" data-image="{% static 'image/tw.jpg' %}" data-description="体重: 体重平稳后读数。" />
-                                    <span class="input-group-addon">千克</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group {% if form.chest.errors %}has-error{% endif %}">
-                            <span class="col-sm-4 control-label">胸围：</span>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" name="chest" class="form-control text-right size-input" value="{{ form.chest.value|default_if_none:'' }}" data-image="{% static 'image/xw.jpg' %}" data-description="胸围: 自然挺胸抬头。沿胸部隆起的最高点，用软尺水平围绕身体一周，软尺恰好相连，不可过松或太紧，得出的测量尺寸即为上胸围尺寸。" />
-                                    <span class="input-group-addon">厘米</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group {% if form.waistline.errors %}has-error{% endif %}">
-                            <span class="col-sm-4 control-label">腰围：</span>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" name="waistline" class="form-control text-right size-input" value="{{ form.waistline.value|default_if_none:'' }}" data-image="{% static 'image/yw.jpg' %}" data-description="腰围: 自然站直，挺胸抬头。上身与下身连接处最为纤细的部分即为腰部。用软尺沿腰部水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为腰围。" />
-                                    <span class="input-group-addon">厘米</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group {% if form.hipline.errors %}has-error{% endif %}">
-                            <span class="col-sm-4 control-label">臀围：</span>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" name="hipline" class="form-control text-right size-input" value="{{ form.hipline.value|default_if_none:'' }}" data-image="{% static 'image/tw.jpg' %}" data-description="臀围: 自然站直，挺胸抬头。用软尺沿下身臀部自然隆起的最高点水平围绕一周，软尺恰好相连，不可过松或太紧，得出的尺寸即为臀围。" />
-                                    <span class="input-group-addon">厘米</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group {% if form.foot.errors %}has-error{% endif %}">
-                            <span class="col-sm-4 control-label">脚长：</span>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" name="foot" class="form-control text-right size-input" value="{{ form.foot.value|default_if_none:'' }}" data-image="{% static 'image/jc.jpg' %}" data-description="脚长：脱去鞋子，用软尺测量最长脚指的尖端到脚后跟的距离，得出的测量尺寸即为脚长。" />
-                                    <span class="input-group-addon">厘米</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group checkbox">
-                            <div class="col-sm-offset-4 col-sm-8">
-                                <label>
-                                    <input {% if form.is_slim.value %}checked="checked"{% endif %} name="is_slim" type="checkbox" />是否修身
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-5 hidden-sm hidden-xs">
-                        <div id="sample">
-                            <img height="240" src="{% static 'image/xw.jpg' %}" />
-                            <br />
-                            <span class="description">身高: 自然挺胸抬头。</span>
-                        </div>
-                    </div>
+    <div class="container">
+        <div class="row">
+            {% include "steps.html" with active="info" %}
+            <div class="col-md-8 col-md-offset-2">
+                <div class="text-center">
+                    <img src="{% static 'image/ygrass_eng.png' %}" />
+                    <h4>个人信息填写</h4>
+                    <br />
                 </div>
-            </div>
-            <div class="col-md-6">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <h4>全套搭配价位</h4>
-                        <hr />
-                        <div id="price">
-                            <input type="hidden" name="price_group" />
-                            <ul class="list-inline">
-                                {% for choice in PRICE_CHOICES %}
-                                <li class="option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}"><span>{{ choice.1 }}</span></li>
+                    <div class="col-sm-12 color1">
+                        <div class="line">
+                            <span class="label">身高*</span>
+                            <input id="height" type="text" class="form-control alone" value="{{ user.profile.height }}" /> <small>(厘米)</small>
+                            <span class="label">体重*</span>
+                            <input id="weight" type="text" class="form-control alone" value="{{ user.profile.weight }}" /> <small>(公斤)</small>
+                        </div>
+                        <div class="line">
+                            <span class="label">年龄*</span>
+                            <ul class="list-inline inline selector" id="age">
+                                {% for choice in AGE_GROUP_CHOICES %}
+                                    {% if user.profile.age_group == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 color2">
+                        <div class="line">
+                            <span class="label">衣服尺码*</span>
+                            <ul class="list-inline inline selector" id="clothing_size">
+                                {% for choice in CLOTHING_SIZE_CHOICES %}
+                                    {% if user.profile.clothing_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">裤子尺码*</span>
+                            <ul class="list-inline inline selector" id="pants_size">
+                                {% for choice in PANTS_SIZE_CHOICES %}
+                                    {% if user.profile.pants_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">鞋子尺码*</span>
+                            <ul class="list-inline inline selector" id="shoe_size">
+                                {% for choice in SHOE_SIZE_CHOICES %}
+                                    {% if user.profile.shoe_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 color3">
+                        <div class="line">
+                            <span class="label">喜欢的颜色*</span>
+                            <ul class="list-inline inline selector" id="color">
+                                {% for choice in COLOR_CHOICES %}
+                                    {% if user.profile.color == choice.0 %}
+                                    <li class="selected" style="background-color: {{ choice.0 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}">&nbsp;&nbsp;</li>
+                                    {% else %}
+                                    <li style="background-color: {{ choice.0 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}">&nbsp;&nbsp;</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">裤子偏好*</span>
+                            <ul class="list-inline inline selector" id="pants_style">
+                                {% for choice in PANTS_STYLE_CHOICES %}
+                                    {% if user.profile.pants_style == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">个人照片</span>
+                            <span class="btn btn-success fileinput-button">
+                                <span>上传照片...</span>
+                                <input id="fileupload" type="file" name="file" data-url="{% url 'accounts:create_photo' %}">
+                            </span>
+                            <span id="upload_process"><img height="30" src="{% static 'jQuery-File-Upload/img/loading.gif' %}"><b></b></span><br /><br />
+                            <ul id="photos" class="list-inline" data-url="{% url 'accounts:remove_photo' %}">
+                                {% for photo in user.photo_set.all %}
+                                <li>
+                                    <img height="128" src="{{ photo.file|thumbnail_url:'small' }}" />
+                                    <a data-id="{{ photo.id }}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
+                                </li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
-                <br />
                 <div class="row">
-                    <div class="col-sm-12">
-                        <h4>更多要求</h4>
-                        <hr />
-                        <textarea id="requirements" name="requirements" class="form-control" rows="5"></textarea>
+                    <div class="text-center">
+                        <br /><br /><br />
+                        <img src="{% static 'image/ygrass_eng.png' %}" />
+                        <h4>本次定制信息填写</h4>
+                        <br />
+                    </div>
+                    <div class="col-md-12 color3">
+                        <div class="line">
+                            <span class="label">您选择的风格*</span><br/><br/>
+                            <ul class="list-inline image-selector" id="style_again">
+                                {% for choice in STYLE_CHOICES %}
+                                <li data-value="{{ choice.0 }}">
+                                    <img height="200" src="{{ STATIC_URL }}image/style_{{ choice.0 }}.png" />
+                                    <div class="cover"><p class="name">{{ choice.1 }}</p></div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">您选择的设计师*</span><br/><br/>
+                            <ul class="list-inline image-selector" id="designer_again">
+                                {% for designer in designers %}
+                                <li data-value="{{ designer.user.id }}" data-avatar="{{ designer.avatar|thumbnail_url:'medium' }}">
+                                    <img height="100" src="{{ designer.avatar|thumbnail_url:'medium' }}" />
+                                    <div class="cover"><p class="name">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</p></div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">本次定制的场合*</span><br/><br/>
+                            <ul class="list-inline image-selector" id="situation">
+                                {% for choice in SITUATION_CHOICES %}
+                                    <li data-value="{{ choice.0 }}">
+                                        <img height="100" src="{{ STATIC_URL }}image/situation_{{ choice.0 }}.png" />
+                                        <div class="cover"><p class="name">{{ choice.1 }}</p></div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">本次搭配价格范围： <span id="price-val">600元</span></span><br/><br/>
+                            <b>￥400</b> <div id="price-slider" style="display: inline-block; width: 80%;"></div> <b>￥900</b>
+                        </div>
+                        <div class="line">
+                            <span class="label">其他信息</span><br/>
+                            <textarea id="message" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="line">
+                            <button id="submit-more-survey-btn" data-url="{% url 'orders:create' %}" type="button" class="btn btn-primary btn-lg">立即提交</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 text-right">
-                <br /><br />
-                <button id="submit-more-survey-btn" type="button" class="btn btn-primary">提交信息</button>
-                <br /><br /><br />
-            </div>
-        </form>
-        {% include "foot-steps.html" with active="info" %}
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -4,7 +4,7 @@ body, html {
 
 body {
     font: 14px "微软雅黑", "MicrosoftYahei", "宋体", "Arial Narrow", HELVETICA;
-    background-color: #D5E4F8;
+    background-color: #E0E0E0;
 }
 
 a:hover, a:focus {
@@ -80,29 +80,55 @@ a.highlight {
 }
 
 .page {
-    background: url(../image/page-bg.jpg) center center no-repeat;
-    background-size: cover;
     width: 100%;
     min-height: 93%;
     position: relative;
 }
 
+.btn, .panel, .form-control {
+    border-radius: 0;
+}
+
+.form-control.alone {
+    display: inline-block;
+    width: auto;
+}
+
+.inline {
+    display: inline;
+}
+
 #header {
-    background-color: #D5E4F9;
-    border-bottom: #00295E 5px solid;
+    background: url(../image/header_bg.png) center center no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 250px;
+    position: relative;
+    font-size: 15px;
+    padding-top: 20px;
 }
 
-#header #logo>li>a {
-    padding: 0;
-    padding-bottom: 5px;
+#header.home {
+    background: url(../image/home_header_bg.png) center center no-repeat;
+    background-size: cover;
+    height: 500px;
 }
 
-.nav>li>a:hover, .nav>li>a:focus {
-    background-color: #D5E4F9;
+#header .buttons {
+    padding-top: 20%;
 }
 
-#header.navbar-inverse .navbar-nav>li>a, #header.navbar-inverse .navbar-link, #header.navbar-inverse .navbar-text {
-    color: #eee;
+#header .btn {
+    color: white;
+    background-color: #3FADDE;
+}
+
+#header .menus li a {
+    color: white;
+}
+
+#header .menus li {
+    padding: 0 20px;
 }
 
 #footer {
@@ -119,6 +145,19 @@ a.highlight {
     width: 100%;
 }
 
-#foot-steps .active {
-    color: #B68B69;
+#steps li {
+    background-color: white;
+    padding: 10px 20px;
+    width: 150px;
+    margin: 20px 0px;
 }
+
+#steps .active {
+    background-color: #3F96E3;
+    color: white;
+}
+
+.dark-bg {
+    background-color: #333541;
+}
+

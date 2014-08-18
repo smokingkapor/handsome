@@ -6,13 +6,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
 from django.db.models.signals import post_save
 
-from .constants import(
-    CREATED, PREPAID, DESIGNED, PAID, CANCELED, DONE, SENT,
-    PRICE_299, PRICE_399, PRICE_499, PRICE_599, ACCEPTED, REFUNDING,
-    REFUNDED, COLOR_WHITE, COLOR_BLACK, COLOR_GRAY, COLOR_ORANGE,
-    COLOR_COFFEE, COLOR_BLUE, COLOR_RED, COLOR_SILVER, HOBBY_READING,
-    HOBBY_EXERCISE, HOBBY_SURF, HOBBY_OTHER
-)
+from .constants import *  # noqa
 
 
 class Province(models.Model):
@@ -90,29 +84,11 @@ class Order(models.Model):
         (REFUNDED, u'已退款'),
     )
 
-    PRICE_CHOICES = (
-        (PRICE_299, '299'),
-        (PRICE_399, '399'),
-        (PRICE_499, '499'),
-        (PRICE_599, '599'),
-    )
-
-    COLOR_CHOICES = (
-        (COLOR_WHITE, u'白色'),
-        (COLOR_BLACK, u'黑色'),
-        (COLOR_GRAY, u'灰色'),
-        (COLOR_ORANGE, u'橙色'),
-        (COLOR_COFFEE, u'咖啡色'),
-        (COLOR_BLUE, u'蓝色'),
-        (COLOR_RED, u'红色'),
-        (COLOR_SILVER, u'银色'),
-    )
-
-    HOBBY_CHOICES = (
-        (HOBBY_EXERCISE, u'运动'),
-        (HOBBY_READING, u'看书'),
-        (HOBBY_SURF, u'上网'),
-        (HOBBY_OTHER, u'其他'),
+    SITUATION_CHOICES = (
+        (PARTY, u'聚会'),
+        (WORK, u'上班'),
+        (DATING, u'约会'),
+        (OTHER, u'其他')
     )
 
     code = models.CharField(max_length=32, unique=True, blank=True, null=True)
@@ -133,17 +109,17 @@ class Order(models.Model):
                              choices=Profile.STYLE_CHOICES)
     age_group = models.CharField(max_length=32, blank=True,
                                  choices=Profile.AGE_GROUP_CHOICES)
-    price_group = models.FloatField(default=PRICE_299, choices=PRICE_CHOICES)
-    color = models.CharField(max_length=32, default=COLOR_BLACK, choices=COLOR_CHOICES)
-    hobby = models.CharField(max_length=32, default=HOBBY_OTHER, choices=HOBBY_CHOICES)
+    price_group = models.FloatField()
     height = models.CharField(max_length=16, blank=True)
     weight = models.CharField(max_length=16, blank=True)
-    waistline = models.CharField(max_length=16, blank=True)
-    chest = models.CharField(max_length=16, blank=True)
-    hipline = models.CharField(max_length=16, blank=True)
-    foot = models.CharField(max_length=16, blank=True)
-    is_slim = models.BooleanField(default=False)
+    color = models.CharField(max_length=32)
+    clothing_size = models.CharField(max_length=16, blank=True)
+    pants_size = models.CharField(max_length=16, blank=True)
+    pants_style = models.CharField(max_length=16, blank=True)
+    shoe_size = models.CharField(max_length=16, blank=True)
     preferred_designer = models.ForeignKey(User, related_name='designed_orders')  # noqa
+    situation = models.CharField(max_length=16, blank=True,
+                                 choices=SITUATION_CHOICES)
     message = models.TextField(blank=True)
 
     status = models.CharField(max_length=16, choices=STATUS_CHOICES,

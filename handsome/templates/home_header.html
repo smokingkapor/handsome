@@ -1,7 +1,6 @@
 {% load thumbnail account_tags staticfiles %}
-
 {% if not user.is_staff %}
-<div id="header" class="text-center">
+<div id="header" class="text-center home">
     <ul class="list-inline menus">
         <li>
             <a href="{% url 'portals:index' %}">
@@ -31,6 +30,12 @@
         </li>
         {% endif %}
     </ul>
+    <div class="buttons">
+        <a href="{% url 'portals:survey' %}" class="btn">马上开始 ></a>
+        {% if user.is_authenticated and not user.profile.is_freshman %}
+        <a href="{% url 'orders:create' %}?source=one-key" class="btn">一键下单 ></a>
+        {% endif %}
+    </div>
 </div>
 
 {% else %}

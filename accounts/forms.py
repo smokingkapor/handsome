@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.core.validators import validate_integer
 
-from .models import Profile
+from .models import Profile, Photo
 
 
 class LoginForm(forms.Form):
@@ -105,14 +105,20 @@ class UploadForm(forms.Form):
     file = forms.ImageField()
 
 
+class PhotoForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        fields = ('file',)
+
+
 class ProfileForm(forms.ModelForm):
     """
     Model form for update Profile model
     """
     class Meta:
         model = Profile
-        fields = ('height', 'weight', 'waistline', 'chest', 'hipline', 'foot',
-                  'is_slim')
+        fields = ('height', 'weight', 'color', 'clothing_size', 'pants_size',
+                  'shoe_size', 'pants_style', 'age_group')
 
     def _validate_field(self, field_name):
         value = self.cleaned_data.get(field_name)
@@ -124,15 +130,3 @@ class ProfileForm(forms.ModelForm):
 
     def clean_weight(self):
         return self._validate_field('weight')
-
-    def clean_waistline(self):
-        return self._validate_field('waistline')
-
-    def clean_chest(self):
-        return self._validate_field('chest')
-
-    def clean_hipline(self):
-        return self._validate_field('hipline')
-
-    def clean_foot(self):
-        return self._validate_field('foot')

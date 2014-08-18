@@ -1,72 +1,27 @@
-#home {
-    background: url(../image/home_bg_2.jpg) center center no-repeat;
-    background-size: cover;
-    width: 100%;
-    min-height: 93%;
-    position: relative;
+#home .intro {
+    background-color: #3F404E;
 }
 
-#home .column {
-    margin: 0 auto;
-    background: rgba(0,0,0,0);
-    min-width: 280px;
-    max-width: 40%;
-    z-index: 88;
-    color: #fff;
+#home .case {
+    background: url(../image/home_case_bg.png) center center no-repeat;
+    height: 319px;
 }
 
-#home .column .container {
-    margin: 0 auto;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    position: relative;
-}
-
-#home .column h2 {
-    margin-top: 50%;
-}
-
-#home .column h1 {
-    margin-top: 0;
-}
-
-#home .column h2 span {
-    color: orange;
-}
-
-#home .column h2 img {
-    height: 50px;
-}
-
-#home .column .action .box {
-    padding: 20px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    max-width: 320px;
-}
-
-#home .column .action .bg-transparent {
-    background-color: rgb(20,32,29);
+#home .case .panel {
+    color: white;
+    width: 327px;
+    height: 365px;
+    margin-top: -45px;
+    text-align: left;
+    display: inline-block;
+    background-color: rgb(93,134,200);
     opacity: .8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=80)";
 }
 
-#home .column .action a {
-    background-image: url('../image/start-btn-bg.png');
-    background-repeat: no-repeat;
-    background-color: none;
-    color: white;
-    width: 132px;
-    height: 45px;
-    font-size: 16px;
-    vertical-align: middle;
-    padding-top: 10px;
-}
-
-#home .column .action ul {
-    margin: 15px 30px 0;
+#home .case .panel-heading {
+    background-color: #3364B9;
+    font-size: larger;
 }
 
 #survey.carousel .item {
@@ -80,37 +35,28 @@
     position: relative;
     left: 0px;
     right: 0px;
-    margin: 100px 20px 20px 20px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
 }
 
 #survey .option {
-    cursor: pointer;
+    background-color: #4E80D7;
+    padding: 0;
+    margin: 0;
+    color: white;
+    border: none;
     position: relative;
 }
 
 #survey #style li.option span {
-    display: inline-block;
-    background: url(../image/circle_bg.png);
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 50px;
-    height: 49px;
-    line-height: 49px;
     color: white;
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 18px;
+    right: 28px;
+    width: 180px;
+    display: none;
 }
 
 #survey #style li.option:hover span, #survey #style li.option.selected span {
-    background: url(../image/circle_focus_bg.png);
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    display: inline-block;
 }
 
 #survey .item.rhombus li.option {
@@ -155,46 +101,145 @@
 #survey #designer li.option .intro {
     display: none;
     position: absolute;
-    top: 0;
+    top: -45px;
     left: 0;
+    bottom: 0;
     width: 100%;
-    height: 100%;
     color: white;
-    line-height: 100%;
     background-color: #0F3870;
     opacity: .7;
-    line-height: 200px;
-    font-weight: bolder;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=70)";
 }
+
+#survey #designer li.option .intro .name {
+    padding: 10px;
+    font-size: 18px;
+    background-color: #3464B9;
+}
+
+#survey #designer li.option .intro .content {
+    padding: 10px;
+    text-align: left;
+}
+
 
 #survey #designer li.option:hover .intro, #survey #designer li.option.selected .intro {
     display: block;
 }
 
-#survey-more #price li.option {
-    background: url(../image/rhombus_small_bg.png);
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 100px;
-    width: 100px;
-    margin: auto;
-    line-height: 100px;
+#survey-more .line {
+    padding: 20px;
     color: white;
-    font-size: 25px;
-    font-weight: bold;
-    cursor: pointer;
+}
+
+#survey-more .line .selector li {
+    background-color: white;
+    padding: 6px 15px;
+    margin-right: 15px;
+    color: #333;
+}
+
+#survey-more .line.required {
+    background-color: lightcoral;
+}
+
+#survey-more .line .image-selector li {
+    background-color: white;
+    padding: 1px;
+    margin: 0px 10px;
+    position: relative;
     text-align: center;
 }
 
-#survey-more #price li.option:hover, #survey-more #price li.option.selected {
-    background: url(../image/rhombus_small_focus_bg.png);
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: contain;
+
+#survey-more .line .image-selector li .cover {
+    position: absolute;
+    display: none;
+    color: white;
+    font-size: 20px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #3364B9;
+    opacity: .7;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=70)";
 }
 
-#home #foot-steps .survey {
+#survey-more .line .image-selector li .name {
+    margin-top: 60%;
+}
+
+#survey-more .line .selector li:hover, #survey-more .line .selector li.selected {
+    padding: 5px 14px;
+    border: 1px white solid;
+    background-color: #3364B9;
+    color: white;
+    cursor: pointer;
+}
+
+#survey-more .line .image-selector li:hover .cover, #survey-more .line .image-selector li.selected .cover {
+    display: block;
+    cursor: pointer;
+}
+
+#survey-more .line .label {
+    padding-right: 15px;
+    font-size: 16px;
+    font-weight: normal;
+    width: 100px;
+    display: inline-block;
+}
+
+#survey-more .color1 {
+    background-color: #63677B;
+    padding: 20px;
+}
+
+#survey-more .color2 {
+    background-color: #555764;
+    padding: 20px;
+}
+
+#survey-more .color3 {
+    background-color: #333541;
+    padding: 20px;
+}
+
+#upload_process {
+    display: none;
+    color: white;
+}
+
+#price-slider {
+    background-color: white;
+}
+
+.ui-corner-all {
+    border-radius: 4px;
+}
+
+#price-slider .ui-slider-range {
+    background-color: #168AD0;
+}
+
+#price-slider .ui-slider-handle {
+    background-color: #31B1FF;
+    cursor: pointer;
+}
+
+#photos li {
+    position: relative;
+    margin: 10px 0;
+}
+
+#photos li a {
+    position: absolute;
+    bottom: 0px;
+    right: 6px;
+    color: red;
+    font-size: 18px;
+}
+
+#home #steps .survey {
     color: #B68B69;
 }

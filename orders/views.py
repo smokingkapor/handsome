@@ -58,15 +58,6 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
             'address': address,
             'provinces': Province.objects.all()
         })
-        data.update({
-            'STYLE_CHOICES': Profile.STYLE_CHOICES,
-            'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
-            'PRICE_CHOICES': Order.PRICE_CHOICES,
-            'COLOR_CHOICES': Order.COLOR_CHOICES,
-            'HOBBY_CHOICES': Order.HOBBY_CHOICES,
-            'designers': Profile.objects.filter(user__is_staff=True,
-                                                is_designer=True)
-        })
         if self.request.GET.get('source') == 'one-key':
             # create order by one-key, pass the last order to the context
             data.update({'last_order': self.request.user.my_orders.last()})
@@ -81,13 +72,15 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order = form.save(commit=False)
         order.prepayment = order.price_group * 0.1
         order.creator = profile.user
-        order.height = profile.height
-        order.weight = profile.weight
-        order.waistline = profile.waistline
-        order.chest = profile.chest
-        order.hipline = profile.hipline
-        order.foot = profile.foot
-        order.is_slim = profile.is_slim
+        profile.height = order.height
+        profile.weight = order.weight
+        profile.age_group = order.age_group
+        profile.color = order.color
+        profile.clothing_size = order.clothing_size
+        profile.pants_size = order.pants_size
+        profile.pants_style = order.pants_style
+        profile.shoe_size = order.shoe_size
+        profile.save()
 
         # order address info
         address = Address.objects.get(id=self.request.REQUEST['address'])

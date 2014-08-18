@@ -104,69 +104,26 @@ $(document).ready(function(){
         $('#full-adress').addClass('hidden');
     });
 
-    // load price and personal requirement from local storage
+    // init basic info
     try {
         var survey = JSON.parse(localStorage.survey || '{}');
     } catch(err){
         var survey = {};
     }
     if ($('#create-order').size() > 0 && !$('#create-order').is('.one-key')) {
-        if (survey.style) {
-            $('#style .content span').text(survey.style.label).data('value', survey.style.value);
-            $('#style form select').val(survey.style.value);
-        }
-        if (survey.age) {
-            $('#age .content span').text(survey.age.label).data('value', survey.age.value);
-            $('#age form select').val(survey.age.value);
-        }
-        if (survey.color) {
-            $('#color .content span').text(survey.color.label).data('value', survey.color.value);
-            $('#color form select').val(survey.color.value);
-        }
-        if (survey.hobby) {
-            $('#hobby .content span').text(survey.hobby.label).data('value', survey.hobby.value);
-            $('#hobby form select').val(survey.hobby.value);
-        }
-        if (survey.price) {
-            $('#price .content span').text(survey.price.label).data('value', survey.price.value);
-            $('#price form select').val(survey.price.value);
+        for (name in survey) {
+            var $field = $('#' + name);
+            if ($field.length) {
+                $field.find('span').text(survey[name].label);
+            }
         }
         if (survey.designer) {
-            $('#designer .content span').text(survey.designer.label).data('value', survey.designer.value);
-            $('#designer .content img').attr('src', survey.designer.avatar);
-            $('#designer form select').val(survey.designer.value);
+            $('#designer img').attr('src', survey.designer.avatar);
         }
-        if (survey.requirements) {
-            $('#requirement').val(survey.requirements);
+        if (survey.message) {
+            $('#message').text(survey.message.label);
         }
     }
-
-    $('.edit-requirement-btn').click(function(){
-        var $content = $(this).parents('.content');
-        var $form = $(this).parents('td').find('form');
-        $form.removeClass('hidden');
-        $content.addClass('hidden');
-    });
-
-    $('.cancel-edit-btn').click(function(){
-        var $form = $(this).parents('form');
-        var $content = $(this).parents('td').find('.content');
-        $form.addClass('hidden');
-        $content.removeClass('hidden');
-    });
-
-    $('.save-btn').click(function(){
-        var $form = $(this).parents('form');
-        var $content = $(this).parents('td').find('.content');
-        $form.addClass('hidden');
-        $content.removeClass('hidden');
-
-        var $selected_option = $('option:selected', $form);
-        $('span', $content).text($selected_option.text()).data('value', $selected_option.val());
-        if ($(this).parents('td').attr('id') == 'designer') {
-            $('img', $content).attr('src', $selected_option.data('avatar'));
-        }
-    });
 
     // create order
     $('#create-order-btn').click(function(){
@@ -174,16 +131,27 @@ $(document).ready(function(){
             alert('请先保存配送信息');
             return;
         }
+        try {
+            var survey = JSON.parse(localStorage.survey || '{}');
+        } catch(err){
+            var survey = {};
+        }
         var $btn = $(this);
         $btn.button('loading');
         var data = {
-            price_group: parseInt($('#price .content span').data('value')),
-            message: $('#requirement').val() || '',
-            preferred_designer: $('#designer .content span').data('value'),
-            style: $('#style .content span').data('value'),
-            age_group: $('#age .content span').data('value'),
-            color: $('#color .content span').data('value'),
-            hobby: $('#hobby .content span').data('value'),
+            age_group: survey.age.value,
+            clothing_size: survey.clothing_size.value,
+            color: survey.color.value,
+            preferred_designer: survey.designer.value,
+            height: survey.height.value,
+            pants_size: survey.pants_size.value,
+            pants_style: survey.pants_style.value,
+            price_group: survey.price.value,
+            message: survey.message.value,
+            shoe_size: survey.shoe_size.value,
+            situation: survey.situation.value,
+            style: survey.style.value,
+            weight: survey.weight.value,
             address: $('#address-pk').val(),
             csrfmiddlewaretoken: get_cookie('csrftoken')
         };

@@ -19,8 +19,6 @@
 }
 
 #create-order {
-    background: url("../image/page-bg.jpg") center center no-repeat;
-    background-size: cover;
     width: 100%;
     min-height: 93%;
     position: relative;
@@ -36,6 +34,22 @@
     display: inline;
 }
 
-#my-requirement .title {
-    padding: 15px;
+#create-order .my-requirements .title {
+    padding: 15px 40px;
+}
+
+#create-order .delivery {
+    background-color: #555764;
+    padding: 20px;
+    color: white;
+}
+
+#create-order .my-requirements {
+    background-color: #333541;
+    color: white;
+    padding: 20px;
+}
+
+#create-order .my-requirements table {
+    width: 80%;
 }

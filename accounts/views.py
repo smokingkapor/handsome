@@ -13,7 +13,7 @@ from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http.response import HttpResponse
 from django.views.generic.base import RedirectView, View
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView
 from django.utils.crypto import get_random_string
 
 from braces.views import(
@@ -23,9 +23,10 @@ from braces.views import(
 from easy_thumbnails.files import get_thumbnailer
 
 from .forms import(
-    LoginForm, RegisterForm, UploadForm, ProfileForm, PhoneLoginForm
+    LoginForm, RegisterForm, UploadForm, ProfileForm, PhoneLoginForm,
+    PhotoForm
 )
-from .models import Profile
+from .models import Profile, Photo
 from handsome.utils import generate_str, send_sms
 
 
@@ -222,6 +223,34 @@ class UploadView(CsrfExemptMixin, LoginRequiredMixin, FormView):
 
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'success': False}))
+
+
+class CreatePhotoView(CsrfExemptMixin, LoginRequiredMixin, CreateView):
+    """Create user photo"""
+    model = Photo
+    form_class = PhotoForm
+
+    def form_valid(self, form):
+        photo = form.save(commit=False)
+        photo.user = self.request.user
+        photo.save()
+        return HttpResponse(json.dumps({
+            'success': True,
+            'path': photo.file.get_thumbnail({'size': (128, 128)}).url,
+            'id': photo.id}))
+
+    def form_invalid(self, form):
+        return HttpResponse(json.dumps({'success': False}))
+
+
+class RemovePhotoView(LoginRequiredMixin, AjaxResponseMixin,
+                      JsonRequestResponseMixin, View):
+    def get_ajax(self, request, *args, **kwargs):
+        photo = Photo.objects.get(id=request.GET['id'])
+        if photo.user == request.user:
+            photo.file.delete()
+            photo.delete()
+        return self.render_json_response({'success': True})
 
 
 class UpdateProfileView(LoginRequiredMixin, FormView):

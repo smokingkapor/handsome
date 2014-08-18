@@ -1,0 +1,9 @@
+#phone-login {
+    background-color: #333541;
+    padding: 40px 20px;
+    color: white;
+}
+
+#phone-login .btn-primary {
+    padding: 5px 50px;
+}

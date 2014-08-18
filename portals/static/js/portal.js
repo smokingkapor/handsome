@@ -9,12 +9,12 @@ $(document).ready(function(){
         $('.carousel').carousel('prev');
     });
 
-    $('#survey #foot-steps .style').addClass('active');
+    $('#survey #steps .style').addClass('active');
     $('.carousel').on('slid.bs.carousel', function(){
-        // highlight foot step
+        // highlight step
         var active_item = $('#survey .item.active').prop('id');
-        $('#survey #foot-steps .active').removeClass('active');
-        $('#survey #foot-steps .' + active_item).addClass('active');
+        $('#survey #steps .active').removeClass('active');
+        $('#survey #steps .' + active_item).addClass('active');
     });
 
     $('.selector .option').click(function(){
@@ -30,6 +30,89 @@ $(document).ready(function(){
         }
     });
 
+    // init style and designer in survey more
+    function init_survey_more() {
+        if (!$('#survey-more').length)  return;
+        try {
+            var survey = JSON.parse(localStorage.survey || '{}');
+        } catch(err){
+            var survey = {};
+        }
+        $('#style_again li').removeClass('selected').each(function(){
+            if ($(this).data('value') == survey.style.value) {
+                $(this).addClass('selected');
+                return false;
+            }
+        });
+        $('#designer_again li').removeClass('selected').each(function(){
+            if ($(this).data('value') == survey.designer.value) {
+                $(this).addClass('selected');
+                return false;
+            }
+        });
+    }
+    init_survey_more();
+
+    // selector in survey more
+    $('#survey-more .line .selector li,#survey-more .line .image-selector li').click(function(){
+        $(this).siblings('li').removeClass('selected');
+        $(this).addClass('selected');
+        $(this).parents('.line').removeClass('required');
+    });
+
+    // validate height and weight when changed
+    $('#height,#weight').on('change blur focus', function(){
+        var height = parseFloat($('#height').val());
+        var weight = parseFloat($('#weight').val());
+        if (height && weight) {
+            $(this).parents('.line').removeClass('required');
+            $('#height').val(height);
+            $('#weight').val(weight);
+        } else {
+            if ((!height && $('#height').val()) || (!weight && $('#weight').val()))
+            $(this).parents('.line').addClass('required');
+        }
+    });
+
+    // price slider tooltip
+    $('#price-slider').slider({
+        range: 'min',
+        value: 600,
+        min: 400,
+        max: 900,
+        slide: function(event, ui) {
+            $("#price-val").text(ui.value + '元');
+        }
+    });
+
+    // upload photo
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#upload_process b').text(progress+'%');
+            $('#upload_process').show();
+        },
+        done: function(e, data) {
+            $('#upload_process').hide();
+            if (data.result.success) {
+                $('#photos').append('<li><img width="128" src="{url}" /><a data-id="{id}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a></li>'.replace('{url}', data.result.path).replace('{id}', data.result.id));
+            }
+        }
+    });
+
+    // remove photo
+    $(document).on('click', '#photos a', function(){
+        var $this = $(this);
+        $.ajax({
+            url: $('#photos').data('url'),
+            data: {'id': $this.data('id')},
+            success: function(data) {
+                $this.parents('li').remove();
+            }
+        });
+    });
+
     // save user survey to localStorage
     function save_survey(){
         try {
@@ -37,34 +120,70 @@ $(document).ready(function(){
         } catch(err){
             var survey = {};
         }
-        if ($('#style').length) {
-            survey.style = {
-                label: $('#style .option.selected').data('label'),
-                value: $('#style .option.selected').data('value')
+        if ($('#height').length) {
+            survey.height = {
+                label: $('#height').val() + '厘米',
+                value: $('#height').val()
+            };
+        }
+        if ($('#weight').length) {
+            survey.weight = {
+                label: $('#weight').val() + '公斤',
+                value: $('#weight').val()
             };
         }
         if ($('#age').length) {
             survey.age = {
-                label: $('#age .option.selected').data('label'),
-                value: $('#age .option.selected').data('value')
+                label: $('#age li.selected').text(),
+                value: $('#age li.selected').data('value')
+            };
+        }
+        if ($('#clothing_size').length) {
+            survey.clothing_size = {
+                label: $('#clothing_size li.selected').text(),
+                value: $('#clothing_size li.selected').data('value')
+            };
+        }
+        if ($('#pants_size').length) {
+            survey.pants_size = {
+                label: $('#pants_size li.selected').text(),
+                value: $('#pants_size li.selected').data('value')
+            };
+        }
+        if ($('#shoe_size').length) {
+            survey.shoe_size = {
+                label: $('#shoe_size li.selected').text(),
+                value: $('#shoe_size li.selected').data('value')
+            };
+        }
+        if ($('#pants_style').length) {
+            survey.pants_style = {
+                label: $('#pants_style li.selected').text(),
+                value: $('#pants_style li.selected').data('value')
             };
         }
         if ($('#color').length) {
             survey.color = {
-                label: $('#color .option.selected').data('label'),
-                value: $('#color .option.selected').data('value')
+                label: $('#color li.selected').data('label'),
+                value: $('#color li.selected').data('value')
             };
         }
-        if ($('#hobby').length) {
-            survey.hobby = {
-                label: $('#hobby .option.selected').data('label'),
-                value: $('#hobby .option.selected').data('value')
+        if ($('#situation').length) {
+            survey.situation = {
+                label: $('#situation li.selected .name').text(),
+                value: $('#situation li.selected').data('value')
             };
         }
         if ($('#price').length) {
             survey.price = {
                 label: $('#price .option.selected').data('label'),
                 value: $('#price .option.selected').data('value')
+            };
+        }
+        if ($('#style').length) {
+            survey.style = {
+                label: $('#style .option.selected').data('label'),
+                value: $('#style .option.selected').data('value')
             };
         }
         if ($('#designer').length) {
@@ -74,39 +193,67 @@ $(document).ready(function(){
                 avatar: $('#designer .option.selected').data('avatar')
             };
         }
+        if ($('#style_again').length) {
+            survey.style = {
+                label: $('#style_again li.selected .name').text(),
+                value: $('#style_again li.selected').data('value')
+            };
+        }
+        if ($('#designer_again').length) {
+            survey.designer = {
+                label: $('#designer_again li.selected .name').text(),
+                value: $('#designer_again li.selected').data('value'),
+                avatar: $('#designer_again li.selected').data('avatar')
+            };
+        }
+        if ($('#message').length) {
+            survey.message = {
+                label: $('#message').val(),
+                value: $('#message').val()
+            };
+        }
+        if ($('#price-slider').length) {
+            survey.price = {
+                label: $('#price-slider').slider('value') + '左右',
+                value: $('#price-slider').slider('value')
+            };
+        }
+
         localStorage.survey = JSON.stringify(survey);
     }
 
-    // price select in survey more page
-    $('#survey-more #price .option').click(function(){
-        var $prices = $('#survey-more #price');
-        $prices.find('.option').removeClass('selected');
-        $(this).addClass('selected');
-    });
+    // validate fields
+    function validate_fields() {
+        $('#survey-more .line').removeClass('required');
+        var $first_error_selector = undefined;
 
+        var height = parseFloat($('#height').val());
+        var weight = parseFloat($('#weight').val());
+        if (!height || !weight) {
+            $first_error_selector = $('#height').parents('.line').addClass('required');
+            $('#height').val(height?height:'');
+            $('#weight').val(weight?weight:'');
+        }
+
+        $('#survey-more .line .selector,#survey-more .line .image-selector').each(function(){
+            if ($(this).find('li.selected').size() == 0) {
+                if (!$first_error_selector) $first_error_selector = $(this);
+                $(this).parents('.line').addClass('required');
+            }
+        });
+
+        if ($first_error_selector) {
+            $('html, body').animate({scrollTop: $first_error_selector.offset().top-50}, 500);
+            return false;
+        }
+        return true;
+    }
 
     // submit more survey data
     $('#submit-more-survey-btn').click(function(){
-        // check price first
-        if ($('#survey-more #price .option.selected').size() == 0) {
-            alert('请先选择价位');
+        if (!validate_fields())
             return;
-        }
-
-        // save data to localStorage
-        try {
-            var survey = JSON.parse(localStorage.survey || '{}');
-        } catch(err){
-            var survey = {};
-        }
-        survey.price = {
-            label: $('#survey-more #price .option.selected').data('label'),
-            value: $('#survey-more #price .option.selected').data('value')
-        };
-        survey.requirements = $('#requirements').val();
-        localStorage.survey = JSON.stringify(survey);
-
-        // form submit
-        $('#survey-more form').submit();
+        save_survey();
+        location.href=$(this).data('url');
     });
 });

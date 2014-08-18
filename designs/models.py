@@ -10,6 +10,7 @@ from easy_thumbnails.fields import ThumbnailerImageField
 
 from .constants import WAITING, REJECTED, SELECTED
 from clothings.models import Clothing
+from handsome.utils import path_and_rename
 from orders.models import Order
 
 
@@ -19,7 +20,7 @@ class DesignPhoto(models.Model):
     """
     designer = models.ForeignKey(User)
     file = ThumbnailerImageField(
-        upload_to='design-photo',
+        upload_to=path_and_rename('design-photo'),
         resize_source=dict(size=(1024, 1024), sharpen=True))
     description = models.CharField(max_length=128, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

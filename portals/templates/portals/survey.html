@@ -12,20 +12,27 @@
 <![endif]-->
 {% endblock%}
 
-{% block title %}Mr-Handsome{% endblock %}
+{% block title %}优草设计{% endblock %}
 
 {% block content %}
 <div class="carousel slide page" id="survey">
+    {% include "steps.html" %}
     <div class="carousel-inner">
         <div class="item active" id="style">
             <div class="carousel-caption">
                 <div class="text-center">
-                    <h4>您想要哪种风格？</h4>
+                    <div><img src="{% static 'image/ygrass_eng.png' %}" /></div>
+                    <h4>时尚风格选择</h4>
+                    <br />
                     <ul class="selector auto-slide list-inline">
                         {% for choice in STYLE_CHOICES %}
                         <li class="option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}">
-                            <img width="250" src="{{ STATIC_URL }}image/q1_{{ choice.0 }}.png" />
-                            <span class="text-center">{{ choice.1 }}</span>
+                            <div class="title">
+                                <h2>{{ choice.1 }}</h2>
+                                <p>适合上班的场合</p>
+                            </div>
+                            <img width="250" src="{{ STATIC_URL }}image/style_{{ choice.0 }}.png" />
+                            <span class="btn btn-primary">选择这种</span>
                         </li>
                         {% endfor %}
                     </ul>
@@ -33,73 +40,21 @@
             </div>
         </div>
 
-        <div class="item rhombus" id="age">
-            <div class="carousel-caption">
-                <div class="text-center">
-                    <h4>您处于哪个年龄段？</h4>
-                    <ul class="selector auto-slide list-inline">
-                        {% for choice in AGE_GROUP_CHOICES %}
-                        <li class="option" data-value="{{ choice.0 }}" data-label="{{ choice.1 }}"><span>{{ choice.1 }}</span></li>
-                        {% endfor %}
-                    </ul>
-                    <div class="row">
-                        <div class="col-md-11 text-right">
-                            <br /><br />
-                            <a class="previous" href="javascript:void(0);"><img src="{% static 'image/back_btn.png' %}"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="item rhombus small" id="color">
-            <div class="carousel-caption">
-                <div class="text-center">
-                    <h4>您喜欢哪种颜色？</h4>
-                    <ul class="selector auto-slide list-inline">
-                        {% for choice in COLOR_CHOICES %}
-                        <li class="option" data-value="{{ choice.0 }}" data-label="{{ choice.1 }}"><span>{{ choice.1 }}</span></li>
-                        {% endfor %}
-                    </ul>
-                    <div class="row">
-                        <div class="col-md-11 text-right">
-                            <br /><br />
-                            <a class="previous" href="javascript:void(0);"><img src="{% static 'image/back_btn.png' %}"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="item rhombus" id="hobby">
-            <div class="carousel-caption">
-                <div class="text-center">
-                    <h4>您的爱好？</h4>
-                    <ul class="selector auto-slide list-inline">
-                        {% for choice in HOBBY_CHOICES %}
-                        <li class="option" data-value="{{ choice.0 }}" data-label="{{ choice.1 }}"><span>{{ choice.1 }}</span></li>
-                        {% endfor %}
-                    </ul>
-                    <div class="row">
-                        <div class="col-md-11 text-right">
-                            <br /><br />
-                            <a class="previous" href="javascript:void(0);"><img src="{% static 'image/back_btn.png' %}"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="item" id="designer">
             <div class="carousel-caption">
                 <div class="text-center">
-                    <h4>你希望哪位设计师为你量身定制？</h4>
+                    <div><img src="{% static 'image/ygrass_eng.png' %}" /></div>
+                    <h4>设计师选择</h4>
+                    <br /><br /><br />
                     <ul class="selector last-slide list-inline" data-url="{% url 'portals:survey_more' %}">
                         {% for designer in designers %}
                         <li class="option" data-value="{{ designer.user.id }}", data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
-                            <img width="200" height="200" src="{{ designer.avatar|thumbnail_url:'medium' }}" />
+                            <img width="300" height="300" src="{{ designer.avatar|thumbnail_url:'medium' }}" />
                             <div class="intro">
-                                {{ designer.user.get_full_name|default_if_empty:designer.user.username }}
+                                <p class="name"><b>{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</b></p>
+                                <p class="content">出生于意大利水城威尼斯近郊，是一位知名的服装设计师，有同名商标及同名公司。1950年自己独立开设了服装设计公司，地点选在巴黎的Richepanse街上。早期承接相当多剧服、面具等表演艺术的案子......</p>
+                                <br /><br /><br />
+                                <a href="#" class="btn btn-default">查看详情</a>
                             </div>
                         </li>
                         {% endfor %}
@@ -114,6 +69,5 @@
             </div>
         </div>
     </div>
-    {% include "foot-steps.html" %}
 </div>
 {% endblock %}

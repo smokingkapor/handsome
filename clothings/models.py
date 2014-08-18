@@ -3,11 +3,8 @@ from django.db import models
 
 from easy_thumbnails.fields import ThumbnailerImageField
 
-from .constants import (
-    T_SHIRT, SHIRT, POLO_SHIRT, JACKET, SUIT, KNITWEAR, WAISTCOAT,
-    LEATHER_JACKET, COTTON_PADDED_CLOTHES, TWEED_COAT, FUR_CLOTHING,
-    DOWN_COAT, DOWN_VEST, CASUAL_PANTS, JEANS, SUIT_PANTS, HAREM_PANTS
-)
+from .constants import *  # noqa
+from handsome.utils import path_and_rename
 
 
 class Supplier(models.Model):
@@ -60,7 +57,7 @@ class Clothing(models.Model):
                               blank=True)  # separate with whitespace
     note = models.CharField(u'备注', max_length=256, blank=True)
     image = ThumbnailerImageField(
-        upload_to='clothings',
+        upload_to=path_and_rename('clothings'),
         resize_source=dict(size=(1024, 1024), sharpen=True))
     is_active = models.BooleanField(u'有货', default=True)
     created_at = models.DateTimeField(auto_now_add=True)

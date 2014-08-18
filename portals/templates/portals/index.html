@@ -5,48 +5,31 @@
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
 {% endblock%}
 
-{% block title %}优草{% endblock %}
+{% block title %}优草设计{% endblock %}
 
 {% block content %}
-<div id="home">
-    <div class="overlay">
-        <div class="column">
-            <div class="container text-center">
-                <h2><span>个性化的</span><img src="{% static 'image/ygrass.png' %}" /></h2>
-                <h1>私人服装搭配</h1>
-                <div class="action">
-                    <div class="box center">
-                        <a href="{% url 'portals:survey' %}" class="btn">我们开始吧</a>
-                        {% if user.is_authenticated and not user.profile.is_freshman %}
-                        <a href="{% url 'orders:create' %}?source=one-key" class="btn">一键下单？</a>
-                        {% endif %}
-                        {% comment %}
-                        <ul class="list-unstyled text-left">
-                            <li>
-                                <div class="text-white">
-                                    <span class="text-primary  glyphicon glyphicon-ok"></span>
-                                    <span>完美协调的衣服</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="text-white">
-                                    <span class="text-primary  glyphicon glyphicon-ok"></span>
-                                    <span>尝试变得从容</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="text-white">
-                                    <span class="text-primary  glyphicon glyphicon-ok"></span>
-                                    <span>免费咨询及送货</span>
-                                </div>
-                            </li>
-                        </ul>
-                        {% endcomment %}
-                    </div>
+<div id="home" class="text-center">
+    <img src="{% static 'image/home_steps.png' %}" />
+    <div class="intro">
+        <br /><br /><br /><br />
+        <img src="{% static 'image/home_intro.png' %}" />
+    </div>
+    <div class="case-head">
+        <br /><br /><br /><br />
+        <img src="{% static 'image/home_case_head.png' %}" />
+        <br /><br /><br /><br />
+    </div>
+    <div class="case">
+        <div class="panel">
+            <div class="panel-heading text-center">时尚简约型</div>
+            <div class="panel-body">
+                <p>出生于意大利水城威尼斯近郊，是一位知名的服装设计师，有同名商标及同名公司。1950年自己独立开设了服装设计公司，地点选在巴黎的Richepanse街上。早期承接相当多剧服、面具等表演艺术的案子......</p>
+                <br /><br /><br /><br /><br /><br />
+                <div class="text-center">
+                    <a href="#" class="btn btn-default btn-lg">查看详情</a>
                 </div>
             </div>
         </div>
-        {% include "foot-steps.html" %}
     </div>
 </div>
 {% endblock %}
