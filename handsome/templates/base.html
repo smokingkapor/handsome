@@ -16,9 +16,11 @@
         {% comment %}
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
         {% endcomment %}
-        {% compress css %}
-        <link rel="stylesheet" href="{% static 'css/base.css' %}">
         {% block extracss %}{% endblock %}
+        {% compress css %}
+            <link rel="stylesheet" href="{% static 'css/base.css' %}">
+            {% block extracss_compress %}
+            {% endblock %}
         {% endcompress %}
     </head>
     <body>
@@ -40,9 +42,10 @@
             <script src="{% static 'js/respond.min.js' %}"></script>
             {% endcomment %}
         <![endif]-->
+        {% block extrajs %}{% endblock %}
         {% compress js %}
         <script src="{% static 'js/base.js' %}"></script>
-        {% block extrajs %}{% endblock %}
+        {% block extrajs_compress %}{% endblock %}
         {% endcompress %}
     </body>
 </html>

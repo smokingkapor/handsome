@@ -3,15 +3,19 @@
 
 {% block extracss %}
 <link media="screen" rel="stylesheet" href="http://libs.useso.com/js/jqueryui/1.10.4/css/jquery.ui.slider.min.css">
+{% endblock%}
+{% block extracss_compress %}
 <link rel="stylesheet" href="{% static 'jQuery-File-Upload/css/jquery.fileupload.css' %}">
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
 {% endblock%}
 
 {% block extrajs %}
+<script src="http://libs.useso.com/js/jqueryui/1.10.4/jquery-ui.min.js"></script>
+{% endblock%}
+{% block extrajs_compress %}
 <script src="{% static 'jQuery-File-Upload/js/vendor/jquery.ui.widget.js' %}"></script>
 <script src="{% static 'jQuery-File-Upload/js/jquery.iframe-transport.js' %}"></script>
 <script src="{% static 'jQuery-File-Upload/js/jquery.fileupload.js' %}"></script>
-<script src="http://libs.useso.com/js/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script src="{% static 'js/portal.js' %}"></script>
 {% endblock%}
 
