@@ -72,16 +72,16 @@ class Order(models.Model):
     Order model
     """
     STATUS_CHOICES = (
-        (CREATED, u'等待支付预付款'),
+        (CREATED, u'等待您支付预付款'),
         (PREPAID, u'设计师正在设计'),
-        (DESIGNED, u'设计完成，等待确认'),
-        (ACCEPTED, u'方案确认，等待支付尾款'),
-        (PAID, u'支付完成，等待配送'),
-        (SENT, u'等待收货'),
-        (CANCELED, u'已取消'),
-        (DONE, u'已完成'),
-        (REFUNDING, u'退款中'),
-        (REFUNDED, u'已退款'),
+        (DESIGNED, u'设计完成，等待您选择'),
+        (ACCEPTED, u'方案已确认，等待您支付尾款'),
+        (PAID, u'尾款支付完成，我们正在配送'),
+        (SENT, u'已经发货，请您等待收货'),
+        (CANCELED, u'订单已经却小'),
+        (DONE, u'订单已经完成'),
+        (REFUNDING, u'我们正在退款'),
+        (REFUNDED, u'已经退款'),
     )
 
     SITUATION_CHOICES = (
@@ -112,11 +112,15 @@ class Order(models.Model):
     price_group = models.FloatField()
     height = models.CharField(max_length=16, blank=True)
     weight = models.CharField(max_length=16, blank=True)
-    color = models.CharField(max_length=32)
-    clothing_size = models.CharField(max_length=16, blank=True)
-    pants_size = models.CharField(max_length=16, blank=True)
-    pants_style = models.CharField(max_length=16, blank=True)
-    shoe_size = models.CharField(max_length=16, blank=True)
+    color = models.CharField(max_length=32, choices=Profile.COLOR_CHOICES)
+    clothing_size = models.CharField(max_length=16, blank=True,
+                                     choices=Profile.CLOTHING_SIZE_CHOICES)
+    pants_size = models.CharField(max_length=16, blank=True,
+                                  choices=Profile.PANTS_SIZE_CHOICES)
+    pants_style = models.CharField(max_length=16, blank=True,
+                                   choices=Profile.PANTS_STYLE_CHOICES)
+    shoe_size = models.CharField(max_length=16, blank=True,
+                                 choices=Profile.SHOE_SIZE_CHOICES)
     preferred_designer = models.ForeignKey(User, related_name='designed_orders')  # noqa
     situation = models.CharField(max_length=16, blank=True,
                                  choices=SITUATION_CHOICES)

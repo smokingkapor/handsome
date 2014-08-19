@@ -17,7 +17,7 @@ from braces.views import(
     StaffuserRequiredMixin, SuperuserRequiredMixin
 )
 
-from .constants import PREPAID, PAID, SENT, DONE, DESIGNED, ACCEPTED, REFUNDING
+from .constants import *  # noqa
 from .forms import CreateOrderForm, FinishDesignForm
 from .mixins import OrderPermissionMixin
 from .models import Order, Province, City, Address, Country
@@ -183,14 +183,19 @@ class MyOrderView(LoginRequiredMixin, ListView):
     Display all my orders
     """
     model = Order
-    template_name = 'orders/me.html'
+    template_name = 'orders/me2.html'
 
-    def get_queryset(self):
-        """
-        My orders only
-        """
-        qs = super(MyOrderView, self).get_queryset()
-        return qs.filter(creator=self.request.user).order_by('-created_at')
+    def get_context_data(self, **kwargs):
+        data = super(MyOrderView, self).get_context_data(**kwargs)
+        my_orders = self.request.user.my_orders.all().order_by('-created_at')
+        data.update({'object_list': my_orders})
+        if 'order' in self.request.GET:
+            order = my_orders.get(code=self.request.GET['order'])
+            data.update({'order': order})
+        else:
+            order = my_orders.first()
+            data.update({'order': order})
+        return data
 
 
 class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):

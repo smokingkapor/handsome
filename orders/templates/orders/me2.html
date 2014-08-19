@@ -1,0 +1,123 @@
+{% extends "page.html" %}
+{% load staticfiles thumbnail account_tags %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock%}
+
+{% block title %}我的订单{% endblock %}
+
+{% block content %}
+<div id="my-orders" class="page">
+    <div class="container">
+        <div class="row">
+            <br />
+            <div class="text-center">
+                <img src="{% static 'image/ygrass_eng.png' %}" />
+                <h4>我的订单</h4>
+                <br />
+            </div>
+            <div class="col-md-12 text-center designer-info">
+                <ul class="list-inline">
+                    <li><img width="150" class="avatar" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'medium' }}" /></li>
+                    <li><p>{{ order.get_status_display }}。</p><p>感谢您对我们的支持和信任！</p></li>
+                </ul>
+            </div>
+            <div class="col-md-12 order-detail">
+                <ul class="list-inline order-list">
+                {% for obj in object_list %}
+                    <li {% if order == obj %}class="selected"{% endif %}><a href="{% url 'orders:me' %}?order={{ obj.code }}">订单{{ obj.created_at|date:"m-d" }}</a></li>
+                {% endfor %}
+                </ul>
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">定制详情</a></h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse {% if not order.design_set.exists %}in{% endif %}">
+                            <div class="panel-body">
+                                <table>
+                                    <tr>
+                                        <td class="title">身高</td>
+                                        <td>{{ order.height }}厘米</td>
+                                        <td class="title">体重</td>
+                                        <td>{{ order.weight }}公斤</td>
+                                        <td class="title">年龄段</td>
+                                        <td>{{ order.get_age_group_display }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">衣服尺码</td>
+                                        <td>{{ order.get_clothing_size_display }}</td>
+                                        <td class="title">裤子尺码</td>
+                                        <td>{{ order.get_pants_size_display }}</td>
+                                        <td class="title">鞋子尺码</td>
+                                        <td>{{ order.get_shoe_size_display }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">喜欢的颜色</td>
+                                        <td>{{ order.get_color_display }}</td>
+                                        <td class="title">裤子偏好</td>
+                                        <td>{{ order.get_pants_style_display }}</td>
+                                        <td class="title">价位</td>
+                                        <td>{{ order.price_group }}元左右</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">选择的风格</td>
+                                        <td>{{ order.get_style_display }}</td>
+                                        <td class="title">选择的设计师</td>
+                                        <td>
+                                            <img class="avatar" width="40" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
+                                            <span>{{ order.preferred_designer.get_full_name|default_if_empty:order.preferred_designer.username }}</span>
+                                        </td>
+                                        <td class="title">定制的场合</td>
+                                        <td>{{ order.get_situation_display }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">更多要求</td>
+                                        <td colspan="5">{{ order.message }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">付款信息</a></h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse {% if order.status == 'sent' %}in{% endif %}">
+                            <div class="panel-body">
+                                <dl class="dl-horizontal">
+                                    {% if order.total_price == 0 %}
+                                    <dt>价位：</dt>
+                                    <dd>{{ order.price_group|floatformat }}元</dd>
+                                    {% else %}
+                                    <dt>总价：</dt>
+                                    <dd>{{ order.total_price|floatformat }}元</dd>
+                                    {% endif %}
+                                    <dt>预付款：</dt>
+                                    <dd>{{ order.prepayment|floatformat }}元</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">配送信息</a></h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse {% if order.status == 'sent' %}in{% endif %}">
+                            <div class="panel-body">
+                                {% if order.status == 'sent' %}
+                                <p>物流信息：{{ order.express_info }}</p>
+                                {% endif %}
+                                <p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：{{ order.name }}</p>
+                                <p>收货地址：{{ order.get_address }}</p>
+                                <p>联系电话：{{ order.phone }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

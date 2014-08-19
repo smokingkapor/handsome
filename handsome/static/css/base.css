@@ -8,7 +8,6 @@ body {
 }
 
 a:hover, a:focus {
-    color: #ff4a00;
     text-decoration: none;
 }
 
@@ -17,7 +16,6 @@ a:hover, a:active {
 }
 
 a {
-    color: #6d6d6d;
     text-decoration: none;
 }
 

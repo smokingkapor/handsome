@@ -198,33 +198,6 @@ class CreateRandomUserView(RedirectView):
         return next_url
 
 
-class UploadView(CsrfExemptMixin, LoginRequiredMixin, FormView):
-    """
-    Form view for uploading full body shot.
-    """
-    form_class = UploadForm
-
-    def form_valid(self, form):
-        """
-        Upload shot to temple folder
-        """
-        data = form.cleaned_data
-        user = self.request.user
-        name, ext = os.path.splitext(data['file'].name)
-        filename = '{}.{}.{}'.format(user.id, generate_str(5), ext)
-        root = os.path.join(settings.MEDIA_ROOT, 'tmp')
-        path = os.path.join(root, filename)
-        default_storage.save(path, ContentFile(data['file'].read()))
-        thumbnailer = get_thumbnailer(u'tmp/{}'.format(filename))
-        return HttpResponse(json.dumps({
-            'success': True,
-            'path': thumbnailer.get_thumbnail({'size': (256, 256)}).url,
-            'filename': filename}))
-
-    def form_invalid(self, form):
-        return HttpResponse(json.dumps({'success': False}))
-
-
 class CreatePhotoView(CsrfExemptMixin, LoginRequiredMixin, CreateView):
     """Create user photo"""
     model = Photo
@@ -251,33 +224,3 @@ class RemovePhotoView(LoginRequiredMixin, AjaxResponseMixin,
             photo.file.delete()
             photo.delete()
         return self.render_json_response({'success': True})
-
-
-class UpdateProfileView(LoginRequiredMixin, FormView):
-    """
-    Update profile
-    """
-    form_class = ProfileForm
-    template_name = 'accounts/profile_form.html'
-
-    def get_success_url(self):
-        """
-        Check if next param exist in the query string.
-        """
-        next_url = self.request.GET.get('next')
-        return next_url if next_url else reverse('portals:index')
-
-    def get_form_kwargs(self):
-        """
-        Add user profile to the form
-        """
-        kwargs = super(UpdateProfileView, self).get_form_kwargs()
-        kwargs.update({'instance': self.request.user.profile})
-        return kwargs
-
-    def form_valid(self, form):
-        """
-        Save profile
-        """
-        form.save()
-        return super(UpdateProfileView, self).form_valid(form)

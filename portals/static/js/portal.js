@@ -103,6 +103,7 @@ $(document).ready(function(){
 
     // remove photo
     $(document).on('click', '#photos a', function(){
+        if (!confirm('确定删除？')) return;
         var $this = $(this);
         $.ajax({
             url: $('#photos').data('url'),
