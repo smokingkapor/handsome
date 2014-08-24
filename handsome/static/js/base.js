@@ -8,6 +8,7 @@ $(document).ready(function(){
             location.href = $(this).data('url');
         }
     });
+    $('.carousel').carousel();
 });
 
 function get_cookie(name) {

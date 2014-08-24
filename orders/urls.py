@@ -5,7 +5,7 @@ from .views import(
     CreateOrderView, LoadAddressView, CreateSuccessView, MyOrderView,
     OrderListView, PrepayView, PayView, SendView, ReceiveView, OrderDetailView,
     OrderClothingsView, SaveAddressView, RefundView, FinishDesignView,
-    OrderSupplierClothingsView
+    OrderSupplierClothingsView, SelectClothingView
 )
 
 
@@ -29,4 +29,5 @@ urlpatterns = patterns(
     url(r'^(?P<code>\d+)/send/$', SendView.as_view(), name='send'),
     url(r'^(?P<code>\d+)/receive/$', ReceiveView.as_view(), name='receive'),
     url(r'^(?P<code>\d+)/refund/$', RefundView.as_view(), name='refund'),
+    url(r'^(?P<code>\d+)/select_clothing/$', SelectClothingView.as_view(), name='select_clothings'),
 )

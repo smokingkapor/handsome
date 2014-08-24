@@ -36,6 +36,7 @@
 
 #create-order .my-requirements .title {
     padding: 15px 40px;
+    min-width: 160px;
 }
 
 #create-order .delivery {
@@ -51,66 +52,82 @@
 }
 
 #create-order .my-requirements table {
-    width: 80%;
-}
-
-#my-orders {
-    color: white;
-}
-
-#my-orders table {
-    width: 100%;
-}
-
-#my-orders table .title {
-    padding: 15px 40px;
-    text-align: right;
-}
-
-#my-orders .order-list li {
-    background-color: #606374;
-    padding: 10px 25px;
-    font-size: 16px;
-}
-
-#my-orders .order-list li.selected {
-    background-color: #3464B9;
-}
-
-#my-orders .designer-info {
-    background-color: #333541;
-    color: white;
-    padding: 30px;
-}
-
-#my-orders .designer-info p {
-    font-size: 20px;
-    width: 260px;
-    text-align: left;
-}
-
-#my-orders .order-detail {
-    background-color: #434551;
+    width: 96%;
 }
 
 #my-orders a {
     color: white;
 }
 
-#my-orders .panel {
+#my-orders .order {
+    background-color: #333541;
+    color: white;
+    margin-top: 15px;
+}
+
+#my-orders .order-head {
+    padding: 15px 5px;
+}
+
+#my-orders .order-body {
+    background-color: #434551;
+    padding: 15px 5px;
+}
+
+#my-orders .order-body .buttons {
+    background-color: #333541;
+    padding: 5px 15px;
+}
+
+#my-orders .order-body .buttons a {
+    display: block;
+    padding: 5px;
+}
+
+#order-detail .panel-group {
+    color: white;
+}
+
+#order-detail table {
+    width: 100%;
+}
+
+#order-detail table .title {
+    padding: 15px 40px;
+    text-align: right;
+    min-width: 160px;
+}
+
+#order-detail .panel-group a {
+    color: white;
+}
+
+#order-detail .panel {
     border: none;
 }
 
-#my-orders .panel-heading {
+#order-detail .panel-heading {
     background-color: #333541;
     border: none;
 }
 
-#my-orders .panel-heading a {
+#order-detail .panel-heading a {
     display: block;
 }
 
-#my-orders .panel-body {
-    background-color: #333541;
+#order-detail .panel-body {
+    background-color: #434551;
+    border: none;
+}
+
+#order-detail .design .slide {
+    width: 300px;
+}
+
+#order-detail .design .carousel-indicators {
+    bottom: -27px;
+}
+
+#order-detail .design td {
     border: none;
 }

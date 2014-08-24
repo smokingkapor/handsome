@@ -8,46 +8,39 @@
 {% block title %}我的订单{% endblock %}
 
 {% block content %}
-<div id="my-orders" class="page">
-    <div class="container body">
+<div class="page">
+    <div class="container">
         <div class="row">
-            <div class="col-md-12 content">
+            <br />
+            <div class="text-center">
+                <img src="{% static 'image/ygrass_eng.png' %}" />
                 <h4>我的订单</h4>
-                <table class="table table-bordered orders">
-                    <tbody>
-                        {% for obj in object_list %}
-                        <tr class="column-info">
-                            <td colspan="3">
-                                <span class="order-status">{{ obj.get_status_display }}</span>
-                                <span>订单号：</span>
-                                <a href="{% url 'orders:detail' code=obj.code %}">{{ obj.code }}</a>
-                                <span class="sep">|</span>
-                                <span>{{ obj.created_at|date:"Y年m月d日 H:i" }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="order-description">
-                                <span>服装风格：{{ obj.get_style_display }}</span><br />
-                                <span>穿着年龄：{{ obj.get_age_group_display }}</span><br />
-                                <span>喜欢颜色：{{ obj.get_color_display }}</span><br />
-                                <span>个人爱好：{{ obj.get_hobby_display }}</span><br />
-                                <span>更多要求：{{ obj.message|truncatechars:100 }}</span><br />
-                            </td>
-                            <td class="text-center">
-                                {% if obj.total_price == 0 %}
-                                <span>价位：{{ obj.price_group|floatformat }}元</span>
-                                {% else %}
-                                <span>{{ obj.total_price|floatformat }}元</span>
-                                {% endif %}
-                            </td>
-                            <td class="text-center">
-                                <a href="{% url 'orders:detail' code=obj.code %}">订单详情></a><br />
-                                {{ obj.get_operations|safe }}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <br />
+            </div>
+            <div id="my-orders">
+                {% for obj in object_list %}
+                <div class="order col-md-12">
+                    <div class="order-head row">
+                        <div class="text-left col-sm-6">
+                            <span>订单编号：</span><a href="{% url 'orders:detail' code=obj.code %}">{{ obj.code }}</a>
+                            <span class="sep">|</span>
+                            <span>{{ obj.created_at|date:"Y年m月d日 H:i" }}</span>
+                        </div>
+                        <div class="text-right col-sm-6">
+                            <span class="pull-right">订单状态：{{ obj.get_status_display }}</span>
+                        </div>
+                    </div>
+                    <div class="order-body row">
+                        <div class="col-sm-10">
+                            <p>适合{{ obj.get_situation_display }}时穿的{{ obj.get_style_display }}服装, 价位在{{ obj.price_group }}左右。</p>
+                        </div>
+                        <div class="col-sm-2 buttons">
+                            {{ obj.get_operations|safe }}
+                            <a href="{% url 'orders:detail' code=obj.code %}">订单详情</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

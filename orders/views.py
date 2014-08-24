@@ -25,6 +25,8 @@ from accounts.models import Profile
 from designs.constants import SELECTED, WAITING, REJECTED
 from handsome.utils import send_sms
 from clothings.models import Supplier
+from designs.models import DesignClothing
+from orders.models import OrderClothing
 
 
 class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
@@ -35,15 +37,6 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
     model = Order
     form_class = CreateOrderForm
     template_name = 'orders/create_order.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Check user person size info first.
-        """
-        if request.user.is_authenticated() and not request.user.profile.weight:
-            return redirect('portals:survey_more')
-        else:
-            return super(CreateOrderView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         """
@@ -183,19 +176,11 @@ class MyOrderView(LoginRequiredMixin, ListView):
     Display all my orders
     """
     model = Order
-    template_name = 'orders/me2.html'
+    template_name = 'orders/me.html'
 
-    def get_context_data(self, **kwargs):
-        data = super(MyOrderView, self).get_context_data(**kwargs)
-        my_orders = self.request.user.my_orders.all().order_by('-created_at')
-        data.update({'object_list': my_orders})
-        if 'order' in self.request.GET:
-            order = my_orders.get(code=self.request.GET['order'])
-            data.update({'order': order})
-        else:
-            order = my_orders.first()
-            data.update({'order': order})
-        return data
+    def get_queryset(self):
+        qs = super(MyOrderView, self).get_queryset()
+        return qs.order_by('-created_at')
 
 
 class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
@@ -212,7 +197,8 @@ class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
             'PREPAID': PREPAID,
             'SELECTED': SELECTED,
             'WAITING': WAITING,
-            'REJECTED': REJECTED
+            'REJECTED': REJECTED,
+            'DESIGNED': DESIGNED
         })
         return data
 
@@ -504,3 +490,27 @@ class RefundView(LoginRequiredMixin, OrderPermissionMixin, RedirectView):
         else:
             raise Http404()
         return reverse('orders:detail', kwargs={'code': order.code})
+
+
+class SelectClothingView(LoginRequiredMixin, RedirectView):
+    """
+    Select clothings and update the order status
+    """
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Update order here
+        """
+        order = Order.objects.get(code=kwargs['code'])
+        if self.request.user != order.creator:
+            raise Http404
+        ids = self.request.GET['ids'].split(',')
+        total_price = 0
+        for design_clothing in DesignClothing.objects.in_bulk(ids).values():
+            total_price += design_clothing.clothing.price
+            OrderClothing.objects.get_or_create(order=order, design_clothing=design_clothing)
+        order.status = ACCEPTED
+        order.total_price = total_price
+        order.save()
+        return '{}?code={}'.format(reverse('payments:home'), order.code)

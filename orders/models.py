@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from accounts.models import Profile
 from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
 from django.db.models.signals import post_save
 
 from .constants import *  # noqa
+from accounts.models import Profile
 
 
 class Province(models.Model):
@@ -72,16 +73,16 @@ class Order(models.Model):
     Order model
     """
     STATUS_CHOICES = (
-        (CREATED, u'等待您支付预付款'),
-        (PREPAID, u'设计师正在设计'),
-        (DESIGNED, u'设计完成，等待您选择'),
-        (ACCEPTED, u'方案已确认，等待您支付尾款'),
-        (PAID, u'尾款支付完成，我们正在配送'),
-        (SENT, u'已经发货，请您等待收货'),
-        (CANCELED, u'订单已经却小'),
-        (DONE, u'订单已经完成'),
-        (REFUNDING, u'我们正在退款'),
-        (REFUNDED, u'已经退款'),
+        (CREATED, u'等待支付预付款'),
+        (PREPAID, u'正在设计'),
+        (DESIGNED, u'等待您选择'),
+        (ACCEPTED, u'等待支付尾款'),
+        (PAID, u'正在配送'),
+        (SENT, u'已发货'),
+        (CANCELED, u'已取消'),
+        (DONE, u'已完成'),
+        (REFUNDING, u'正在退款'),
+        (REFUNDED, u'已退款'),
     )
 
     SITUATION_CHOICES = (
@@ -148,17 +149,17 @@ class Order(models.Model):
         if self.status == CREATED:
             # prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
             prepay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
-            operations = '<a class="highlight" href="{}">支付预付款></a>'.format(prepay_url)
+            operations = '<a href="{}">支付预付款</a>'.format(prepay_url)
         elif self.status == ACCEPTED:
             # pay_url = reverse('orders:pay', kwargs={'code': self.code})
             pay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
-            operations = '<a class="highlight" href="{}">支付尾款></a>'.format(pay_url)
+            operations = '<a href="{}">支付尾款</a>'.format(pay_url)
         elif self.status == SENT:
             receive_url = reverse('orders:receive', kwargs={'code': self.code})
-            operations = '<a class="highlight" href="{}">确认收货></a>'.format(receive_url)
+            operations = '<a href="{}">确认收货</a>'.format(receive_url)
         elif self.status == DESIGNED:
             choose_design_url = reverse('orders:detail', kwargs={'code': self.code})
-            operations = '<a class="highlight" href="{}">挑选设计></a>'.format(choose_design_url)
+            operations = '<a href="{}">挑选设计</a>'.format(choose_design_url)
 
         return operations
 
@@ -178,6 +179,15 @@ class Order(models.Model):
 
     def __unicode__(self):
         return '{}\'s order'.format(self.creator.username)
+
+
+class OrderClothing(models.Model):
+    """
+    Selected clothing for the order
+    """
+    order = models.ForeignKey(Order)
+    design = models.ForeignKey('designs.Design', blank=True, null=True)
+    design_clothing = models.ForeignKey('designs.DesignClothing')
 
 
 def generate_order_code(sender, instance, created, *args, **kwargs):

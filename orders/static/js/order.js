@@ -168,4 +168,18 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#confirm-selection-btn').click(function(){
+        if ($(this).is('.loading')) return; else $(this).addClass('loading');
+        var all = $('.wanted:not(:checked)').size() == 0;
+        if ($('.wanted:checked').size() == 0) {
+            alert('您忘记选择衣服了');
+            return;
+        }
+        var ids = [];
+        $('.wanted:checked').each(function(){
+            ids.push($(this).data('id'));
+        });
+        location.href = $(this).data('url') + '?all=' + all + '&ids=' + ids.join(',');
+    });
 });

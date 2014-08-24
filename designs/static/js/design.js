@@ -51,6 +51,8 @@ $(document).ready(function(){
                 $btn.button('reset');
                 if (data.success) {
                     location.href = data.next;
+                } else {
+                    alert('所有信息都填了？');
                 }
             }
         });
