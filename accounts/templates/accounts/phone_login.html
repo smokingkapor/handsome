@@ -17,12 +17,11 @@
         <div class="text-center">
             <br /><br />
             <img src="{% static 'image/ygrass_eng.png' %}" />
-            <h4>登录优草形象</h4>
+            <h4>手机号快速登录</h4>
             <br />
         </div>
         <div id="phone-login" class="row">
             <div class="col-md-4">
-                <h3>手机号快速登录</h3><br />
                 <form method="post" class="form-horizontal" role="form">
                     {% csrf_token %}
                     <div class="form-group {% if form.phone.errors %}has-error{% endif %}">
@@ -51,12 +50,12 @@
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
-                            <input class="btn btn-primary" type="submit" value="登录" />
+                            <input class="btn btn-primary" type="submit" value="登录" /><br /><br />
+                            <small>或者</small>&nbsp;<a href="{% url 'accounts:login' %}?{{ query_string }}">普通登录</a>
                         </div>
                     </div>
                 </form>
             </div>
-            {% comment %}
             <div class="col-md-4 col-md-offset-4">
                 <p>还没账号？您可以</p>
                 {% if query_string %}
@@ -65,13 +64,6 @@
                 {% endif %}
                 <h4><a href="{% url 'accounts:register' %}?{{ query_string }}">马上注册新账号</a></h4>
             </div>
-            {% endcomment %}
-            {% if query_string %}
-            <div class="col-md-4 col-md-offset-4">
-                <p>还没账号？您可以</p>
-                <p><a href="{% url 'accounts:create_random_user' %}?{{ query_string }}" class="btn btn-primary">无账号快速下单</a></p>
-            </div>
-            {% endif %}
         </div>
     </div>
 </div>

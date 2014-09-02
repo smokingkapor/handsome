@@ -182,4 +182,36 @@ $(document).ready(function(){
         });
         location.href = $(this).data('url') + '?all=' + all + '&ids=' + ids.join(',');
     });
+
+    $('.return-btn').click(function(){
+        $('#return').modal({show: true});
+        $('#return .submit-return-btn').data('url', $(this).data('url'));
+    });
+    $('#return .submit-return-btn').click(function(){
+        var $btn = $(this);
+        var express_provider = $('#express_provider').val();
+        var express_code = $('#express_code').val();
+        if (!express_provider || express_code.length < 6) {
+            alert('请输入正确的快递信息');
+            return;
+        }
+        $btn.button('loading');
+         $.ajax({
+             url: $btn.data('url'),
+             type: 'post',
+             dataType: 'json',
+             data: {
+                 express_provider: express_provider,
+                 express_code: express_code,
+                 csrfmiddlewaretoken: get_cookie('csrftoken')
+             },
+             success: function(data) {
+                 if (data.success) {
+                     location.href = location.href;
+                 }
+              }
+         }).always(function () {
+            $btn.button('reset');
+        });
+    });
 });

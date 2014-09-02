@@ -5,17 +5,18 @@
 <link rel="stylesheet" href="{% static 'css/payment.css' %}">
 {% endblock %}
 
-{% block title %}{% if order.status == CREATED %}支付预付款{% else %}支付尾款{% endif %}{% endblock %}
+{% block title %}{% if order.status == CREATED %}支付预付款{% else %}支付{% endif %}{% endblock %}
 
 {% block content %}
 <div class="page">
-    {% include "steps.html" with active="pay" %}
     <div class="text-center">
+        <br />
         <img src="{% static 'image/ygrass_eng.png' %}" />
-        <h4>{% if order.status == CREATED %}支付预付款{% else %}支付尾款{% endif %}</h4>
+        <h4>{% if order.status == CREATED %}支付预付款{% else %}支付{% endif %}</h4>
         <br />
     </div>
     <div class="container">
+        {% comment %}
         <div class="row">
             <div class="col-md-12">
                 <p>总价 x 10% = 预付款&nbsp;&nbsp;(<span class="text-success">* 预付款可以全额退款的哦</span>)</p>
@@ -23,6 +24,7 @@
                 <hr />
             </div>
         </div>
+        {% endcomment %}
         <div class="row">
             <form method="get" action="{% url 'payments:pay' %}" class="col-md-12 content">
                 <input type="hidden" name="code" value="{{ order.code }}" />

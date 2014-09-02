@@ -25,6 +25,7 @@
                 <br />
                 <p>
                     <span>订单号：{{ order.code }}</span>
+                    <b>{{ order.get_status_display }}</b>
                     <span class="pull-right">
                         {% if user.is_staff %}
                         {{ order.get_designer_operations|safe }}
@@ -44,6 +45,9 @@
                         </div>
                         <div id="collapseZero" class="panel-collapse collapse in">
                             <div class="panel-body">
+                                {% if order.report %}
+                                <p>设计师评语：{{ order.report }}</p><br />
+                                {% endif %}
                                 <table class="col-sm-12">
                                 {% for design in order.design_set.all %}
                                 <tr class="design">
@@ -64,7 +68,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        {% if order.status == DESIGNED %}
+                                        {% if order.status == DESIGNED or order.status == PREPAID %}
                                         <p>搭配方案{{ forloop.counter }}(可以只选择你想要的)</p>
                                         <table class="clothings table">
                                             {% for design_clothing in design.clothings.all %}
@@ -107,10 +111,10 @@
                                     </td>
                                 </tr>
                                 {% endfor %}
-                                {% if order.status == DESIGNED %}
+                                {% if order.status == DESIGNED and not user.profile.is_designer %}
                                 <tr>
                                     <td colspan="2" class="text-right">
-                                        <button id="confirm-selection-btn" data-url="{% url 'orders:select_clothings' code=object.code %}" class="btn btn-primary">确认并支付预付款</button>
+                                        <button id="confirm-selection-btn" data-url="{% url 'orders:select_clothings' code=object.code %}" class="btn btn-primary">确认并付款</button>
                                     </td>
                                 </tr>
                                 {% endif %}
@@ -169,6 +173,7 @@
                             </div>
                         </div>
                     </div>
+                    {% if order.total_price != 0 %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">付款信息</a></h4>
@@ -176,27 +181,23 @@
                         <div id="collapseTwo" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <dl class="dl-horizontal">
-                                    {% if order.total_price == 0 %}
-                                    <dt>价位：</dt>
-                                    <dd>{{ order.price_group|floatformat }}元</dd>
-                                    {% else %}
                                     <dt>总价：</dt>
                                     <dd>{{ order.total_price|floatformat }}元</dd>
-                                    {% endif %}
-                                    <dt>预付款：</dt>
-                                    <dd>{{ order.prepayment|floatformat }}元</dd>
                                 </dl>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">配送信息</a></h4>
                         </div>
                         <div id="collapseThree" class="panel-collapse collapse in">
                             <div class="panel-body">
-                                {% if order.status == 'sent' %}
+                                {% if order.status == SENT %}
                                 <p>物流信息：{{ order.express_info }}</p>
+                                {% elif order.status == RETURNING %}
+                                <p>退货快递信息：{{ order.express_info }}</p>
                                 {% endif %}
                                 <p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：{{ order.name }}</p>
                                 <p>收货地址：{{ order.get_address }}</p>

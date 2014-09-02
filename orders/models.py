@@ -73,16 +73,18 @@ class Order(models.Model):
     Order model
     """
     STATUS_CHOICES = (
-        (CREATED, u'等待支付预付款'),
-        (PREPAID, u'正在设计'),
+        (CREATED, u'正在设计'),
+        # (CREATED, u'等待支付预付款'),
+        # (PREPAID, u'正在设计'),
         (DESIGNED, u'等待您选择'),
-        (ACCEPTED, u'等待支付尾款'),
+        (ACCEPTED, u'等待支付'),
         (PAID, u'正在配送'),
         (SENT, u'已发货'),
         (CANCELED, u'已取消'),
         (DONE, u'已完成'),
         (REFUNDING, u'正在退款'),
         (REFUNDED, u'已退款'),
+        (RETURNING, u'正在退货'),
     )
 
     SITUATION_CHOICES = (
@@ -94,7 +96,7 @@ class Order(models.Model):
 
     code = models.CharField(max_length=32, unique=True, blank=True, null=True)
     total_price = models.FloatField(default=0)
-    prepayment = models.FloatField()
+    prepayment = models.FloatField(default=0)
 
     # address info
     address_province = models.ForeignKey(Province, null=True, blank=True)
@@ -129,7 +131,6 @@ class Order(models.Model):
 
     status = models.CharField(max_length=16, choices=STATUS_CHOICES,
                               default=CREATED)
-    express_info = models.CharField(max_length=128, blank=True)
     creator = models.ForeignKey(User, related_name='my_orders')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -146,20 +147,23 @@ class Order(models.Model):
         Get operation buttons for current order
         """
         operations = ''
-        if self.status == CREATED:
-            # prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
-            prepay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
-            operations = '<a href="{}">支付预付款</a>'.format(prepay_url)
-        elif self.status == ACCEPTED:
+#         if self.status == CREATED:
+#             # prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
+#             prepay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
+#             operations = u'<a href="{}">支付预付款</a>'.format(prepay_url)
+        if self.status == ACCEPTED:
             # pay_url = reverse('orders:pay', kwargs={'code': self.code})
             pay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
-            operations = '<a href="{}">支付尾款</a>'.format(pay_url)
+            operations = u'<a href="{}">支付</a>'.format(pay_url)
         elif self.status == SENT:
             receive_url = reverse('orders:receive', kwargs={'code': self.code})
-            operations = '<a href="{}">确认收货</a>'.format(receive_url)
+            operations = u'<a href="{}">确认收货</a>'.format(receive_url)
         elif self.status == DESIGNED:
             choose_design_url = reverse('orders:detail', kwargs={'code': self.code})
-            operations = '<a href="{}">挑选设计</a>'.format(choose_design_url)
+            operations = u'<a href="{}">挑选设计</a>'.format(choose_design_url)
+        elif self.status in [SENT, DONE]:
+            return_url = '{}?code={}'.format(reverse('orders:return'), self.code)
+            operations = u'<a href="javascript:void(0)" class="return-btn" data-url="{}">申请退货</a>'.format(return_url)
 
         return operations
 
@@ -168,14 +172,26 @@ class Order(models.Model):
         Operations for designer
         """
         operations = ''
-        if self.status == PREPAID:
+        if self.status == CREATED:
             create_design_url = u'{}?code={}'.format(reverse_lazy('designs:create'), self.code)
             finish_design_url = reverse_lazy('orders:finish_design', kwargs={'code': self.code})
             operations = '<a class="highlight" href="{}">创建方案></a><br /><a class="highlight" href="{}">设计结束></a>'.format(create_design_url, finish_design_url)
         elif self.status == PAID:
             send_url = reverse('orders:send', kwargs={'code': self.code})
             operations = '<a class="highlight send-order-btn" href="javascript:void(0);" data-url="{}">已经寄出></a>'.format(send_url)
+        elif self.status == RETURNING:
+            receive_return_url = reverse('orders:receive_return', kwargs={'code': self.code})
+            operations = '<a class="highlight" href="{}">收到退货></a>'.format(receive_return_url)
         return operations
+
+    @property
+    def express_info(self):
+        delivery = self.delivery_set.last()
+        if delivery:
+            return u'{} {}'.format(delivery.express_provider,
+                                    delivery.express_code)
+        else:
+            return u'暂时没有快递信息'
 
     def __unicode__(self):
         return '{}\'s order'.format(self.creator.username)

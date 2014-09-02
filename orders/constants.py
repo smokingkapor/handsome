@@ -8,6 +8,7 @@ PAID = 'paid'
 SENT = 'sent'
 CANCELED = 'canceled'
 DONE = 'done'
+RETURNING = 'returning'
 REFUNDING = 'refunding'
 REFUNDED = 'refunded'
 

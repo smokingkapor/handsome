@@ -61,6 +61,11 @@ class Profile(models.Model):
     COLOR_CHOICES = (
         (BLACK, u'黑色'),
         (GRAY, u'灰色'),
+        (WIHTE, u'白色'),
+        (RED, u'红色'),
+        (ORANGE, u'橙色'),
+        (GREEN, u'绿色'),
+        (YELLOW, u'黄色'),
     )
 
     PANTS_STYLE_CHOICES = (
@@ -91,6 +96,8 @@ class Profile(models.Model):
     shoe_size = models.CharField(max_length=16, blank=True,
                                  choices=SHOE_SIZE_CHOICES)
     is_freshman = models.BooleanField(default=True)
+    intro = models.TextField(blank=True)
+    qq = models.CharField(max_length=32, blank=True)
 
     def get_fullbody_shot(self):
         photo = self.user.photo_set.filter(tag=FULL_BODY_SHOT, is_primary=True).first()  # noqa
@@ -100,6 +107,13 @@ class Profile(models.Model):
 
     def __unicode__(self):
         return ('designer - ' if self.is_designer else '') + self.user.username
+
+
+class DesignerWork(models.Model):
+    user = models.ForeignKey(User)
+    file = ThumbnailerImageField(
+        upload_to=path_and_rename('designer-works'),
+        resize_source=dict(size=(1024, 1024), sharpen=True))
 
 
 class Photo(models.Model):

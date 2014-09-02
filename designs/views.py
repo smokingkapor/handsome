@@ -89,7 +89,7 @@ class CreateDesignView(StaffuserRequiredMixin, AjaxResponseMixin,
                 design.photos.add(photo)
 
         if self.request.is_ajax():
-            url = reverse('designs:detail', kwargs={'code': design.code})
+            url = reverse('orders:detail', kwargs={'code': order.code})
             return self.render_json_response({'success': True, 'next': url})
 
         return super(CreateDesignView, self).form_valid(form)

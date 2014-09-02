@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 import json
-import os
 import string
 from datetime import datetime
 
 from django.conf import settings
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http.response import HttpResponse
-from django.views.generic.base import RedirectView, View
+from django.views.generic.base import RedirectView, View, TemplateView
 from django.views.generic.edit import FormView, CreateView
 from django.utils.crypto import get_random_string
 
@@ -20,14 +17,13 @@ from braces.views import(
     LoginRequiredMixin, CsrfExemptMixin, AjaxResponseMixin,
     JsonRequestResponseMixin
 )
-from easy_thumbnails.files import get_thumbnailer
 
 from .forms import(
-    LoginForm, RegisterForm, UploadForm, ProfileForm, PhoneLoginForm,
-    PhotoForm
+    LoginForm, RegisterForm, ProfileForm, PhoneLoginForm,
+    PhotoForm, UpdatePasswordForm
 )
-from .models import Profile, Photo
-from handsome.utils import generate_str, send_sms
+from .models import Profile, Photo, DesignerWork
+from handsome.utils import send_sms
 
 
 class LoginView(FormView):
@@ -130,7 +126,7 @@ class LogoutView(RedirectView):
     Logout current user and redirect to sign in page
     """
     permanent = False
-    url = reverse_lazy('accounts:phone_login')
+    url = reverse_lazy('accounts:login')
 
     def get(self, request, *args, **kwargs):
         """
@@ -224,3 +220,60 @@ class RemovePhotoView(LoginRequiredMixin, AjaxResponseMixin,
             photo.file.delete()
             photo.delete()
         return self.render_json_response({'success': True})
+
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/profile.html'
+
+
+class UpdateProfileView(LoginRequiredMixin, AjaxResponseMixin,
+                        JsonRequestResponseMixin, FormView):
+    form_class = ProfileForm
+    template_name = 'accounts/update_profile.html'
+
+    def post_ajax(self, request, *args, **kwargs):
+        form = ProfileForm(request.POST, instance=self.request.user.profile)
+        form.save()
+        return self.render_json_response({'success': True,
+                                          'next': reverse('accounts:profile')})
+
+    def get_context_data(self, **kwargs):
+        """
+        Add extra data to context
+        """
+        data = super(UpdateProfileView, self).get_context_data(**kwargs)
+        data.update({
+            'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
+            'CLOTHING_SIZE_CHOICES': Profile.CLOTHING_SIZE_CHOICES,
+            'PANTS_SIZE_CHOICES': Profile.PANTS_SIZE_CHOICES,
+            'PANTS_STYLE_CHOICES': Profile.PANTS_STYLE_CHOICES,
+            'SHOE_SIZE_CHOICES': Profile.SHOE_SIZE_CHOICES,
+            'COLOR_CHOICES': Profile.COLOR_CHOICES,
+        })
+        return data
+
+
+class UpdatePasswordView(LoginRequiredMixin, FormView):
+    form_class = UpdatePasswordForm
+    template_name = 'accounts/update_password.html'
+    success_url = reverse_lazy('accounts:update_password')
+
+    def get_form(self, form_class):
+        return form_class(self.request.user, **self.get_form_kwargs())
+
+    def form_valid(self, form):
+        messages.success(self.request, u'密码修改成功')
+        return super(UpdatePasswordView, self).form_valid(form)
+
+
+class DesignerCaseView(TemplateView):
+    template_name = 'accounts/case.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(DesignerCaseView, self).get_context_data(**kwargs)
+        user = User.objects.get(pk=self.kwargs['pk'])
+        data.update({
+            'cases': user.designerwork_set.all(),
+            'designer': user.profile
+        })
+        return data

@@ -18,6 +18,24 @@
     width: 70%;
 }
 
+.tabs {
+    margin: 0;
+    margin-bottom: 1px;
+}
+
+.tabs li {
+    background-color: #606374;
+    padding: 5px 15px;
+}
+
+.tabs li.selected {
+    background-color: #3464B9;
+}
+
+.tabs li a {
+    color: white;
+}
+
 #create-order {
     width: 100%;
     min-height: 93%;

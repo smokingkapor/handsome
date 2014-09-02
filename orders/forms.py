@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 
-from orders.models import Order
+from orders.models import Order, Address
 
 
 class CreateOrderForm(forms.ModelForm):
@@ -20,3 +20,9 @@ class FinishDesignForm(forms.Form):
     Form for finish design and update the order status
     """
     report = forms.CharField(label=u'设计报告', widget=forms.Textarea)
+
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        exclude = ('user', 'is_selected')

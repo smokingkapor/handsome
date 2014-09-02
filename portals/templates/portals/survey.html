@@ -17,7 +17,7 @@
 {% block title %}优草设计{% endblock %}
 
 {% block content %}
-<div class="carousel slide page" id="survey">
+<div class="carousel slide page" id="survey" data-ride="carousel" data-interval="false">
     {% include "steps.html" %}
     <div class="carousel-inner">
         <div class="item active" id="style">
@@ -34,7 +34,7 @@
                                 <p>适合上班的场合</p>
                             </div>
                             <img width="250" src="{{ STATIC_URL }}image/style_{{ choice.0 }}.png" />
-                            <span class="btn btn-primary">选择这种</span>
+                            <span class="btn btn-primary select-btn">选择这种</span>
                         </li>
                         {% endfor %}
                     </ul>
@@ -54,9 +54,9 @@
                             <img width="300" height="300" src="{{ designer.avatar|thumbnail_url:'medium' }}" />
                             <div class="intro">
                                 <p class="name"><b>{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</b></p>
-                                <p class="content">出生于意大利水城威尼斯近郊，是一位知名的服装设计师，有同名商标及同名公司。1950年自己独立开设了服装设计公司，地点选在巴黎的Richepanse街上。早期承接相当多剧服、面具等表演艺术的案子......</p>
+                                <p class="content">{{ designer.intro }} <a target="_blank" href="{% url 'accounts:designer_case' pk=designer.user.id %}">查看更多</a></p>
                                 <br /><br /><br />
-                                <a href="#" class="btn btn-default">查看详情</a>
+                                <span class="btn btn-default select-btn">选择设计师</span>
                             </div>
                         </li>
                         {% endfor %}

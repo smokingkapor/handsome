@@ -1,5 +1,6 @@
 #home .intro {
     background-color: #3F404E;
+    color: white;
 }
 
 #home .case {
@@ -107,8 +108,8 @@
     width: 100%;
     color: white;
     background-color: #0F3870;
-    opacity: .7;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=70)";
+    opacity: .9;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=90)";
 }
 
 #survey #designer li.option .intro .name {
@@ -132,11 +133,21 @@
     color: white;
 }
 
+
 #survey-more .line .selector li {
     background-color: white;
     padding: 6px 15px;
     margin-right: 15px;
     color: #333;
+}
+
+#survey-more #color li {
+    padding: 3px;
+}
+
+#survey-more #color li div {
+    width: 35px;
+    height: 25px;
 }
 
 #survey-more .line.required {
@@ -177,6 +188,10 @@
     cursor: pointer;
 }
 
+#survey-more #color li:hover, #survey-more #color li.selected {
+    padding: 2px;
+}
+
 #survey-more .line .image-selector li:hover .cover, #survey-more .line .image-selector li.selected .cover {
     display: block;
     cursor: pointer;
@@ -186,7 +201,7 @@
     padding-right: 15px;
     font-size: 16px;
     font-weight: normal;
-    width: 100px;
+    width: 150px;
     display: inline-block;
 }
 

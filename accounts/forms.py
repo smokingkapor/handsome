@@ -5,7 +5,6 @@ from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.core.validators import validate_integer
 
 from .models import Profile, Photo
 
@@ -38,8 +37,8 @@ class PhoneLoginForm(forms.Form):
     """
     Form for user login with phone
     """
-    phone = forms.CharField(label=u'手机号')
-    password = forms.CharField(label=u'动态密码')
+    phone = forms.CharField(label=u'*手机号')
+    password = forms.CharField(label=u'*动态密码')
 
     def clean_phone(self):
         """
@@ -120,13 +119,19 @@ class ProfileForm(forms.ModelForm):
         fields = ('height', 'weight', 'color', 'clothing_size', 'pants_size',
                   'shoe_size', 'pants_style', 'age_group')
 
-    def _validate_field(self, field_name):
-        value = self.cleaned_data.get(field_name)
-        validate_integer(value)
-        return value
 
-    def clean_height(self):
-        return self._validate_field('height')
+class UpdatePasswordForm(forms.Form):
+    new_password = forms.CharField(label=u'新密码', widget=forms.PasswordInput)
+    new_password_again = forms.CharField(label=u'确认新密码', widget=forms.PasswordInput)
 
-    def clean_weight(self):
-        return self._validate_field('weight')
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UpdatePasswordForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        if self.data.get('new_password') != self.data.get('new_password_again'):
+            raise forms.ValidationError(u'两次输入的新密码不匹配')
+
+        self.user.set_password(self.data.get('new_password'))
+        self.user.save()
+        return self.cleaned_data

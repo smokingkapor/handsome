@@ -37,6 +37,7 @@ LOCAL_APPS = (
     'accounts',
     'clothings',
     'designs',
+    'deliveries',
     'handsome',
     'orders',
     'payments',
@@ -145,7 +146,7 @@ EMAIL_SUBJECT_PREFIX = u'[优草]'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'ygrass.system.notification@gmail.com'
 
-LOGIN_URL = '/accounts/phone_login/'
+LOGIN_URL = '/accounts/login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

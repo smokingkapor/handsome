@@ -4,16 +4,10 @@
     <div class="container">
         <div class="col-md-12">
             <div class="text-center">
-                <ul class="list-inline">
-                    {% for page in flatpages %}
-                        <li><a href="/flatpages{{ page.url }}">{{ page.title }}</a></li>
-                    {% endfor %}
-                    <li><a href="{% url 'orders:supplier_clothings' %}">供应商</a></li>
-                </ul>
-            </div>
-            <div class="text-center">
                 <span class="text-left">© 2014 ygrass.com, all rights reserved. 浙ICP备14019743号-1</span>
+                <a href="{% url 'orders:supplier_clothings' %}">供应商</a>
             </div>
+            <br />
         </div>
     </div>
 </div>

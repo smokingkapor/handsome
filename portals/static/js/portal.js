@@ -17,11 +17,12 @@ $(document).ready(function(){
         $('#survey #steps .' + active_item).addClass('active');
     });
 
-    $('.selector .option').click(function(){
+    $('.selector .option .select-btn').click(function(){
         var $selector = $(this).parents('.selector');
+        var $option = $(this).parents('.option');
         $selector.find('.option').removeClass('selected');
         $selector.parents('.item').find('.next').removeClass('hidden');
-        $(this).addClass('selected');
+        $option.addClass('selected');
         if ($selector.is('.auto-slide')) {
             $('.carousel').carousel('next');
         } else if ($selector.is('.last-slide')) {
@@ -29,6 +30,19 @@ $(document).ready(function(){
             location.href = $selector.data('url');
         }
     });
+
+    // price slider tooltip
+    if ($('#price-slider').size() > 0){
+        $('#price-slider').slider({
+            range: 'min',
+            value: 600,
+            min: 300,
+            max: 2000,
+            slide: function(event, ui) {
+                $("#price-val").text(ui.value + '元');
+            }
+        });
+    }
 
     // init style and designer in survey more
     function init_survey_more() {
@@ -39,17 +53,28 @@ $(document).ready(function(){
             var survey = {};
         }
         $('#style_again li').removeClass('selected').each(function(){
-            if ($(this).data('value') == survey.style.value) {
+            if (survey.style && $(this).data('value') == survey.style.value) {
                 $(this).addClass('selected');
                 return false;
             }
         });
         $('#designer_again li').removeClass('selected').each(function(){
-            if ($(this).data('value') == survey.designer.value) {
+            if (survey.designer && $(this).data('value') == survey.designer.value) {
                 $(this).addClass('selected');
                 return false;
             }
         });
+        if (location.href.indexOf('mode=edit') != -1) {
+            $('#situation li').removeClass('selected').each(function(){
+                if (survey.situation && $(this).data('value') == survey.situation.value) {
+                    $(this).addClass('selected');
+                    return false;
+                }
+            });
+            $('#message').val(survey.message.value);
+            $('#price-slider').slider('option', 'value', survey.price.value);
+            $("#price-val").text(survey.price.value + '元');
+        }
     }
     init_survey_more();
 
@@ -74,32 +99,22 @@ $(document).ready(function(){
         }
     });
 
-    // price slider tooltip
-    $('#price-slider').slider({
-        range: 'min',
-        value: 600,
-        min: 400,
-        max: 900,
-        slide: function(event, ui) {
-            $("#price-val").text(ui.value + '元');
-        }
-    });
-
-    // upload photo
-    $('#fileupload').fileupload({
-        dataType: 'json',
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#upload_process b').text(progress+'%');
-            $('#upload_process').show();
-        },
-        done: function(e, data) {
-            $('#upload_process').hide();
-            if (data.result.success) {
-                $('#photos').append('<li><img width="128" src="{url}" /><a data-id="{id}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a></li>'.replace('{url}', data.result.path).replace('{id}', data.result.id));
+    if ($('#fileupload').size() > 0){
+        $('#fileupload').fileupload({
+            dataType: 'json',
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#upload_process b').text(progress+'%');
+                $('#upload_process').show();
+            },
+            done: function(e, data) {
+                $('#upload_process').hide();
+                if (data.result.success) {
+                    $('#photos').append('<li><img width="128" src="{url}" /><a data-id="{id}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a></li>'.replace('{url}', data.result.path).replace('{id}', data.result.id));
+                }
             }
-        }
-    });
+        });
+    }
 
     // remove photo
     $(document).on('click', '#photos a', function(){
@@ -171,7 +186,7 @@ $(document).ready(function(){
         }
         if ($('#situation').length) {
             survey.situation = {
-                label: $('#situation li.selected .name').text(),
+                label: $('#situation li.selected').text(),
                 value: $('#situation li.selected').data('value')
             };
         }

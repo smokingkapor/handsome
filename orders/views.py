@@ -18,14 +18,16 @@ from braces.views import(
 )
 
 from .constants import *  # noqa
-from .forms import CreateOrderForm, FinishDesignForm
+from .forms import CreateOrderForm, FinishDesignForm, AddressForm
 from .mixins import OrderPermissionMixin
 from .models import Order, Province, City, Address, Country
 from accounts.models import Profile
-from designs.constants import SELECTED, WAITING, REJECTED
-from handsome.utils import send_sms
 from clothings.models import Supplier
+from deliveries.constants import RETURN
+from deliveries.models import Delivery
+from designs.constants import SELECTED, WAITING, REJECTED
 from designs.models import DesignClothing
+from handsome.utils import send_sms
 from orders.models import OrderClothing
 
 
@@ -63,7 +65,7 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         profile = self.request.user.profile
 
         order = form.save(commit=False)
-        order.prepayment = order.price_group * 0.1
+        # order.prepayment = order.price_group * 0.1
         order.creator = profile.user
         profile.height = order.height
         profile.weight = order.weight
@@ -92,7 +94,8 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         profile.save()
 
         if self.request.is_ajax():
-            url = u'{}?code={}'.format(reverse('payments:home'), order.code)
+            # url = u'{}?code={}'.format(reverse('payments:home'), order.code)
+            url = reverse('orders:detail', kwargs={'code': order.code})
             return self.render_json_response({'success': True, 'next': url})
 
         return super(CreateOrderView, self).form_valid(form)
@@ -161,6 +164,26 @@ class SaveAddressView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
                                           'address': unicode(address)})
 
 
+class UpdateAddressView(LoginRequiredMixin, FormView):
+    template_name = 'orders/update_address.html'
+    form_class = AddressForm
+
+    def get_context_data(self, **kwargs):
+        """
+        Override. Add extra data to context
+        """
+        data = super(UpdateAddressView, self).get_context_data(**kwargs)
+        try:
+            address = self.request.user.address_set.get(is_selected=True)
+        except Address.DoesNotExist:
+            address = None
+        data.update({
+            'address': address,
+            'provinces': Province.objects.all()
+        })
+        return data
+
+
 class CreateSuccessView(LoginRequiredMixin, DetailView):
     """
     Order create success page view
@@ -179,8 +202,7 @@ class MyOrderView(LoginRequiredMixin, ListView):
     template_name = 'orders/me.html'
 
     def get_queryset(self):
-        qs = super(MyOrderView, self).get_queryset()
-        return qs.order_by('-created_at')
+        return self.request.user.my_orders.all().order_by('-created_at')
 
 
 class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
@@ -198,7 +220,9 @@ class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
             'SELECTED': SELECTED,
             'WAITING': WAITING,
             'REJECTED': REJECTED,
-            'DESIGNED': DESIGNED
+            'DESIGNED': DESIGNED,
+            'SENT': SENT,
+            'RETURNING': RETURNING,
         })
         return data
 
@@ -357,8 +381,9 @@ class SendView(StaffuserRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         """
         order = Order.objects.get(code=kwargs['code'])
         order.status = SENT
-        order.express_info = request.REQUEST['express_info']
         order.save()
+        Delivery(order=order, express_provider=request.GET['express_provider'],
+                 express_code=request.GET['express_code']).save()
         return self.render_json_response({'success': True})
 
 
@@ -509,8 +534,41 @@ class SelectClothingView(LoginRequiredMixin, RedirectView):
         total_price = 0
         for design_clothing in DesignClothing.objects.in_bulk(ids).values():
             total_price += design_clothing.clothing.price
-            OrderClothing.objects.get_or_create(order=order, design_clothing=design_clothing)
+            OrderClothing.objects.get_or_create(
+                order=order, design_clothing=design_clothing,
+                design=design_clothing.design_set.first())
         order.status = ACCEPTED
         order.total_price = total_price
         order.save()
         return '{}?code={}'.format(reverse('payments:home'), order.code)
+
+
+class ReturnView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
+                 View):
+
+    def post_ajax(self, request, *args, **kwargs):
+        order = Order.objects.get(code=request.GET['code'])
+        if self.request.user != order.creator:
+            raise Http404
+
+        order.status = RETURNING
+        order.save()
+        Delivery(order=order,
+                 express_provider=request.POST['express_provider'],
+                 express_code=request.POST['express_code'],
+                 direction=RETURN).save()
+        return self.render_json_response({'success': True})
+
+
+class ReceiveReturnView(StaffuserRequiredMixin, RedirectView):
+    permanent = False
+    url = reverse_lazy('orders:list')
+
+    def get_redirect_url(self, *args, **kwargs):
+        """
+        Update order status here
+        """
+        order = Order.objects.get(code=kwargs['code'])
+        order.status = REFUNDING
+        order.save()
+        return super(ReceiveReturnView, self).get_redirect_url(*args, **kwargs)

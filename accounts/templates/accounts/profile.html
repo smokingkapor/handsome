@@ -1,0 +1,63 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block title %}用户管理{% endblock %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/account.css' %}">
+{% endblock %}
+
+{% block extrajs_compress %}
+<script src="{% static 'js/account.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container">
+        <div class="text-center">
+            <br />
+            <img src="{% static 'image/ygrass_eng.png' %}" />
+            <h4>用户管理</h4>
+            <br />
+        </div>
+        <div class="row">
+            <ul class="list-inline tabs">
+                <li class="selected"><a href="{% url 'accounts:profile' %}">个人中心</a></li>
+                <li><a href="{% url 'orders:update_address' %}">发货地址管理</a></li>
+                <li><a href="{% url 'accounts:update_password' %}">密码修改</a></li>
+            </ul>
+        </div>
+        <div class="row" id="profile">
+            <div class="col-md-12">
+                <table>
+                    <tr>
+                        <td class="title">身高</td>
+                        <td>{{ user.profile.height }}</td>
+                        <td class="title">体重</td>
+                        <td>{{ user.profile.weight }}</td>
+                        <td class="title">年龄段</td>
+                        <td>{{ user.profile.get_age_group_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">衣服尺码</td>
+                        <td>{{ user.profile.get_clothing_size_display }}</td>
+                        <td class="title">裤子尺码</td>
+                        <td>{{ user.profile.get_pants_size_display }}</td>
+                        <td class="title">鞋子尺码</td>
+                        <td>{{ user.profile.get_shoe_size_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">喜欢的颜色</td>
+                        <td>{{ user.profile.get_color_display }}</td>
+                        <td class="title">裤子偏好</td>
+                        <td>{{ user.profile.get_pants_style_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><a href="{% url 'accounts:update_profile' %}" class="btn btn-primary">修改</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

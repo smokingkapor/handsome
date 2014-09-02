@@ -43,6 +43,10 @@ SHOE_45 = '45'
 BLACK = 'black'
 GRAY = 'gray'
 WIHTE = 'white'
+RED = 'red'
+ORANGE = 'orange'
+GREEN = 'green'
+YELLOW = 'yellow'
 
 # pants style
 CLOSE_FITTING = 'close-fitting'

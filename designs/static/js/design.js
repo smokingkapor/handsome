@@ -44,7 +44,7 @@ $(document).ready(function(){
                 //comment: $('#comment').val(),
                 photos: $('#design-photos').val(),
                 selected_clothings: $('#selected-clothings-input').val(),
-                total_price: $('#total_price').val(),
+                total_price: 0,
                 csrfmiddlewaretoken: get_cookie('csrftoken')
             },
             success: function(data) {

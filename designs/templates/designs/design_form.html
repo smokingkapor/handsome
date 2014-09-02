@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles thumbnail %}
+{% load staticfiles thumbnail account_tags %}
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'jQuery-File-Upload/css/jquery.fileupload.css' %}">
@@ -21,15 +21,47 @@
     <div class="container body">
         <div class="row">
             <div class="col-md-12">
-                <p><b>客户要求：</b></p>
-                <p>{{ order.get_style_display }}, {{ order.get_age_group_display }}, {{ order.get_color_display }}, {{ order.get_hobby_display }}, {{ order.price_group|floatformat }}</p>
-                <p>更多要求: {{ order.message }}</p>
-                <hr />
-            </div>
-            <div class="col-md-12">
-                <p><b>客户数据：</b></p>
-                <p>身高{{ order.height }}cm, 体重{{ order.weight }}kg, 腰围{{ order.waistline }}cm, 胸围{{ order.chest }}cm, 臀围{{ order.hipline }}cm, 脚长{{ order.foot }}cm{% if order.is_slim %}, 修身{% endif %}</p>
-                <hr />
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="title">身高</td>
+                        <td>{{ order.height }}厘米</td>
+                        <td class="title">体重</td>
+                        <td>{{ order.weight }}公斤</td>
+                        <td class="title">年龄段</td>
+                        <td>{{ order.get_age_group_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">衣服尺码</td>
+                        <td>{{ order.get_clothing_size_display }}</td>
+                        <td class="title">裤子尺码</td>
+                        <td>{{ order.get_pants_size_display }}</td>
+                        <td class="title">鞋子尺码</td>
+                        <td>{{ order.get_shoe_size_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">喜欢的颜色</td>
+                        <td>{{ order.get_color_display }}</td>
+                        <td class="title">裤子偏好</td>
+                        <td>{{ order.get_pants_style_display }}</td>
+                        <td class="title">价位</td>
+                        <td>{{ order.price_group }}元左右</td>
+                    </tr>
+                    <tr>
+                        <td class="title">选择的风格</td>
+                        <td>{{ order.get_style_display }}</td>
+                        <td class="title">选择的设计师</td>
+                        <td>
+                            <img class="avatar" width="40" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
+                            <span>{{ order.preferred_designer.get_full_name|default_if_empty:order.preferred_designer.username }}</span>
+                        </td>
+                        <td class="title">定制的场合</td>
+                        <td>{{ order.get_situation_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">更多要求</td>
+                        <td colspan="5">{{ order.message }}</td>
+                    </tr>
+                </table>
             </div>
             <form class="col-md-12 content" role="form">
                 {% comment %}
@@ -44,14 +76,6 @@
                     <div class="row" id="selected-clothings">
                     </div>
                     <hr />
-                    <div class="row">
-                        <div class="col-sm-1">
-                            <b>总价：</b>
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="number" id="total_price" class="form-control input-sm" />
-                        </div>
-                    </div>
                     <label>选择服装：</label>
                     <div class="row">
                         <div class="col-sm-2">

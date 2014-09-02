@@ -38,6 +38,8 @@
                         <div class="line">
                             <span class="label">身高*</span>
                             <input id="height" type="text" class="form-control alone" value="{{ user.profile.height }}" /> <small>(厘米)</small>
+                        </div>
+                        <div class="line">
                             <span class="label">体重*</span>
                             <input id="weight" type="text" class="form-control alone" value="{{ user.profile.weight }}" /> <small>(公斤)</small>
                         </div>
@@ -100,9 +102,9 @@
                             <ul class="list-inline inline selector" id="color">
                                 {% for choice in COLOR_CHOICES %}
                                     {% if user.profile.color == choice.0 %}
-                                    <li class="selected" style="background-color: {{ choice.0 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}">&nbsp;&nbsp;</li>
+                                    <li title="{{ choice.1 }}" class="selected" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}"><div style="background-color: {{ choice.0 }}"></div></li>
                                     {% else %}
-                                    <li style="background-color: {{ choice.0 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}">&nbsp;&nbsp;</li>
+                                    <li title="{{ choice.1 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}"><div style="background-color: {{ choice.0 }}"></div></li>
                                     {% endif %}
                                 {% endfor %}
                             </ul>
@@ -168,22 +170,19 @@
                             </ul>
                         </div>
                         <div class="line">
-                            <span class="label">本次定制的场合*</span><br/><br/>
-                            <ul class="list-inline image-selector" id="situation">
+                            <span class="label">本次定制的场合*</span>
+                            <ul class="list-inline inline selector" id="situation">
                                 {% for choice in SITUATION_CHOICES %}
-                                    <li data-value="{{ choice.0 }}">
-                                        <img height="100" src="{{ STATIC_URL }}image/situation_{{ choice.0 }}.png" />
-                                        <div class="cover"><p class="name">{{ choice.1 }}</p></div>
-                                    </li>
+                                <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="line">
-                            <span class="label">本次搭配价格范围： <span id="price-val">600元</span></span><br/><br/>
-                            <b>￥400</b> <div id="price-slider" style="display: inline-block; width: 80%;"></div> <b>￥900</b>
+                            <span class="label">您对本次定制的预算为 <b id="price-val">600元</b> <small>(春夏装我们建议400元左右，秋冬装我们建议 800元左右)</small></span><br/><br/>
+                            <b>￥300</b> <div id="price-slider" style="display: inline-block; width: 80%;"></div> <b>￥2000</b>
                         </div>
                         <div class="line">
-                            <span class="label">其他信息</span><br/>
+                            <span class="label">其他信息 <small>(为了为您提供更好的服务，我们建议你提供更多信息，比如平时的穿衣困扰或者一些特殊的需求)</small></span><br/>
                             <textarea id="message" class="form-control" rows="5"></textarea>
                         </div>
                         <div class="line">

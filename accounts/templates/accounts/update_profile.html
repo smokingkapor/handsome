@@ -1,0 +1,127 @@
+{% extends "page.html" %}
+{% load staticfiles thumbnail %}
+
+{% block title %}用户管理{% endblock %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/account.css' %}">
+{% endblock %}
+
+{% block extrajs_compress %}
+<script src="{% static 'js/account.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="update-profile" class="page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <br />
+                    <img src="{% static 'image/ygrass_eng.png' %}" />
+                    <h4>用户管理</h4>
+                    <br />
+                </div>
+                <div class="row">
+                    <ul class="list-inline tabs">
+                        <li class="selected"><a href="{% url 'accounts:profile' %}">个人中心</a></li>
+                        <li><a href="{% url 'orders:update_address' %}">发货地址管理</a></li>
+                        <li><a href="{% url 'accounts:update_password' %}">密码修改</a></li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 color1">
+                        <div class="line">
+                            <span class="label">身高*</span>
+                            <input id="height" type="text" class="form-control alone" value="{{ user.profile.height }}" /> <small>(厘米)</small>
+                            <span class="label">体重*</span>
+                            <input id="weight" type="text" class="form-control alone" value="{{ user.profile.weight }}" /> <small>(公斤)</small>
+                        </div>
+                        <div class="line">
+                            <span class="label">年龄*</span>
+                            <ul class="list-inline inline selector" id="age">
+                                {% for choice in AGE_GROUP_CHOICES %}
+                                    {% if user.profile.age_group == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 color2">
+                        <div class="line">
+                            <span class="label">衣服尺码*</span>
+                            <ul class="list-inline inline selector" id="clothing_size">
+                                {% for choice in CLOTHING_SIZE_CHOICES %}
+                                    {% if user.profile.clothing_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">裤子尺码*</span>
+                            <ul class="list-inline inline selector" id="pants_size">
+                                {% for choice in PANTS_SIZE_CHOICES %}
+                                    {% if user.profile.pants_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">鞋子尺码*</span>
+                            <ul class="list-inline inline selector" id="shoe_size">
+                                {% for choice in SHOE_SIZE_CHOICES %}
+                                    {% if user.profile.shoe_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 color3">
+                        <div class="line">
+                            <span class="label">喜欢的颜色*</span>
+                            <ul class="list-inline inline selector" id="color">
+                                {% for choice in COLOR_CHOICES %}
+                                    {% if user.profile.color == choice.0 %}
+                                    <li class="selected" style="background-color: {{ choice.0 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}">&nbsp;&nbsp;</li>
+                                    {% else %}
+                                    <li style="background-color: {{ choice.0 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}">&nbsp;&nbsp;</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">裤子偏好*</span>
+                            <ul class="list-inline inline selector" id="pants_style">
+                                {% for choice in PANTS_STYLE_CHOICES %}
+                                    {% if user.profile.pants_style == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <button id="update-profile-btn" class="btn btn-primary" data-url="{% url 'accounts:update_profile' %}" data-loading-text="正在提交...">确认修改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
