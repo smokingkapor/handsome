@@ -220,6 +220,19 @@
     padding: 20px;
 }
 
+#survey-more #price-val {
+    color: #168AD0;
+    font-size: 24px;
+}
+
+#survey-more .order-detail .line {
+    border-top: 1px dotted gray;
+}
+
+#survey-more .order-detail .line.no-border {
+    border: none
+}
+
 #upload_process {
     display: none;
     color: white;

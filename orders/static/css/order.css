@@ -143,9 +143,19 @@
 }
 
 #order-detail .design .carousel-indicators {
-    bottom: -27px;
+    bottom: -10px;
 }
 
 #order-detail .design td {
     border: none;
+}
+
+#order-detail .design {
+    background-color: #63677B;
+    border-top: 1px dotted gray;
+}
+
+#order-detail .design .preview {
+    padding: 20px;
+    margin: 5px;
 }

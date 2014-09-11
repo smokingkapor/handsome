@@ -26,6 +26,9 @@
                 <p>
                     <span>订单号：{{ order.code }}</span>
                     <b>{{ order.get_status_display }}</b>
+                    {% if order.status == CREATED %}
+                    <span>(您将在24小时之内收到我们的设计方案)</span>
+                    {% endif %}
                     <span class="pull-right">
                         {% if user.is_staff %}
                         {{ order.get_designer_operations|safe }}
@@ -51,7 +54,8 @@
                                 <table class="col-sm-12">
                                 {% for design in order.design_set.all %}
                                 <tr class="design">
-                                    <td>
+                                    <td class="preview">
+                                        <p>搭配方案{{ forloop.counter }}</p>
                                         <div id="designer-{{ design.id }}" class="carousel slide" data-ride="carousel">
                                             <ol class="carousel-indicators">
                                                 {% for photo in design.photos.all %}
@@ -69,7 +73,6 @@
                                     </td>
                                     <td>
                                         {% if order.status == DESIGNED or order.status == PREPAID %}
-                                        <p>搭配方案{{ forloop.counter }}(可以只选择你想要的)</p>
                                         <table class="clothings table">
                                             {% for design_clothing in design.clothings.all %}
                                             <tr>
@@ -90,7 +93,6 @@
                                             {% endfor %}
                                         </table>
                                         {% else %}
-                                        <p>搭配方案{{ forloop.counter }}</p>
                                         <table class="clothings table">
                                             {% for order_clothing in design.orderclothing_set.all %}
                                             <tr>
