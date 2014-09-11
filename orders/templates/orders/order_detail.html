@@ -65,7 +65,7 @@
                                             <div class="carousel-inner">
                                                 {% for photo in design.photos.all %}
                                                 <div class="item {% if forloop.first %}active{% endif %}">
-                                                  <img width="300" src="{{ photo.file|thumbnail_url:'medium' }}" />
+                                                  <img src="{{ photo.file|thumbnail_url:'medium' }}" />
                                                 </div>
                                                 {% endfor %}
                                             </div>

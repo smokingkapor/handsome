@@ -39,7 +39,7 @@
                             {% if obj.design_set.exists %}
                                 {% for design in obj.design_set.all %}
                                     {% if design.photos.first %}
-                                        <a href="{% url 'orders:detail' code=obj.code %}"><img src="{{ design.photos.first.file|thumbnail_url:'medium' }}" /></a>
+                                        <a href="{% url 'orders:detail' code=obj.code %}"><img height="200" src="{{ design.photos.first.file|thumbnail_url:'medium' }}" /></a>
                                     {% endif %}
                                 {% endfor %}
                             {% else %}

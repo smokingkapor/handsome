@@ -159,3 +159,7 @@
     padding: 20px;
     margin: 5px;
 }
+
+#order-detail .carousel-inner>.item>img {
+    height: 200px;
+}
