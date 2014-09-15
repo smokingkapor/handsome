@@ -14,7 +14,7 @@ class LoginForm(forms.Form):
     Form for user login.
     """
     username = forms.CharField(
-        label='用户名',
+        label='用户名/手机号',
         widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(
         label='密码',
@@ -131,6 +131,18 @@ class UpdatePasswordForm(forms.Form):
     def clean(self):
         if self.data.get('new_password') != self.data.get('new_password_again'):
             raise forms.ValidationError(u'两次输入的新密码不匹配')
+
+        if self.user.profile.is_random_user:
+            new_username = self.data.get('new_username').strip()
+            if self.user.username != new_username:
+                if not new_username:
+                    raise forms.ValidationError(u'新用户名不能为空')
+                elif User.objects.filter(username=new_username):
+                    raise forms.ValidationError(u'用户名已经被占用')
+                else:
+                    self.user.username = new_username
+                    self.user.profile.is_random_user = False
+                    self.user.profile.save()
 
         self.user.set_password(self.data.get('new_password'))
         self.user.save()

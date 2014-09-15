@@ -7,13 +7,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>{% block title %}{% endblock %}</title>
 
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        {% comment %}
         <!--[if IE]>
             <link media="screen" rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
         <![endif]-->
         <!--[if !IE]><!-->
             <link media="screen" rel="stylesheet" href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css">
         <!--<![endif]-->
-        {% comment %}
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
         {% endcomment %}
         {% block extracss %}{% endblock %}

@@ -70,6 +70,13 @@ class Design(models.Model):
         return 'Design for {} by {}'.format(self.client.username,
                                             self.designer.username)
 
+    @property
+    def price(self):
+        total_price = 0
+        for design_clothing in self.clothings.all():
+            total_price += design_clothing.clothing.price
+        return total_price
+
 
 def generate_design_code(sender, instance, created, *args, **kwargs):
     """

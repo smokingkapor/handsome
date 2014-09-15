@@ -1,18 +1,29 @@
 {% extends "page.html" %}
 
-{% block title %}{% if order.status == PREPAID %}预付款支付成功{% else %}尾款付款成功{% endif %}{% endblock %}
+{% block title %}支付成功！{% endblock %}
 
 {% block content %}
 <div class="page">
     <div class="container body">
         <div>
-            <h4>{% if order.status == PREPAID %}预付款支付成功{% else %}尾款付款成功{% endif %}</h4>
+            <h4 class="text-center">支付成功！</h4>
             <hr />
         </div>
         <div class="row">
             <div class="col-md-12 content">
-                <p>感谢您的支持 :-)</p>
-                <p><a href="{% url 'orders:detail' code=order.code %}">查看订单</a></p>
+                <p>感谢您的付款！我们正在努力为您发货。 请点击页首我的订单查看订单状态。如果您有任务疑问，请联系我们客服 QQ XXXXXXXX 微信:优草形象</p>
+                <p>或者直接电话与优草联系 0571-85127385 (工作日9:00-5:30)</p>
+                <p>更多优草资讯 请关注</p>
+                <ul class="list-inline">
+                    <li>
+                        <p>微博：优草形象</p>
+                        <img src="{{ STATIC_URL }}image/weibo.png" width="149" height="147" />
+                    </li>
+                    <li>
+                        <p>微信：优草形象</p>
+                        <img src="{{ STATIC_URL }}image/weixin.jpg" width="160" height="153" />
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

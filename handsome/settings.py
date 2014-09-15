@@ -172,7 +172,7 @@ SMS_SERVER_USERNAME = ''
 SMS_SERVER_PASSWORD = ''
 SMS_TEMPLATES = {
     'designed': u'设计师{}已经为您量身搭配了多套服装，请登录优草(ygrass.com)查看.',
-    'temporary_pwd': u'您在优草的动态密码是{}，三十分钟内有效.'
+    'temporary_pwd': u'您在优草的动态密码是{}，三十分钟内有效.登录成功后，请在个人页面设定永久密码.'
 }
 
 ALIPAY_PID = ''

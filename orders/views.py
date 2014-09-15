@@ -95,7 +95,7 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
 
         if self.request.is_ajax():
             # url = u'{}?code={}'.format(reverse('payments:home'), order.code)
-            url = reverse('orders:detail', kwargs={'code': order.code})
+            url = reverse('orders:detail', kwargs={'code': order.code}) + '?mode=create'
             return self.render_json_response({'success': True, 'next': url})
 
         return super(CreateOrderView, self).form_valid(form)
@@ -225,6 +225,7 @@ class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
             'SENT': SENT,
             'RETURNING': RETURNING,
         })
+        data.update(self.request.GET.dict())
         return data
 
 

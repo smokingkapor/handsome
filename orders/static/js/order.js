@@ -171,16 +171,15 @@ $(document).ready(function(){
 
     $('#confirm-selection-btn').click(function(){
         if ($(this).is('.loading')) return; else $(this).addClass('loading');
-        var all = $('.wanted:not(:checked)').size() == 0;
-        if ($('.wanted:checked').size() == 0) {
+        if ($('.clothing.selected').size() == 0) {
             alert('您忘记选择衣服了');
             return;
         }
         var ids = [];
-        $('.wanted:checked').each(function(){
+        $('.clothing.selected').each(function(){
             ids.push($(this).data('id'));
         });
-        location.href = $(this).data('url') + '?all=' + all + '&ids=' + ids.join(',');
+        location.href = $(this).data('url') + '?ids=' + ids.join(',');
     });
 
     $('.return-btn').click(function(){
@@ -214,4 +213,30 @@ $(document).ready(function(){
             $btn.button('reset');
         });
     });
+
+    function update_design_price() {
+        var total_price = 0;
+        $('.design').each(function(){
+            var $design = $(this);
+            var design_price = 0;
+            $('.clothing.selected', $design).each(function() {
+                design_price += parseFloat($(this).data('price'));
+            });
+            $('.price span', $design).text(design_price);
+            total_price += design_price;
+        });
+        $('#order-detail .total_price').text(total_price);
+    }
+
+    $('#order-detail .clothings .clothing:not(.readonly)').click(function(){
+        var $design = $(this).parents('.design');
+        if ($(this).is('.selected')) {
+            $(this).removeClass('selected');
+            update_design_price($design);
+        } else {
+            $(this).addClass('selected');
+            update_design_price($design);
+        }
+    });
+    update_design_price();
 });

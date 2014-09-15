@@ -30,7 +30,8 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="text-center">
                     <img src="{% static 'image/ygrass_eng.png' %}" />
-                    <h4>个人信息填写</h4>
+                    <h4>完善个人资料</h4>
+                    <p><small>为了给您提供更加出色的服务，优草建议您准确填以下信息</small></p>
                     <br />
                 </div>
                 <div class="row">
@@ -143,12 +144,12 @@
                     <div class="text-center">
                         <br /><br /><br />
                         <img src="{% static 'image/ygrass_eng.png' %}" />
-                        <h4>本次定制信息填写</h4>
+                        <h4>完善本次定制信息</h4>
                         <br />
                     </div>
                     <div class="col-md-12 color3">
                         <div class="line no-border">
-                            <span class="label">您选择的风格*</span><br/><br/>
+                            <span class="label">您已选择的风格</span><br/><br/>
                             <ul class="list-inline image-selector" id="style_again">
                                 {% for choice in STYLE_CHOICES %}
                                 <li data-value="{{ choice.0 }}">
@@ -159,7 +160,7 @@
                             </ul>
                         </div>
                         <div class="line">
-                            <span class="label">您选择的设计师*</span><br/><br/>
+                            <span class="label">您已选择的设计师</span><br/><br/>
                             <ul class="list-inline image-selector" id="designer_again">
                                 {% for designer in designers %}
                                 <li data-value="{{ designer.user.id }}" data-avatar="{{ designer.avatar|thumbnail_url:'medium' }}">
@@ -178,12 +179,14 @@
                             </ul>
                         </div>
                         <div class="line">
-                            <span class="label">您对本次定制的预算为 <b id="price-val">600元</b> <small>(春夏装我们建议400元左右，秋冬装我们建议 800元左右)</small></span><br/><br/>
+                            <span class="label">您对本次定制的预算为 <b id="price-val">600元</b></span><br/><br/>
                             <b>￥300</b> <div id="price-slider" style="display: inline-block; width: 80%;"></div> <b>￥2000</b>
+                            <p><small class="gray">(春夏装我们建议400元左右，秋冬装我们建议 800元左右)</small></p>
                         </div>
                         <div class="line">
-                            <span class="label">其他信息 <small>(为了为您提供更好的服务，我们建议你提供更多信息，比如平时的穿衣困扰或者一些特殊的需求)</small></span><br/>
+                            <span class="label">其他信息</span><br/>
                             <textarea id="message" class="form-control" rows="5"></textarea>
+                            <p><small class="gray">(为了为您提供更好的服务，我们建议你提供更多信息，比如平时的穿衣困扰或者一些特殊的需求)</small></p>
                         </div>
                         <div class="line no-border">
                             <button id="submit-more-survey-btn" data-url="{% url 'orders:create' %}" type="button" class="btn btn-primary btn-lg">立即提交</button>

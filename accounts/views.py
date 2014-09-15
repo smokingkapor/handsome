@@ -22,7 +22,7 @@ from .forms import(
     LoginForm, RegisterForm, ProfileForm, PhoneLoginForm,
     PhotoForm, UpdatePasswordForm
 )
-from .models import Profile, Photo, DesignerWork
+from .models import Profile, Photo
 from handsome.utils import send_sms
 
 
@@ -182,7 +182,7 @@ class CreateRandomUserView(RedirectView):
             return reverse('accounts:register')
 
         if not self.request.user.is_authenticated():
-            username = get_random_string()
+            username = 'random_user_' + get_random_string(5)
             password = get_random_string()
             user = User.objects.create_user(username=username,
                                             password=password)

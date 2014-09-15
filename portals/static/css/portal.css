@@ -1,3 +1,7 @@
+.gray {
+    color: gray;
+}
+
 #home .intro {
     background-color: #3F404E;
     color: white;
@@ -221,7 +225,7 @@
 }
 
 #survey-more #price-val {
-    color: #168AD0;
+    color: orange;
     font-size: 24px;
 }
 
