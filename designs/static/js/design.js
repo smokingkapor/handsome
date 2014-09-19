@@ -34,6 +34,10 @@ $(document).ready(function(){
 
     // create design
     $('#create-design-btn').click(function(){
+        if (!$('#design-photos').val() || !$('#selected-clothings-input').val()) {
+            alert('所有信息都提供了吗？');
+            return;
+        }
         var $btn = $(this);
         $btn.button('loading');
         $.ajax({
@@ -52,7 +56,7 @@ $(document).ready(function(){
                 if (data.success) {
                     location.href = data.next;
                 } else {
-                    alert('所有信息都填了？');
+                    alert('发生错误，请联系技术人员');
                 }
             }
         });

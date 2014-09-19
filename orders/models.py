@@ -175,7 +175,10 @@ class Order(models.Model):
         if self.status == CREATED:
             create_design_url = u'{}?code={}'.format(reverse_lazy('designs:create'), self.code)
             finish_design_url = reverse_lazy('orders:finish_design', kwargs={'code': self.code})
-            operations = '<a class="highlight" href="{}">创建方案></a><br /><a class="highlight" href="{}">设计结束></a>'.format(create_design_url, finish_design_url)
+            operations = '<a class="highlight" href="{}">创建方案></a> <a class="highlight" href="{}">设计结束></a>'.format(create_design_url, finish_design_url)
+        elif self.status == DESIGNED:
+            create_design_url = u'{}?code={}'.format(reverse_lazy('designs:create'), self.code)
+            operations = '<a class="highlight" href="{}">创建方案></a>'.format(create_design_url)
         elif self.status == PAID:
             send_url = reverse('orders:send', kwargs={'code': self.code})
             operations = '<a class="highlight send-order-btn" href="javascript:void(0);" data-url="{}">已经寄出></a>'.format(send_url)
@@ -186,10 +189,14 @@ class Order(models.Model):
 
     @property
     def express_info(self):
-        delivery = self.delivery_set.last()
+        delivery = self.delivery_set.order_by('-id').first()
         if delivery:
-            return u'{} {}'.format(delivery.express_provider,
-                                    delivery.express_code)
+            if delivery.reason:
+                return u'{} {}. <br />原因: {}'.format(
+                    delivery.express_provider,
+                    delivery.express_code,
+                    delivery.reason)
+            return u'{} {}'.format(delivery.express_provider, delivery.express_code)
         else:
             return u'暂时没有快递信息'
 

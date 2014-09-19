@@ -16,4 +16,5 @@ class Delivery(models.Model):
                                  default=SEND)
     express_provider = models.CharField(max_length=64)
     express_code = models.CharField(max_length=64)
+    reason = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

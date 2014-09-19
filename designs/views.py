@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, Http404
 from django.views.generic.base import View, RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -195,3 +195,15 @@ class RejectDesignView(LoginRequiredMixin, DesignPermissionMixin, UpdateView):
     def get_success_url(self):
         return reverse('orders:detail',
                        kwargs={'code': self.object.order.code})
+
+
+class RemoveDesignView(StaffuserRequiredMixin, RedirectView):
+
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        design = Design.objects.get(code=self.kwargs['code'])
+        if design.designer != self.request.user:
+            raise Http404
+        design.delete()
+        return reverse('orders:detail', kwargs={'code': design.order.code})

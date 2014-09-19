@@ -46,10 +46,18 @@
                                 <p>{{ obj.get_status_display }}</p>
                             {% endif %}
                         </div>
-                        <div class="col-sm-2 buttons">
-                            {{ obj.get_operations|safe }}
-                            <a href="{% url 'orders:detail' code=obj.code %}">订单详情</a>
-                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ obj.preferred_designer.profile.qq }}&site=qq&menu=yes">联系设计师 </a>
+                        <div class="col-sm-2">
+                            <div class="buttons">
+                                {{ obj.get_operations|safe }}
+                                <a href="{% url 'orders:detail' code=obj.code %}">订单详情</a>
+                                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ obj.preferred_designer.profile.qq }}&site=qq&menu=yes">联系设计师 </a>
+                            </div>
+                            <div>
+                                <br />
+                                {% if obj.status == SENT %}
+                                <p><span class="glyphicon glyphicon-info-sign"></span> {{ obj.express_info }}</p>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,35 +65,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="return">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">申请退货</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <span class="col-sm-2 control-label">快递公司</span>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="express_provider" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <span class="col-sm-2 control-label">快递单号</span>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="express_code" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" data-loading-text="正在提交..." class="btn btn-primary submit-return-btn">提交申请</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include "orders/return.html" %}
 </div>
 {% endblock %}

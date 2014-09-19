@@ -55,7 +55,7 @@
                                 {% for design in order.design_set.all %}
                                 <tr class="design">
                                     <td class="preview">
-                                        <p>搭配方案{{ forloop.counter }}</p>
+                                        <p>搭配方案{{ forloop.counter }} {% if user == design.designer %}<a href="javascript:void(0)" data-confirm="确定要删除这套方案？" class="confirm" data-url="{% url 'designs:remove' code=design.code %}"><span title="删除方案" class="glyphicon glyphicon-remove red"></span></a>{% endif %}</p>
                                         <div id="designer-{{ design.id }}" class="carousel slide" data-ride="carousel">
                                             <ol class="carousel-indicators">
                                                 {% for photo in design.photos.all %}
@@ -190,14 +190,16 @@
                         </div>
                         <div id="collapseThree" class="panel-collapse collapse in">
                             <div class="panel-body">
-                                {% if order.status == SENT %}
-                                <p>物流信息：{{ order.express_info }}</p>
-                                {% elif order.status == RETURNING %}
-                                <p>退货快递信息：{{ order.express_info }}</p>
-                                {% endif %}
                                 <p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：{{ order.name }}</p>
                                 <p>收货地址：{{ order.get_address }}</p>
                                 <p>联系电话：{{ order.phone }}</p>
+                                {% if order.status == SENT %}
+                                <hr />
+                                <p>物流信息：{{ order.express_info }}</p>
+                                {% elif order.status == RETURNING %}
+                                <hr />
+                                <p>退货快递信息：{{ order.express_info|safe }}</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -205,5 +207,6 @@
             </div>
         </div>
     </div>
+    {% include "orders/return.html" %}
 </div>
 {% endblock %}

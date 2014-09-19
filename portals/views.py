@@ -74,3 +74,9 @@ class SurveyMoreView(LoginRequiredMixin, FormView):
         """
         form.save()
         return super(SurveyMoreView, self).form_valid(form)
+
+
+class StaticPageView(TemplateView):
+
+    def get_template_names(self):
+        return 'portals/{}.html'.format(self.kwargs['template_name'])

@@ -201,6 +201,21 @@ class MyOrderView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'orders/me.html'
 
+    def get_context_data(self, **kwargs):
+        data = super(MyOrderView, self).get_context_data(**kwargs)
+        data.update({
+            'CREATED': CREATED,
+            'PREPAID': PREPAID,
+            'SELECTED': SELECTED,
+            'WAITING': WAITING,
+            'REJECTED': REJECTED,
+            'DESIGNED': DESIGNED,
+            'SENT': SENT,
+            'RETURNING': RETURNING,
+        })
+        data.update(self.request.GET.dict())
+        return data
+
     def get_queryset(self):
         return self.request.user.my_orders.all().order_by('-created_at')
 
@@ -244,6 +259,7 @@ class OrderListView(StaffuserRequiredMixin, ListView):
             'STATUS_CHOICES': Order.STATUS_CHOICES,
             'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
             'STYLE_CHOICES': Profile.STYLE_CHOICES,
+            'RETURNING': RETURNING,
             'designers': Profile.objects.filter(user__is_staff=True,
                                                 is_designer=True)
         })
@@ -558,6 +574,7 @@ class ReturnView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         Delivery(order=order,
                  express_provider=request.POST['express_provider'],
                  express_code=request.POST['express_code'],
+                 reason=request.POST['reason'],
                  direction=RETURN).save()
         return self.render_json_response({'success': True})
 

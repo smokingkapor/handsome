@@ -275,3 +275,21 @@
 #home #steps .survey {
     color: #B68B69;
 }
+
+.left-nav li {
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
+.left-nav li.selected {
+    background-color: black;
+}
+
+.left-nav li.selected a {
+    color: white;
+}
+
+.left-nav li a {
+    color: black;
+}

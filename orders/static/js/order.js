@@ -190,8 +190,13 @@ $(document).ready(function(){
         var $btn = $(this);
         var express_provider = $('#express_provider').val();
         var express_code = $('#express_code').val();
+        var reason = $('#reason').val();
         if (!express_provider || express_code.length < 6) {
             alert('请输入正确的快递信息');
+            return;
+        }
+        if (reason.length < 3) {
+            alert('请提供退款原因');
             return;
         }
         $btn.button('loading');
@@ -202,6 +207,7 @@ $(document).ready(function(){
              data: {
                  express_provider: express_provider,
                  express_code: express_code,
+                 reason: reason,
                  csrfmiddlewaretoken: get_cookie('csrftoken')
              },
              success: function(data) {

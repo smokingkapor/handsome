@@ -1,0 +1,36 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block title %}关于优草{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-md-offset-2">
+                <br /><br />
+                <ul class="list-unstyled left-nav">
+                    <li class="selected"><a href="{% url 'portals:static_page' 'about' %}">关于优草</a></li>
+                    <li><a href="{% url 'portals:static_page' 'contact' %}">联系优草</a></li>
+                    <li><a href="{% url 'portals:static_page' 'terms' %}">使用协议</a></li>
+                </ul>
+            </div>
+            <div class="col-md-7">
+                <h1 style="font-size: normal">优草能帮你做什么？</h1>
+                <hr />
+                <p><b>你是不是偶尔要出席一些正式的场合，但是没有得体的服装？</b></p>
+                <p><b>平时的时候因为穿的太过随意，没有引起她的注意？</b></p>
+                <p><b>其实，你也想穿的帅帅的，但是自己真的买不来？</b></p>
+                <p>这也就是优草要做的。优草为您量身搭配出适合您的服装，让您在不同场合都能自信应对</p>
+                <br /><br />
+                <p>优草由一群具备专业知识同时富有创造力和激情的年轻人组成的公司，致力于为广大男性提供最佳的着装解决方案。无论您是要改变自己的形象，还是要去参加特定的活动，我们的形象顾问都会为您提供最大的帮组。</p>
+                <img src="{% static 'image/about.jpg' %}" />
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

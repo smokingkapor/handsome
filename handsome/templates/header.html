@@ -12,16 +12,13 @@
             <a href="/">首页</a>
         </li>
         <li>
-            <a href="/flatpages/about/">关于优草</a>
-        </li>
-        <li>
             <a href="/#process">如何运作</a>
         </li>
         <li>
             <a href="/flatpages/return/">售后服务</a>
         </li>
         <li>
-            <a href="/flatpages/contact/">联系优草</a>
+            <a href="{% static 'portals_static_page' 'about' %}">关于优草</a>
         </li>
         {% if user.is_authenticated %}
         <li>
