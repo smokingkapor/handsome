@@ -1,3 +1,4 @@
+
 {% load thumbnail account_tags staticfiles %}
 
 {% if not user.is_staff %}
@@ -18,7 +19,7 @@
             <a href="/flatpages/return/">售后服务</a>
         </li>
         <li>
-            <a href="{% static 'portals_static_page' 'about' %}">关于优草</a>
+            <a href="{% url 'portals:static_page' 'about' %}">关于优草</a>
         </li>
         {% if user.is_authenticated %}
         <li>
