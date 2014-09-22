@@ -92,7 +92,7 @@ class SuccessView(LoginRequiredMixin, TemplateView):
     """
     template_name = 'payments/success.html'
 
-    def get(self, request, *args, **kwargs):
+    def get2(self, request, *args, **kwargs):
         """
         Verify notify
         """
@@ -118,7 +118,7 @@ class SuccessView(LoginRequiredMixin, TemplateView):
             order.save()
         return super(SuccessView, self).get(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data2(self, **kwargs):
         """
         Add extra data to the context
         """

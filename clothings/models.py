@@ -20,6 +20,12 @@ class Supplier(models.Model):
         return self.name
 
 
+class ClothingImage(models.Model):
+    image = ThumbnailerImageField(
+        upload_to=path_and_rename('clothings'),
+        resize_source=dict(size=(1024, 1024), sharpen=True))
+
+
 class Clothing(models.Model):
     """
     Clothing model
@@ -56,8 +62,11 @@ class Clothing(models.Model):
     colors = models.CharField(u'可选颜色', max_length=128,
                               blank=True)  # separate with whitespace
     note = models.CharField(u'备注', max_length=256, blank=True)
-    image = ThumbnailerImageField(
+    image = ThumbnailerImageField(u'正面图片',
         upload_to=path_and_rename('clothings'),
         resize_source=dict(size=(1024, 1024), sharpen=True))
+    more_image_1 = ThumbnailerImageField(u'反面图片',
+        upload_to=path_and_rename('clothings'),
+        resize_source=dict(size=(1024, 1024), sharpen=True), blank=True, null=True)
     is_active = models.BooleanField(u'有货', default=True)
     created_at = models.DateTimeField(auto_now_add=True)

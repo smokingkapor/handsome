@@ -272,4 +272,13 @@ $(document).ready(function(){
         save_survey();
         location.href=$(this).data('url');
     });
+
+    $('.modal').on('show.bs.modal', function (e) {
+        $('img', $(this)).each(function() {
+            if ($(this).data('src')) {
+                $(this).prop('src', $(this).data('src'));
+                $(this).data('src', undefined);
+            }
+        });
+    });
 });

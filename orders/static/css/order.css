@@ -167,13 +167,26 @@
 
 #order-detail .clothings .clothing {
     cursor: pointer;
+    position: relative;
+}
+
+#order-detail .clothings .clothing .zoom {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    color: #333;
+    display: none;
+}
+
+#order-detail .clothings .clothing:hover .zoom {
+    display: inline;
 }
 
 #order-detail .clothings .clothing.selected .glyphicon {
     display: inline-block;
 }
 
-#order-detail .clothings .clothing .glyphicon {
+#order-detail .clothings .clothing .glyphicon-ok {
     color: lightgreen;
     font-size: 14px;
     display: none;

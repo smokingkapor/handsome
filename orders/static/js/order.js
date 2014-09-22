@@ -234,6 +234,10 @@ $(document).ready(function(){
         $('#order-detail .total_price').text(total_price);
     }
 
+    $('#order-detail .clothings .clothing .zoom').click(function(evt){
+        evt.stopPropagation();
+    });
+
     $('#order-detail .clothings .clothing:not(.readonly)').click(function(){
         var $design = $(this).parents('.design');
         if ($(this).is('.selected')) {

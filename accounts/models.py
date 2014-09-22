@@ -15,10 +15,10 @@ class Profile(models.Model):
     """
 
     STYLE_CHOICES = (
-        (BUSINESS, u'商务'),
+        (BUSINESS, u'经典商务'),
         (CASUAL, u'休闲'),
-        (ENGLAND, u'英伦'),
-        (NO_IDEA, u'其他'),
+        (ENGLAND, u'时尚英伦'),
+        (CASUAL_BUSINESS, u'休闲商务'),
     )
 
     AGE_GROUP_CHOICES = (
@@ -66,6 +66,8 @@ class Profile(models.Model):
         (ORANGE, u'橙色'),
         (GREEN, u'绿色'),
         (YELLOW, u'黄色'),
+        (BLUE, u'蓝色'),
+        (PURPLE, u'紫色'),
     )
 
     PANTS_STYLE_CHOICES = (

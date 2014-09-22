@@ -3,6 +3,7 @@
 BUSINESS = 'business'
 CASUAL = 'casual'
 ENGLAND = 'England'
+CASUAL_BUSINESS = 'casual_business'
 NO_IDEA = 'no_idea'
 
 
@@ -47,6 +48,8 @@ RED = 'red'
 ORANGE = 'orange'
 GREEN = 'green'
 YELLOW = 'yellow'
+BLUE = 'blue'
+PURPLE = 'purple'
 
 # pants style
 CLOSE_FITTING = 'close-fitting'

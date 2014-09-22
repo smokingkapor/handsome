@@ -79,6 +79,7 @@
                                                 <p><img title="{{ design_clothing.clothing.name }}" src="{{ design_clothing.clothing.image|thumbnail_url:'small' }}" /></p>
                                                 <p title="{{ design_clothing.clothing.name }}">{{ design_clothing.clothing.name|truncatechars:13 }}</p>
                                                 <p>{{ design_clothing.color }}/{{ design_clothing.size }}/￥{{ design_clothing.clothing.price }} <span class="glyphicon glyphicon-ok"></span></p>
+                                                <a class="zoom" target="_blank" href="{% url 'clothings:photos' pk=design_clothing.clothing.id %}"><span class="glyphicon glyphicon-zoom-in"></span> 查看大图</a>
                                             </li>
                                             {% endfor %}
                                         </ul><br /><br />
@@ -90,6 +91,7 @@
                                                 <p><img title="{{ order_clothing.design_clothing.clothing.name }}" src="{{ order_clothing.design_clothing.clothing.image|thumbnail_url:'small' }}" /></p>
                                                 <p title="{{ order_clothing.design_clothing.clothing.name }}">{{ order_clothing.design_clothing.clothing.name|truncatechars:13 }}</p>
                                                 <p>{{ order_clothing.design_clothing.color }}/{{ order_clothing.design_clothing.size }}/￥{{ order_clothing.design_clothing.clothing.price }} <span class="glyphicon glyphicon-ok"></span></p>
+                                                <a class="zoom" target="_blank" href="{% url 'clothings:photos' pk=order_clothing.design_clothing.clothing.id %}"><span class="glyphicon glyphicon-zoom-in"></span> 查看大图</a>
                                             </li>
                                             {% endfor %}
                                         </ul><br /><br />

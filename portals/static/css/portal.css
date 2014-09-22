@@ -64,6 +64,10 @@
     display: inline-block;
 }
 
+#survey #style li.option a {
+    color: white;
+}
+
 #survey .item.rhombus li.option {
     background: url(../image/rhombus_bg.png);
     background-position: top center;

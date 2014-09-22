@@ -2,12 +2,13 @@
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 from django.views.generic.base import View
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
 from braces.views import(
     SuperuserRequiredMixin, StaffuserRequiredMixin, AjaxResponseMixin,
-    JSONResponseMixin
+    JSONResponseMixin, LoginRequiredMixin
 )
 
 from .models import Clothing, Supplier
@@ -130,3 +131,8 @@ class UpdateSupplierView(SuperuserRequiredMixin, UpdateView):
     """
     model = Supplier
     success_url = reverse_lazy('clothings:supplier_list')
+
+
+class ClothingPhotosView(LoginRequiredMixin, DetailView):
+    model = Clothing
+    template_name = 'clothings/clothing_photos.html'
