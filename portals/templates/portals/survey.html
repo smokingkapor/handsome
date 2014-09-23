@@ -53,7 +53,7 @@
                     <ul class="selector last-slide list-inline" data-url="{% url 'portals:survey_more' %}">
                         {% for designer in designers %}
                         <li class="option" data-value="{{ designer.user.id }}", data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
-                            <img width="300" height="300" src="{{ designer.avatar|thumbnail_url:'medium' }}" />
+                            <img height="512" src="{{ designer.avatar|thumbnail_url:'large' }}" />
                             <div class="intro">
                                 <p class="name"><b>{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</b></p>
                                 <p class="content">{{ designer.intro }} <a target="_blank" href="{% url 'accounts:designer_case' pk=designer.user.id %}">查看更多</a></p>
