@@ -1,0 +1,82 @@
+{% extends "page.html" %}
+{% load thumbnail %}
+
+{% block title %}服装管理{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-12 content">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <span>风格：</span>
+                        <select name="category" class="form-control input-sm">
+                            <option value="all">所有风格</option>
+                            {% for choice in clothing_choices %}
+                                {% if choice.0 == category %}
+                                <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span>供应商：</span>
+                        <select name="supplier" class="form-control input-sm">
+                            <option value="all">所有供应商</option>
+                            {% for spl in suppliers %}
+                                {% if spl.id|lower == supplier %}
+                                <option value="{{ spl.id }}" selected="selected">{{ spl.name }}</option>
+                                {% else %}
+                                <option value="{{ spl.id }}">{{ spl.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-default input-sm">查找</button>
+                </form>
+                <br />
+
+                <div class="pull-right"><a class="btn btn-primary" href="{% url 'clothings:create' %}">添加</a></div>
+
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>服装名</th>
+                            <th>类别</th>
+                            <th>供应商</th>
+                            <th>库存编号</th>
+                            <th>价格</th>
+                            <th>尺寸</th>
+                            <th>颜色</th>
+                            <th>备注</th>
+                            <th>有货</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for obj in object_list %}
+                        <tr>
+                            <td>{{ obj.name }}
+                                <a class="pull-right" href="{{ obj.image|thumbnail_url:'medium' }}" target="_blank"><span class="glyphicon glyphicon-picture"></span></a>
+                            </td>
+                            <td>{{ obj.get_category_display }}</td>
+                            <td>{{ obj.supplier }}</td>
+                            <td>{{ obj.sku }}</td>
+                            <td>{{ obj.price }}</td>
+                            <td>{{ obj.sizes }}</td>
+                            <td>{{ obj.colors }}</td>
+                            <td>{{ obj.note }}</td>
+                            <td>{{ obj.is_active }}</td>
+                            <td><a href="{% url 'clothings:update' pk=obj.id %}">编辑</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

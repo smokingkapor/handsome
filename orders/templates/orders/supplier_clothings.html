@@ -1,0 +1,49 @@
+{% extends "page.html" %}
+
+{% block title %}供应商配送单{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-12 content">
+                {% if error %}
+                <p class="text-danger">代码错误</p>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div>供应商代码：<input name="code" value="{{ code|default_if_none:'' }}" /><button class="btn btn-primary btn-sm" type="submit">查询</button></div>
+                </form>
+                {% if design_clothings %}
+                <h4>供应商配送单</h4>
+                <hr />
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>库存编号</th>
+                            <th>名字</th>
+                            <th>型号</th>
+                            <th>数量</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sku, dc in design_clothings.items %}
+                            {% for color_size, count in dc.amount.items %}
+                            <tr>
+                                {% if forloop.first %}
+                                <td rowspan="{{ dc.amount|length }}">{{ sku }}</td>
+                                <td rowspan="{{ dc.amount|length }}">{{ dc.name }}</td>
+                                {% endif %}
+                                <td>{{ color_size }}</td>
+                                <td>{{ count }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

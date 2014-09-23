@@ -1,0 +1,168 @@
+body, html {
+    height: 100%;
+}
+
+body {
+    font: 14px "微软雅黑", "MicrosoftYahei", "宋体", "Arial Narrow", HELVETICA;
+    background-color: #E0E0E0;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    outline: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+a.highlight {
+    color: #ff4a00;
+}
+
+.body {
+    padding-top: 90px;
+    padding-bottom: 40px;
+}
+
+.well-shadow {
+    background-color: white;
+    -moz-box-shadow: 3px 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px 3px #888888;
+    box-shadow: 3px 3px 3px #888888;
+    zoom: 1;
+    filter: progid:DXImageTransform.Microsoft.DropShadow(OffX=3, OffY=3, Color=#888888);
+}
+
+#login-form {
+    padding: 20px 10px 0 10px;
+    width: 340px;
+}
+
+.eye_conversion {
+    cursor: pointer;
+}
+
+.eye_conversion:hover {
+    color: #2a6496;
+}
+
+.eye_conversion.glyphicon-eye-open {
+    color: #428bca;
+}
+
+.avatar {
+    background-color: #F5F5F5;
+    border: 1px solid #DDDDDD;
+    border-radius: 50% 50% 50% 50%;
+    padding: 2px;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.text-primary {
+    color: #2880a3;
+}
+
+.bg-gray {
+    background-color: #eee;
+}
+
+.page {
+    width: 100%;
+    min-height: 93%;
+    position: relative;
+}
+
+.btn, .panel, .form-control {
+    border-radius: 0;
+}
+
+.form-control.alone {
+    display: inline-block;
+    width: auto;
+}
+
+.inline {
+    display: inline;
+}
+
+#header {
+    background: url(../image/header_bg.png) center center no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 250px;
+    position: relative;
+    font-size: 15px;
+    padding-top: 20px;
+}
+
+#header.home {
+    background: url(../image/home_header_bg.png) center center no-repeat;
+    background-size: cover;
+    height: 500px;
+}
+
+#header .buttons {
+    padding-top: 20%;
+}
+
+#header .btn {
+    color: white;
+    background-color: #3FADDE;
+}
+
+#header .menus li a {
+    color: white;
+}
+
+#header .menus li {
+    padding: 0 20px;
+}
+
+#footer {
+    padding-top: 5px;
+}
+
+#foot-steps {
+    background-color: #00224D;
+    background-image: url(../image/foot-steps-bg.png);
+    background-repeat: repeat-x;
+    color: #408BED;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#steps li {
+    background-color: white;
+    padding: 10px 20px;
+    width: 150px;
+    margin: 20px 0px;
+}
+
+#steps .active {
+    background-color: #3F96E3;
+    color: white;
+}
+
+.dark-bg {
+    background-color: #333541;
+}
+
+.gray {
+    color: gray;
+}
+
+.red {
+    color: red;
+}

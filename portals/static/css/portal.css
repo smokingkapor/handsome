@@ -1,0 +1,299 @@
+.gray {
+    color: gray;
+}
+
+#home .intro {
+    background-color: #3F404E;
+    color: white;
+}
+
+#home .case {
+    background: url(../image/home_case_bg.png) center center no-repeat;
+    height: 319px;
+}
+
+#home .case .panel {
+    color: white;
+    width: 327px;
+    height: 365px;
+    margin-top: -45px;
+    text-align: left;
+    display: inline-block;
+    background-color: rgb(93,134,200);
+    opacity: .8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=80)";
+}
+
+#home .case .panel-heading {
+    background-color: #3364B9;
+    font-size: larger;
+}
+
+#survey.carousel .item {
+    min-height: 500px;
+    width: 100%;
+}
+
+#survey .carousel-caption {
+    color: #000;
+    text-shadow: none;
+    position: relative;
+    left: 0px;
+    right: 0px;
+}
+
+#survey .option {
+    background-color: #4E80D7;
+    padding: 0;
+    margin: 0;
+    color: white;
+    border: none;
+    position: relative;
+}
+
+#survey #style li.option span {
+    color: white;
+    position: absolute;
+    bottom: 18px;
+    right: 28px;
+    width: 180px;
+    display: none;
+}
+
+#survey #style li.option:hover span, #survey #style li.option.selected span {
+    display: inline-block;
+}
+
+#survey #style li.option a {
+    color: white;
+}
+
+#survey .item.rhombus li.option {
+    background: url(../image/rhombus_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    margin: auto;
+    line-height: 200px;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#survey .item.rhombus.small li.option {
+    background: url(../image/rhombus_small_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+    font-size: 17px;
+}
+
+#survey .item.rhombus li.option:hover, #survey .item.rhombus li.option.selected {
+    background: url(../image/rhombus_focus_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#survey .item.rhombus.small li.option:hover, #survey .item.rhombus.small li.option.selected {
+    background: url(../image/rhombus_small_focus_bg.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#survey #designer li.option .intro {
+    display: none;
+    position: absolute;
+    top: -45px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    background-color: #0F3870;
+    opacity: .9;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=90)";
+}
+
+#survey #designer li.option .intro .name {
+    padding: 10px;
+    font-size: 18px;
+    background-color: #3464B9;
+}
+
+#survey #designer li.option .intro .content {
+    padding: 10px;
+    text-align: left;
+}
+
+
+#survey #designer li.option:hover .intro, #survey #designer li.option.selected .intro {
+    display: block;
+}
+
+#survey-more .line {
+    padding: 20px;
+    color: white;
+}
+
+
+#survey-more .line .selector li {
+    background-color: white;
+    padding: 6px 15px;
+    margin-right: 15px;
+    color: #333;
+}
+
+#survey-more #color li {
+    padding: 3px;
+}
+
+#survey-more #color li div {
+    width: 35px;
+    height: 25px;
+}
+
+#survey-more .line.required {
+    background-color: lightcoral;
+}
+
+#survey-more .line .image-selector li {
+    background-color: white;
+    padding: 1px;
+    margin: 0px 10px;
+    position: relative;
+    text-align: center;
+}
+
+
+#survey-more .line .image-selector li .cover {
+    position: absolute;
+    display: none;
+    color: white;
+    font-size: 20px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #3364B9;
+    opacity: .7;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=70)";
+}
+
+#survey-more .line .image-selector li .name {
+    margin-top: 60%;
+}
+
+#survey-more .line .selector li:hover, #survey-more .line .selector li.selected {
+    padding: 5px 14px;
+    border: 1px white solid;
+    background-color: #3364B9;
+    color: white;
+    cursor: pointer;
+}
+
+#survey-more #color li:hover, #survey-more #color li.selected {
+    padding: 2px;
+}
+
+#survey-more .line .image-selector li:hover .cover, #survey-more .line .image-selector li.selected .cover {
+    display: block;
+    cursor: pointer;
+}
+
+#survey-more .line .label {
+    padding-right: 15px;
+    font-size: 16px;
+    font-weight: normal;
+    width: 150px;
+    display: inline-block;
+}
+
+#survey-more .color1 {
+    background-color: #63677B;
+    padding: 20px;
+}
+
+#survey-more .color2 {
+    background-color: #555764;
+    padding: 20px;
+}
+
+#survey-more .color3 {
+    background-color: #333541;
+    padding: 20px;
+}
+
+#survey-more #price-val {
+    color: orange;
+    font-size: 24px;
+}
+
+#survey-more .order-detail .line {
+    border-top: 1px dotted gray;
+}
+
+#survey-more .order-detail .line.no-border {
+    border: none
+}
+
+#upload_process {
+    display: none;
+    color: white;
+}
+
+#price-slider {
+    background-color: white;
+}
+
+.ui-corner-all {
+    border-radius: 4px;
+}
+
+#price-slider .ui-slider-range {
+    background-color: #168AD0;
+}
+
+#price-slider .ui-slider-handle {
+    background-color: #31B1FF;
+    cursor: pointer;
+}
+
+#photos li {
+    position: relative;
+    margin: 10px 0;
+}
+
+#photos li a {
+    position: absolute;
+    bottom: 0px;
+    right: 6px;
+    color: red;
+    font-size: 18px;
+}
+
+#home #steps .survey {
+    color: #B68B69;
+}
+
+.left-nav li {
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
+.left-nav li.selected {
+    background-color: black;
+}
+
+.left-nav li.selected a {
+    color: white;
+}
+
+.left-nav li a {
+    color: black;
+}

@@ -1,0 +1,209 @@
+{% extends "page.html" %}
+{% load staticfiles thumbnail account_tags %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'jQuery-File-Upload/css/jquery.fileupload.css' %}">
+{% endblock%}
+
+{% block extrajs %}
+<script src="{% static 'jQuery-File-Upload/js/vendor/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.fileupload.js' %}"></script>
+
+<script src="{% static 'js/design.js' %}"></script>
+<script src="{% static 'js/ractive.min.js' %}"></script>
+{% endblock%}
+
+{% block title %}设计方案{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="title">身高</td>
+                        <td>{{ order.height }}厘米</td>
+                        <td class="title">体重</td>
+                        <td>{{ order.weight }}公斤</td>
+                        <td class="title">年龄段</td>
+                        <td>{{ order.get_age_group_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">衣服尺码</td>
+                        <td>{{ order.get_clothing_size_display }}</td>
+                        <td class="title">裤子尺码</td>
+                        <td>{{ order.get_pants_size_display }}</td>
+                        <td class="title">鞋子尺码</td>
+                        <td>{{ order.get_shoe_size_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">喜欢的颜色</td>
+                        <td>{{ order.get_color_display }}</td>
+                        <td class="title">裤子偏好</td>
+                        <td>{{ order.get_pants_style_display }}</td>
+                        <td class="title">价位</td>
+                        <td>{{ order.price_group }}元左右</td>
+                    </tr>
+                    <tr>
+                        <td class="title">选择的风格</td>
+                        <td>{{ order.get_style_display }}</td>
+                        <td class="title">选择的设计师</td>
+                        <td>
+                            <img class="avatar" width="40" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
+                            <span>{{ order.preferred_designer.get_full_name|default_if_empty:order.preferred_designer.username }}</span>
+                        </td>
+                        <td class="title">定制的场合</td>
+                        <td>{{ order.get_situation_display }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">更多要求</td>
+                        <td colspan="5">{{ order.message }}</td>
+                    </tr>
+                </table>
+                <ul class="list-inline">
+                    {% for photo in order.creator.photo_set.all %}
+                    <li>
+                        <a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}"><img height="120" src="{{ photo.file|thumbnail_url:'small' }}" />
+                    </li>
+                    {% empty %}
+                    <li>用户没有上传个人照片</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <form class="col-md-12 content" role="form">
+                {% comment %}
+                <div class="form-group">
+                    <label>设计思路：</label>
+                    <textarea id="comment" class="form-control" rows="5"></textarea>
+                </div>
+                <hr />
+                {% endcomment %}
+                <div class="form-group">
+                    <input name="selected-clothings" type="hidden" id="selected-clothings-input" />
+                    <div class="row" id="selected-clothings">
+                    </div>
+                    <hr />
+                    <label>选择服装：</label>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <select class="form-control" id="category-select" data-url="{% url 'clothings:search' %}">
+                                <option value="all">所有种类</option>
+                                {% for choice in clothing_choices %}
+                                    {% if choice.0 == category %}
+                                    <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                    {% else %}
+                                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <input placeholder="搜索" type="text" class="form-control" id="search-clothing-input" /><br />
+                        </div>
+                        <div class="col-sm-2">
+                            <button id="search-clothing-btn" type="button" class="btn btn-default btn-sm">查询</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-hover" id="clothing-list">
+                                <thead>
+                                    <tr>
+                                        <th>名字</th>
+                                        <th>尺寸</th>
+                                        <th>颜色</th>
+                                        <th>价格</th>
+                                        <th>备注</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            {% verbatim %}
+                            <script id='clothing-template' type='text/ractive'>
+                                {{#clothings}}
+                                <tr id="clothing-{{pk}}">
+                                    <td>
+                                        <a class="image-tooltip" href="javascript:void(0)" data-toggle="tooltip" data-placement="right" data-html="true" title="<img width=150 src='/media/{{image}}'>">{{name}}</a>
+                                    </td>
+                                    <td>{{sizes}}</td>
+                                    <td>{{colors}}</td>
+                                    <td>{{price}}</td>
+                                    <td>{{note}}</td>
+                                    <td>
+                                        <button id="select-popover-btn-{{pk}}" class="btn btn-sm btn-default select-popover-btn" data-placement="left" data-toggle="popover" data-html="true" type="button" data-content="{{popover_content}}">选择</button>
+                                    </td>
+                                </tr>
+                                {{/clothings}}
+                            </script>
+                            <script id='select-popover-template' type='text/ractive'>
+                                <div class="select-popover">
+                                    <div>
+                                        {{#colors}}
+                                        <label class="radio-inline">
+                                            <input type="radio" name="color_{{pk}}" value="{{color}}" />{{color}}
+                                        </label>
+                                        {{/colors}}
+                                    </div>
+                                    <div>
+                                        {{#sizes}}
+                                        <label class="radio-inline">
+                                            <input type="radio" name="size_{{pk}}" value="{{size}}" />{{size}}
+                                        </label>
+                                        {{/sizes}}
+                                    </div>
+                                    <hr />
+                                    <div class="pull-right">
+                                        <button data-id="{{pk}}" type="button" class="btn btn-primary btn-sm select-btn">添加</button>
+                                        <button data-id="{{pk}}" type="button" class="btn btn-sm close-popover">取消</button>
+                                    </div>
+                                </div>
+                            </script>
+                            <script id='selected-clothing-template' type='text/ractive'>
+                                <div id="selected-clothing-{{pk}}" class="col-sm-2 selected-clothing" data-id="{{pk}}" data-color="{{color}}" data-size="{{size}}">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+                                            <img width="50" src="/media/{{image}}" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <span>颜色：<b>{{color}}</b></span>
+                                            <span>尺寸：<b>{{size}}</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <span>{{name}}</span>
+                                            <a href="javascript:void(0)" class="clothing-remove-btn"><span class="glyphicon glyphicon-remove"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </script>
+                            {% endverbatim %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span class="btn btn-success fileinput-button">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>上传设计方案...</span>
+                        <input id="fileupload" type="file" name="file" data-url="{% url 'designs:upload' %}?code={{ order.code }}" multiple>
+                    </span>
+                    <span id="progress"></span>
+                </div>
+                <div class="form-group">
+                    <input id="design-photos" type="hidden" />
+                    <div id="photos"></div>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="create-design-btn" data-loading-text="正在创建..." data-url="{% url 'designs:create' %}?code={{ order.code }}" class="btn btn-primary pull-right">提交设计</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

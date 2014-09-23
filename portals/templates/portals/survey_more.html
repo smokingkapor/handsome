@@ -1,0 +1,201 @@
+{% extends "page.html" %}
+{% load staticfiles thumbnail account_tags %}
+
+{% block extracss %}
+<link media="screen" rel="stylesheet" href="http://libs.useso.com/js/jqueryui/1.10.4/css/jquery.ui.slider.min.css">
+{% endblock%}
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'jQuery-File-Upload/css/jquery.fileupload.css' %}">
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block extrajs %}
+<script src="http://libs.useso.com/js/jqueryui/1.10.4/jquery-ui.min.js"></script>
+{% endblock%}
+{% block extrajs_compress %}
+<script src="{% static 'jQuery-File-Upload/js/vendor/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'jQuery-File-Upload/js/jquery.fileupload.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
+{% endblock%}
+
+{% block title %}优草{% endblock %}
+
+{% block content %}
+
+<div id="survey-more" class="page">
+    <div class="container">
+        <div class="row">
+            {% include "steps.html" with active="info" %}
+            <div class="col-md-8 col-md-offset-2">
+                <div class="text-center">
+                    <img src="{% static 'image/ygrass_eng.png' %}" />
+                    <h4>完善个人资料</h4>
+                    <p><small>为了给您提供更加出色的服务，优草建议您准确填以下信息</small></p>
+                    <br />
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 color1">
+                        <div class="line">
+                            <span class="label">身高*</span>
+                            <input id="height" type="text" class="form-control alone" value="{{ user.profile.height }}" /> <small>(厘米)</small>
+                        </div>
+                        <div class="line">
+                            <span class="label">体重*</span>
+                            <input id="weight" type="text" class="form-control alone" value="{{ user.profile.weight }}" /> <small>(公斤)</small>
+                        </div>
+                        <div class="line">
+                            <span class="label">年龄*</span>
+                            <ul class="list-inline inline selector" id="age">
+                                {% for choice in AGE_GROUP_CHOICES %}
+                                    {% if user.profile.age_group == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 color2">
+                        <div class="line">
+                            <span class="label">衣服尺码*</span>
+                            <ul class="list-inline inline selector" id="clothing_size">
+                                {% for choice in CLOTHING_SIZE_CHOICES %}
+                                    {% if user.profile.clothing_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">裤子尺码*</span>
+                            <ul class="list-inline inline selector" id="pants_size">
+                                {% for choice in PANTS_SIZE_CHOICES %}
+                                    {% if user.profile.pants_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">鞋子尺码*</span>
+                            <ul class="list-inline inline selector" id="shoe_size">
+                                {% for choice in SHOE_SIZE_CHOICES %}
+                                    {% if user.profile.shoe_size == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 color3">
+                        <div class="line">
+                            <span class="label">喜欢的颜色*</span>
+                            <ul class="list-inline inline selector" id="color">
+                                {% for choice in COLOR_CHOICES %}
+                                    {% if user.profile.color == choice.0 %}
+                                    <li title="{{ choice.1 }}" class="selected" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}"><div style="background-color: {{ choice.0 }}"></div></li>
+                                    {% else %}
+                                    <li title="{{ choice.1 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}"><div style="background-color: {{ choice.0 }}"></div></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">裤子偏好*</span>
+                            <ul class="list-inline inline selector" id="pants_style">
+                                {% for choice in PANTS_STYLE_CHOICES %}
+                                    {% if user.profile.pants_style == choice.0 %}
+                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% else %}
+                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">个人照片</span>
+                            <span class="btn btn-success fileinput-button">
+                                <span>上传照片...</span>
+                                <input id="fileupload" type="file" name="file" data-url="{% url 'accounts:create_photo' %}">
+                            </span>
+                            <span id="upload_process"><img height="30" src="{% static 'jQuery-File-Upload/img/loading.gif' %}"><b></b></span><br /><br />
+                            <ul id="photos" class="list-inline" data-url="{% url 'accounts:remove_photo' %}">
+                                {% for photo in user.photo_set.all %}
+                                <li>
+                                    <img height="128" src="{{ photo.file|thumbnail_url:'small' }}" />
+                                    <a data-id="{{ photo.id }}" href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small class="gray"> 我们的设计方案和您的肤色和体型有着直接的联系，为了给您提供最优的服务，我们建议您提供个人照片</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row order-detail">
+                    <div class="text-center">
+                        <br /><br /><br />
+                        <img src="{% static 'image/ygrass_eng.png' %}" />
+                        <h4>完善本次定制信息</h4>
+                        <br />
+                    </div>
+                    <div class="col-md-12 color3">
+                        <div class="line no-border">
+                            <span class="label">您已选择的风格</span><br/><br/>
+                            <ul class="list-inline image-selector" id="style_again">
+                                {% for choice in STYLE_CHOICES %}
+                                <li data-value="{{ choice.0 }}">
+                                    <img height="200" src="{{ STATIC_URL }}image/styles/{{ choice.0 }}/0.jpg" />
+                                    <div class="cover"><p class="name">{{ choice.1 }}</p></div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">您已选择的设计师</span><br/><br/>
+                            <ul class="list-inline image-selector" id="designer_again">
+                                {% for designer in designers %}
+                                <li data-value="{{ designer.user.id }}" data-avatar="{{ designer.avatar|thumbnail_url:'medium' }}">
+                                    <img height="100" src="{{ designer.avatar|thumbnail_url:'medium' }}" />
+                                    <div class="cover"><p class="name">{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</p></div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">本次定制的场合*</span>
+                            <ul class="list-inline inline selector" id="situation">
+                                {% for choice in SITUATION_CHOICES %}
+                                <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="line">
+                            <span class="label">您对本次定制的预算为 <b id="price-val">600元</b></span><br/><br/>
+                            <b>￥300</b> <div id="price-slider" style="display: inline-block; width: 80%;"></div> <b>￥2000</b>
+                            <p><small class="gray">(春夏装我们建议400元左右，秋冬装我们建议 800元左右)</small></p>
+                        </div>
+                        <div class="line">
+                            <span class="label" style="text-align: left;">其他信息</span><br/>
+                            <textarea id="message" class="form-control" rows="5"></textarea>
+                            <p><small class="gray">(为了为您提供更好的服务，我们建议你提供更多信息，比如平时的穿衣困扰或者一些特殊的需求)</small></p>
+                        </div>
+                        <div class="line no-border">
+                            <button id="submit-more-survey-btn" data-url="{% url 'orders:create' %}" type="button" class="btn btn-primary btn-lg">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

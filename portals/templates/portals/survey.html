@@ -1,0 +1,105 @@
+{% extends "page.html" %}
+{% load staticfiles thumbnail account_tags %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block extrajs_compress %}
+<script src="{% static 'js/portal.js' %}"></script>
+{% endblock%}
+{% block extrajs %}
+<!--[if lte IE 9]>       
+    <script src="{% static 'ie-bootstrap-carousel/ie-bootstrap-carousel.min.js' %}"></script>
+<![endif]-->
+{% endblock%}
+
+{% block title %}优草形象{% endblock %}
+
+{% block content %}
+<div class="carousel slide page" id="survey" data-ride="carousel" data-interval="false">
+    {% include "steps.html" %}
+    <div class="carousel-inner">
+        <div class="item active" id="style">
+            <div class="carousel-caption">
+                <div class="text-center">
+                    <div><img src="{% static 'image/ygrass_eng.png' %}" /></div>
+                    <h4>时尚风格选择</h4>
+                    <p><small>您想让我们为您打造哪种风格？</small></p>
+                    <br />
+                    <ul class="selector auto-slide list-inline">
+                        {% for choice in STYLE_CHOICES %}
+                        <li class="option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}">
+                            <div class="title">
+                                <h2>{{ choice.1 }}</h2>
+                                <p><a data-toggle="modal" data-target="#modal_{{ choice.0 }}" href="javascript:void(0)">查看更多照片</a></p>
+                            </div>
+                            <img width="250" src="{{ STATIC_URL }}image/styles/{{ choice.0 }}/0.jpg" />
+                            <span class="btn btn-primary select-btn">选择这种</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="item" id="designer">
+            <div class="carousel-caption">
+                <div class="text-center">
+                    <div><img src="{% static 'image/ygrass_eng.png' %}" /></div>
+                    <h4>设计师选择</h4>
+                    <p><small>我们的设计师都有自己独特的搭配风格，您可以查看她们的搭配案例来选择自己喜爱的设计师。她们会在您下单之后和您取得联系。</small></p>
+                    <br />
+                    <ul class="selector last-slide list-inline" data-url="{% url 'portals:survey_more' %}">
+                        {% for designer in designers %}
+                        <li class="option" data-value="{{ designer.user.id }}", data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
+                            <img height="512" src="{{ designer.avatar|thumbnail_url:'large' }}" />
+                            <div class="intro">
+                                <p class="name"><b>{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</b></p>
+                                <p class="content">{{ designer.intro }} <a target="_blank" href="{% url 'accounts:designer_case' pk=designer.user.id %}">查看更多</a></p>
+                                <br /><br /><br />
+                                <span class="btn btn-default select-btn">选择设计师</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-md-11 text-right">
+                        <br /><br />
+                        <a class="previous" href="javascript:void(0);"><img src="{% static 'image/back_btn.png' %}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% for style, values in STYLE_IMAGES.items %}
+<div class="modal fade" id="modal_{{ style }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="carousel_{{ style }}" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    {% for file in values %}
+                    <li data-target="#carousel_{{ style }}" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
+                    {% endfor %}
+                </ol>
+                <div class="carousel-inner">
+                    {% for file in values %}
+                    <div class="item {% if forloop.first %}active{% endif %}">
+                      <img data-src="{{ STATIC_URL }}image/styles/{{ style }}/{{ file }}.jpg" />
+                    </div>
+                    {% endfor %}
+                </div>
+                <a class="left carousel-control" href="#carousel_{{ style }}" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel_{{ style }}" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

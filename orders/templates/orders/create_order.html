@@ -1,0 +1,162 @@
+{% extends "page.html" %}
+{% load staticfiles account_tags thumbnail %}
+
+{% block extrajs %}
+<script src="{% static 'js/order.js' %}"></script>
+{% endblock%}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock%}
+
+{% block title %}下单{% endblock %}
+
+{% block content %}
+<div id="create-order">
+    <div class="container {% if last_order %}one-key{% endif %}">
+        <div class="row">
+            {% include "steps.html" with active="order" %}
+            <div class="text-center">
+                <img src="{% static 'image/ygrass_eng.png' %}" />
+                <h4>配送信息</h4>
+                <br />
+            </div>
+            <form class="form-horizontal col-md-12 delivery" role="form">
+                <input type="hidden" id="address-pk" value="{{ address.id }}" />
+                <p id="full-adress" {% if not address %}class="hidden"{% endif %}>
+                    <span>{{ address|default_if_none:'' }}</span>
+                    <a href="javascript:void(0)" id="edit-address-btn"><span class="glyphicon glyphicon-edit"></span>修改</a>
+                </p>
+                <div id="address-edit-panel" {% if address %}class="hidden"{% endif %}>
+                    <div class="form-group">
+                        <small class="col-sm-2 control-label"><b class="text-danger">*</b>收货人&nbsp;&nbsp;&nbsp;：</small>
+                        <div class="col-sm-10">
+                            <input id="name" class="form-control input-sm" value="{{ address.name }}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <small class="col-sm-2 control-label"><b class="text-danger">*</b>所在地区：</small>
+                        <div class="col-sm-10">
+                            <select id="province" class="form-control input-sm address" data-target="#city" data-url="{% url 'orders:load_address' %}?level=city">
+                                <option value="-1">--请选择--</option>
+                                {% for province in provinces %}
+                                    {% if province == address.province %}
+                                        <option value="{{ province.id }}" selected="selected">{{ province.name }}</option>
+                                    {% else %}
+                                        <option value="{{ province.id }}">{{ province.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <select id="city" class="form-control input-sm address {% if not address.city %}hidden{% endif %}" data-target="#country" data-url="{% url 'orders:load_address' %}?level=country">
+                                <option value="-1">--请选择--</option>
+                                {% for city in address.province.city_set.all %}
+                                    {% if city == address.city %}
+                                        <option value="{{ city.id }}" selected="selected">{{ city.name }}</option>
+                                    {% else %}
+                                        <option value="{{ city.id }}">{{ city.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <select id="country" class="form-control input-sm address {% if not address.country %}hidden{% endif %}" data-target="#town" data-url="{% url 'orders:load_address' %}?level=town">
+                                <option value="-1">--请选择--</option>
+                                {% for country in address.city.country_set.all %}
+                                    {% if country == address.country %}
+                                        <option value="{{ country.id }}" selected="selected">{{ country.name }}</option>
+                                    {% else %}
+                                        <option value="{{ country.id }}">{{ country.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <small class="col-sm-2 control-label"><b class="text-danger">*</b>详细地址：</small>
+                            <div class="col-sm-10">
+                                <span id="region">{{ address.get_region }}</span>
+                                <input id="house" class="form-control input-sm" value="{{ address.house }}" />
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <small class="col-sm-2 control-label"><b class="text-danger">*</b>手机号：</small>
+                        <div class="col-sm-10">
+                            <input id="phone" class="form-control input-sm" value="{% if address.phone %}{{ address.phone }}{% elif user.profile.phone %}{{ user.profile.phone }}{% endif %}" />
+                            <small>(提示：请您输入真实的手机号，您下次可以使用手机号动态密码登录。登录后您可以在账户中修改账号和密码。)</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="save-address-btn" type="button" data-url="{% url 'orders:save_address' %}" class="btn btn-default">保存配送信息</button>
+                            {% if address %}
+                            <a id="cancel-edit-address-btn" href="javascript:void(0)">取消</a>
+                            {% endif %}
+                            <br />
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <br /><br />
+        <div class="row">
+            <div class="text-center">
+                <img src="{% static 'image/ygrass_eng.png' %}" />
+                <h4>订单详情</h4>
+                <br />
+            </div>
+            <div class="col-md-12 my-requirements">
+                <table>
+                    <tr>
+                        <td class="text-right title">身高</td>
+                        <td id="height"><span></span></td>
+                        <td class="text-right title">体重</td>
+                        <td id="weight"><span></span></td>
+                        <td class="text-right title">年龄段</td>
+                        <td id="age"><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">衣服尺码</td>
+                        <td id="clothing_size"><span></span></td>
+                        <td class="text-right title">裤子尺码</td>
+                        <td id="pants_size"><span></span></td>
+                        <td class="text-right title">鞋子尺码</td>
+                        <td id="shoe_size"><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">喜欢的颜色</td>
+                        <td id="color"><span></span></td>
+                        <td class="text-right title">裤子偏好</td>
+                        <td id="pants_style"><span></span></td>
+                        <td class="text-right title">价位</td>
+                        <td id="price"><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">选择的风格</td>
+                        <td id="style"><span></span></td>
+                        <td class="text-right title">选择的设计师</td>
+                        <td id="designer">
+                            <img class="avatar" width="40" src="{% static 'image/avatars/default_avatar.png' %}" />
+                            <span></span>
+                        </td>
+                        <td class="text-right title">定制的场合</td>
+                        <td id="situation"><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right title">更多要求</td>
+                        <td colspan="5">
+                            <p id="message"></p>
+                        </td>
+                    </tr>
+                    <tr class="text-right">
+                        <td colspan="6">
+                            <br />
+                            <a href="{% url 'portals:survey_more' %}?mode=edit">返回修改</a> 
+                            <button id="create-order-btn" data-loading-text="正在创建..." data-url="{% url 'orders:create' %}" class="btn btn-primary btn-lg">确认并提交</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br /><br />
+    </div>
+</div>
+{% endblock %}

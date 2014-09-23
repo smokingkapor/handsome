@@ -1,0 +1,126 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block title %}客户订单{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'jqueryui/css/ui-lightness/jquery-ui-1.10.4.custom.min.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+<script src="{% static 'jqueryui/js/jquery-ui-1.10.4.custom.min.js' %}"></script>
+<script src="{% static 'js/order-designer.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-12 content">
+                <h4>客户订单</h4>
+                <hr />
+                <form class="form-inline" role="form">
+                    {% if user.is_superuser %}
+                    <div class="form-group">
+                        <span>设计师：</span>
+                        <select name="designer" class="form-control input-sm">
+                            <option value="all">所有设计师</option>
+                            {% for ds in designers %}
+                                {% if ds.user.id|lower == designer %}
+                                <option value="{{ ds.user.id }}" selected="selected">{{ ds.user.username }}</option>
+                                {% else %}
+                                <option value="{{ ds.user.id }}">{{ ds.user.username }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <span>订单状态：</span>
+                        <select name="status" class="form-control input-sm">
+                            <option value="all">所有状态</option>
+                            {% for choice in STATUS_CHOICES %}
+                                {% if choice.0 == status %}
+                                <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span>风格：</span>
+                        <select name="style" class="form-control input-sm">
+                            <option value="all">所有风格</option>
+                            {% for choice in STYLE_CHOICES %}
+                                {% if choice.0 == style %}
+                                <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span>年龄段：</span>
+                        <select name="age-group" class="form-control input-sm">
+                            <option value="all">所有年龄段</option>
+                            {% for choice in AGE_GROUP_CHOICES %}
+                                {% if choice.0 == age_group %}
+                                <option value="{{ choice.0 }}" selected="selected">{{ choice.1 }}</option>
+                                {% else %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span>创建时间：</span>
+                        <input type="text" class="form-control datetime input-sm" value="{{ created_from|date:'m/d/Y' }}" name="created-from" />
+                        <label> - </label>
+                        <input type="text" class="form-control datetime input-sm" value="{{ created_to|date:'m/d/Y' }}" name="created-to" />
+                    </div>
+                    <button type="submit" class="btn btn-primary input-sm">查找</button>
+                </form>
+                <br />
+
+                {% if user.is_superuser %}
+                <p class="pull-right"><a href="{% url 'payments:refund' %}" class="btn btn-default">批量退款</a></p>
+                {% endif %}
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>订单号 </th>
+                            <th>客户信息</th>
+                            <th>配送地址</th>
+                            <th>创建日期</th>
+                            <th>状态</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for obj in object_list %}
+                        <tr>
+                            <td>{{ obj.code }}</td>
+                            <td>{{ obj.name }}({{ obj.phone }})</td>
+                            <td>{{ obj.get_address }}</td>
+                            <td>{{ obj.created_at|date:"n月j日 G:i" }}</td>
+                            <td>
+                                <p>{{ obj.get_status_display }}</p>
+                                {% if obj.status == RETURNING %}
+                                <p>{{ obj.express_info|safe }}</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{%url 'orders:detail' code=obj.code %}">订单详情></a><br /><br />
+                                {{ obj.get_designer_operations|safe }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

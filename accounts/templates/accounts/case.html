@@ -1,0 +1,64 @@
+{% extends "page.html" %}
+{% load staticfiles thumbnail %}
+
+{% block title %}设计师案例{% endblock %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/account.css' %}">
+{% endblock %}
+
+{% block extrajs_compress %}
+<script src="{% static 'js/account.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container">
+        <div class="text-center">
+            <br /><br />
+            <img src="{% static 'image/ygrass_eng.png' %}" />
+            <h4>设计师案例</h4>
+            <br />
+        </div>
+        <div id="case">
+            <div class="row">
+                <div class="col-md-10">
+                    <h4>{{ designer.user.get_full_name }}</h4>
+                    <p>{{ designer.intro }}</p>
+                </div>
+                <div class="col-md-2 text-center">
+                    <img class="avatar" height="100" src="{{ designer.avatar|thumbnail_url:'medium' }}" />
+                </div>
+            </div>
+            <br />
+            {% if cases %}
+            <div class="row cases">
+                <br /><br />
+                <div id="cases" class="carousel slide col-md-10 col-md-offset-1 text-center" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for case in cases %}
+                        <li data-target="#cases" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for case in cases %}
+                        <div class="item {% if forloop.first %}active{% endif %}">
+                            <div>
+                              <img src="{{ MEDIA_URL }}{{ case.file }}" />
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a class="left carousel-control" href="#cases" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#cases" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

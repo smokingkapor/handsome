@@ -1,0 +1,15 @@
+{% extends "page.html" %}
+
+{% block title %}{{ flatpage.title }}{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-12 content">
+            {{ flatpage.content|linebreaks }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

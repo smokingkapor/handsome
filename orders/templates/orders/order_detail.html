@@ -1,0 +1,214 @@
+{% extends "page.html" %}
+{% load staticfiles thumbnail account_tags %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock%}
+
+{% block extrajs_compress %}
+<script src="{% static 'js/order.js' %}"></script>
+{% endblock%}
+
+{% block title %}订单详情{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container">
+        <div class="row">
+            <br />
+            <div class="text-center">
+                <img src="{% static 'image/ygrass_eng.png' %}" />
+                <h4>{% if mode %}恭喜您，下单成功！{% else %}订单详情{% endif %}</h4>
+                <br />
+            </div>
+            <div class="col-md-12" id="order-detail">
+                <br />
+                <p>
+                    <span>订单号：{{ order.code }}</span>
+                    <b>{{ order.get_status_display }}</b>
+                    {% if order.status == CREATED %}
+                    <span>(您将在24小时之内收到我们的设计方案)</span>
+                    {% endif %}
+                    <span class="pull-right">
+                        {% if user.is_staff %}
+                        {{ order.get_designer_operations|safe }}
+                        {% else %}
+                        {{ order.get_operations|safe }}
+                            {% if order.status == PREPAID %}
+                            <a data-url="{% url 'orders:refund' code=order.code %}" data-confirm="确认要退还预付款？" class="confirm" href="#">申请退款></a>
+                            {% endif %}
+                        {% endif %}
+                    </span>
+                </p>
+                <div class="panel-group" id="accordion">
+                    {% if order.status != CREATED %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseZero">搭配方案</a></h4>
+                        </div>
+                        <div id="collapseZero" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                {% if order.report %}
+                                <p>设计师评语：{{ order.report }}</p><br />
+                                {% endif %}
+                                <table class="col-sm-12">
+                                {% for design in order.design_set.all %}
+                                <tr class="design">
+                                    <td class="preview">
+                                        <p>搭配方案{{ forloop.counter }} {% if user == design.designer %}<a href="javascript:void(0)" data-confirm="确定要删除这套方案？" class="confirm" data-url="{% url 'designs:remove' code=design.code %}"><span title="删除方案" class="glyphicon glyphicon-remove red"></span></a>{% endif %}</p>
+                                        <div id="designer-{{ design.id }}" class="carousel slide" data-ride="carousel">
+                                            <ol class="carousel-indicators">
+                                                {% for photo in design.photos.all %}
+                                                <li data-target="#designer-{{ design.id }}" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
+                                                {% endfor %}
+                                            </ol>
+                                            <div class="carousel-inner">
+                                                {% for photo in design.photos.all %}
+                                                <div class="item {% if forloop.first %}active{% endif %}">
+                                                  <img src="{{ photo.file|thumbnail_url:'medium' }}" />
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                    {% if order.status == DESIGNED %}
+                                        <ul class="list-inline clothings">
+                                            {% for design_clothing in design.clothings.all %}
+                                            <li class="clothing selected" data-price="{{ design_clothing.clothing.price }}" data-id="{{ design_clothing.id }}">
+                                                <p><img title="{{ design_clothing.clothing.name }}" src="{{ design_clothing.clothing.image|thumbnail_url:'small' }}" /></p>
+                                                <p title="{{ design_clothing.clothing.name }}">{{ design_clothing.clothing.name|truncatechars:13 }}</p>
+                                                <p>{{ design_clothing.color }}/{{ design_clothing.size }}/￥{{ design_clothing.clothing.price }} <span class="glyphicon glyphicon-ok"></span></p>
+                                                <a class="zoom" target="_blank" href="{% url 'clothings:photos' pk=design_clothing.clothing.id %}"><span class="glyphicon glyphicon-zoom-in"></span> 查看大图</a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul><br /><br />
+                                        <p class="text-right price">此方案累计：<span></span>元</p>
+                                    {% else %}
+                                        <ul class="list-inline clothings">
+                                            {% for order_clothing in design.orderclothing_set.all %}
+                                            <li class="clothing selected readonly" data-price="{{ order_clothing.design_clothing.clothing.price }}" data-id="{{ order_clothing.design_clothing.id }}">
+                                                <p><img title="{{ order_clothing.design_clothing.clothing.name }}" src="{{ order_clothing.design_clothing.clothing.image|thumbnail_url:'small' }}" /></p>
+                                                <p title="{{ order_clothing.design_clothing.clothing.name }}">{{ order_clothing.design_clothing.clothing.name|truncatechars:13 }}</p>
+                                                <p>{{ order_clothing.design_clothing.color }}/{{ order_clothing.design_clothing.size }}/￥{{ order_clothing.design_clothing.clothing.price }} <span class="glyphicon glyphicon-ok"></span></p>
+                                                <a class="zoom" target="_blank" href="{% url 'clothings:photos' pk=order_clothing.design_clothing.clothing.id %}"><span class="glyphicon glyphicon-zoom-in"></span> 查看大图</a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul><br /><br />
+                                        <p class="text-right price">此方案累计：<span></span>元</p>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% if order.status == DESIGNED and not user.profile.is_designer %}
+                                    <tr>
+                                        <td colspan="2" class="text-right">
+                                            <br />
+                                            <span>总计：<span class="total_price"></span>元</span>&nbsp;&nbsp;&nbsp;
+                                            <button id="confirm-selection-btn" data-url="{% url 'orders:select_clothings' code=object.code %}" class="btn btn-primary">确认并付款</button>
+                                        </td>
+                                    </tr>
+                                {% else  %}
+                                    <tr>
+                                    <td colspan="2" class="text-right">
+                                        <br />
+                                        <span>总计：<span class="total_price"></span>元</span>&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">定制详情</a></h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <table>
+                                    <tr>
+                                        <td class="title">身高</td>
+                                        <td>{{ order.height }}厘米</td>
+                                        <td class="title">体重</td>
+                                        <td>{{ order.weight }}公斤</td>
+                                        <td class="title">年龄段</td>
+                                        <td>{{ order.get_age_group_display }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">衣服尺码</td>
+                                        <td>{{ order.get_clothing_size_display }}</td>
+                                        <td class="title">裤子尺码</td>
+                                        <td>{{ order.get_pants_size_display }}</td>
+                                        <td class="title">鞋子尺码</td>
+                                        <td>{{ order.get_shoe_size_display }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">喜欢的颜色</td>
+                                        <td>{{ order.get_color_display }}</td>
+                                        <td class="title">裤子偏好</td>
+                                        <td>{{ order.get_pants_style_display }}</td>
+                                        <td class="title">价位</td>
+                                        <td>{{ order.price_group }}元左右</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">选择的风格</td>
+                                        <td>{{ order.get_style_display }}</td>
+                                        <td class="title">选择的设计师</td>
+                                        <td>
+                                            <img class="avatar" width="40" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
+                                            <span>{{ order.preferred_designer.get_full_name|default_if_empty:order.preferred_designer.username }}</span>
+                                        </td>
+                                        <td class="title">定制的场合</td>
+                                        <td>{{ order.get_situation_display }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">更多要求</td>
+                                        <td colspan="5">{{ order.message }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% if order.total_price != 0 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">付款信息</a></h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <dl class="dl-horizontal">
+                                    <dt>总价：</dt>
+                                    <dd>{{ order.total_price|floatformat }}元</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">配送信息</a></h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：{{ order.name }}</p>
+                                <p>收货地址：{{ order.get_address }}</p>
+                                <p>联系电话：{{ order.phone }}</p>
+                                {% if order.status == SENT %}
+                                <hr />
+                                <p>物流信息：{{ order.express_info }}</p>
+                                {% elif order.status == RETURNING %}
+                                <hr />
+                                <p>退货快递信息：{{ order.express_info|safe }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "orders/return.html" %}
+</div>
+{% endblock %}

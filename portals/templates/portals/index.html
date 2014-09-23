@@ -1,0 +1,62 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block title %}优草形象{% endblock %}
+
+{% block content %}
+<div id="home" class="text-center">
+    <a name="process"></a>
+    <div class="col-md-12">
+        <br /><br />
+        <img src="{% static 'image/ygrass_eng.png' %}" />
+        <h3>如何运作</h3>
+        <br />
+    </div>
+    <img src="{% static 'image/home_steps.png' %}" />
+    <div class="intro">
+        <br /><br /><br />
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <img src="{% static 'image/ygrass_eng_lucid.png' %}" />
+                    <h3>优草的服装</h3>
+                    <br />
+                </div>
+                <br /><br />
+                <div class="col-md-12">
+                    <div class="col-sm-6 text-right">
+                        <img src="{% static 'image/home_intro_rect.jpg' %}" />
+                    </div>
+                    <div class="col-sm-4 text-left">
+                        <br /><br /><br /><br />
+                        <p>优草的服装来源渠道丰富，款式和质量都经过我们的专业人员精挑细选，同时在保持平价的基础上，为您提供最佳的穿着解决方案。无论您是要参加聚会、相亲或是平时上班，我们的服装库都可以确保有最合适您的款式。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br /><br /><br /><br />
+    </div>
+    <div class="case-head">
+        <br /><br />
+        <img src="{% static 'image/ygrass_eng.png' %}" />
+        <h3>优草案例</h3>
+        <br /><br /><br /><br />
+    </div>
+    <div class="case">
+        <div class="panel">
+            <div class="panel-heading text-center">时尚简约型</div>
+            <div class="panel-body">
+                <p>出生于意大利水城威尼斯近郊，是一位知名的服装设计师，有同名商标及同名公司。1950年自己独立开设了服装设计公司，地点选在巴黎的Richepanse街上。早期承接相当多剧服、面具等表演艺术的案子......</p>
+                <br /><br /><br /><br /><br /><br />
+                <div class="text-center">
+                    <a href="#" class="btn btn-default btn-lg">查看详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

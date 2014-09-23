@@ -1,0 +1,153 @@
+#phone-login {
+    background-color: #333541;
+    padding: 40px 20px;
+    color: white;
+}
+
+#phone-login .btn-primary {
+    padding: 5px 50px;
+}
+
+#login {
+    background-color: #333541;
+    padding: 40px 0;
+    color: white;
+}
+
+#login .btn-primary {
+    padding: 5px 50px;
+}
+
+#register {
+    background-color: #333541;
+    padding: 40px 0;
+    color: white;
+}
+
+#register .btn-primary {
+    padding: 5px 50px;
+}
+
+#profile {
+    background-color: #333541;
+    padding: 40px 0;
+    color: white;
+}
+
+#profile table .title {
+    padding: 15px 40px;
+    text-align: right;
+    min-width: 160px;
+}
+
+#update-password {
+    background-color: #333541;
+    padding: 40px 0;
+    color: white;
+}
+
+#update-profile .line {
+    padding: 20px;
+    color: white;
+}
+
+#update-profile .line .selector li {
+    background-color: white;
+    padding: 6px 15px;
+    margin-right: 15px;
+    color: #333;
+}
+
+#update-profile .line.required {
+    background-color: lightcoral;
+}
+
+#update-profile .line .image-selector li {
+    background-color: white;
+    padding: 1px;
+    margin: 0px 10px;
+    position: relative;
+    text-align: center;
+}
+
+
+#update-profile .line .image-selector li .cover {
+    position: absolute;
+    display: none;
+    color: white;
+    font-size: 20px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #3364B9;
+    opacity: .7;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=70)";
+}
+
+#update-profile .line .image-selector li .name {
+    margin-top: 60%;
+}
+
+#update-profile .line .selector li:hover, #update-profile .line .selector li.selected {
+    padding: 5px 14px;
+    border: 1px white solid;
+    background-color: #3364B9;
+    color: white;
+    cursor: pointer;
+}
+
+#update-profile .line .image-selector li:hover .cover {
+    display: block;
+    cursor: pointer;
+}
+
+#update-profile .line .label {
+    padding-right: 15px;
+    font-size: 16px;
+    font-weight: normal;
+    width: 100px;
+    display: inline-block;
+}
+
+#update-profile .color1 {
+    background-color: #63677B;
+    padding: 20px;
+}
+
+#update-profile .color2 {
+    background-color: #555764;
+    padding: 20px;
+}
+
+#update-profile .color3 {
+    background-color: #333541;
+    padding: 20px;
+}
+
+.tabs {
+    margin: 0;
+    margin-bottom: 1px;
+}
+
+.tabs li {
+    background-color: #606374;
+    padding: 5px 15px;
+}
+
+.tabs li.selected {
+    background-color: #3464B9;
+}
+
+.tabs li a {
+    color: white;
+}
+
+#case {
+    background-color: #333541;
+    color: white;
+    padding: 15px;
+}
+
+#case .cases {
+    background-color: #434551;
+}

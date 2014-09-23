@@ -1,0 +1,26 @@
+{% extends "page.html" %}
+{% load handsome_template_tags staticfiles %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container">
+        <div class="text-center">
+            <br /><br />
+            <img src="{% static 'image/ygrass_eng.png' %}" />
+            <h4>优草形象</h4>
+            <br />
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img style="width: 100%" src="{{ MEDIA_URL }}{{ object.image }}" />
+                {% if object.more_image_1 %}
+                <br /><br />
+                <img style="width: 100%" src="{{ MEDIA_URL }}{{ object.more_image_1 }}" />
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
