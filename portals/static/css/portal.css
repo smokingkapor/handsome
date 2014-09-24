@@ -115,15 +115,27 @@
     bottom: 0;
     width: 100%;
     color: white;
-    background-color: #0F3870;
+    background-color: lightgray;
     opacity: .9;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=90)";
+}
+
+#survey #designer li.option .case {
+    position: absolute;
+    z-index: 100;
 }
 
 #survey #designer li.option .intro .name {
     padding: 10px;
     font-size: 18px;
-    background-color: #3464B9;
+    background-color: gray;
+}
+
+#survey #designer li.option span {
+    color: white;
+    bottom: 18px;
+    right: 28px;
+    width: 180px;
 }
 
 #survey #designer li.option .intro .content {

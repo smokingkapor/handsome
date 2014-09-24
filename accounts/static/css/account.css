@@ -151,3 +151,8 @@
 #case .cases {
     background-color: #434551;
 }
+
+#login,#phone-login,#register {
+    background: url('../image/auth_bg.jpg') top center no-repeat;
+    background-size: cover;
+}

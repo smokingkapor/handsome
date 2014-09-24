@@ -22,6 +22,7 @@
         </div>
         <div id="phone-login" class="row">
             <div class="col-md-4">
+                <h3>登录 LOGIN</h3><br /><br />
                 <form method="post" class="form-horizontal" role="form">
                     {% csrf_token %}
                     <div class="form-group {% if form.phone.errors %}has-error{% endif %}">
@@ -56,7 +57,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-md-4 col-md-offset-2">
                 <p>还没账号？您可以</p>
                 {% if query_string %}
                 <p><a href="{% url 'accounts:create_random_user' %}?{{ query_string }}" class="btn btn-primary">无账号快速下单</a></p>

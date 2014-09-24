@@ -73,6 +73,22 @@ $(document).ready(function(){
         return true;
     }
 
+    // save selected designer
+    $('#select-designer-btn').click(function() {
+        try {
+            var survey = JSON.parse(localStorage.survey || '{}');
+        } catch(err){
+            var survey = {};
+        }
+        survey.designer = {
+            label: $(this).data('label'),
+            value: $(this).data('value'),
+            avatar: $(this).data('avatar')
+        };
+        localStorage.survey = JSON.stringify(survey);
+        location.href = $(this).data('url');
+    });
+
     // submit more survey data
     $('#update-profile-btn').click(function(){
         var $btn = $(this);

@@ -52,14 +52,15 @@
                     <br />
                     <ul class="selector last-slide list-inline" data-url="{% url 'portals:survey_more' %}">
                         {% for designer in designers %}
-                        <li class="option" data-value="{{ designer.user.id }}", data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
+                        <li class="option" data-value="{{ designer.user.id }}" data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
                             <img height="512" src="{{ designer.avatar|thumbnail_url:'large' }}" />
                             <div class="intro">
                                 <p class="name"><b>{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</b></p>
-                                <p class="content">{{ designer.intro }} <a target="_blank" href="{% url 'accounts:designer_case' pk=designer.user.id %}">查看更多</a></p>
+                                <p class="content">{{ designer.intro|linebreaks }}</p>
                                 <br /><br /><br />
-                                <span class="btn btn-default select-btn">选择设计师</span>
+                                <span class="btn btn-primary select-btn">选择她</span>
                             </div>
+                            <a class="btn btn-default case" href="{% url 'accounts:designer_case' pk=designer.user.id %}">她的设计案例</a>
                         </li>
                         {% endfor %}
                     </ul>

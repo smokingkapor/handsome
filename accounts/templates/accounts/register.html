@@ -23,6 +23,7 @@
 
         <div class="row" id="register">
             <form method="post" class="form-horizontal col-md-4" role="form">
+                <h3>注册 REGISTER</h3><br /><br />
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
@@ -62,7 +63,7 @@
                 </div>
             </form>
 
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-md-4 col-md-offset-2">
                 <p>已经有优草账号？</p>
                 <h4><a href="{% url 'accounts:login' %}?{{ query_string }}">马上登录</a></h4>
             </div>

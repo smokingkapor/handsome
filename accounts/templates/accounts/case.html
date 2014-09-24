@@ -1,5 +1,5 @@
 {% extends "page.html" %}
-{% load staticfiles thumbnail %}
+{% load staticfiles thumbnail account_tags %}
 
 {% block title %}设计师案例{% endblock %}
 
@@ -27,7 +27,8 @@
                     <p>{{ designer.intro }}</p>
                 </div>
                 <div class="col-md-2 text-center">
-                    <img class="avatar" height="100" src="{{ designer.avatar|thumbnail_url:'medium' }}" />
+                    <img class="avatar" height="100" src="{{ designer.avatar|thumbnail_url:'medium' }}" /><br /><br />
+                    <button id="select-designer-btn" class="btn btn-primary" data-url="{% url 'portals:survey_more' %}" data-value="{{ designer.user.id }}" data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">选择她</button>
                 </div>
             </div>
             <br />
