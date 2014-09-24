@@ -123,6 +123,7 @@
 #survey #designer li.option .case {
     position: absolute;
     z-index: 100;
+    left: 40%;
 }
 
 #survey #designer li.option .intro .name {

@@ -56,7 +56,7 @@
                 <p><a href="{% url 'accounts:create_random_user' %}?{{ query_string }}" class="btn btn-primary">无账号快速下单</a></p>
                 <p><small>或者...</small></p>
                 {% endif %}
-                <h4><a href="{% url 'accounts:register' %}?{{ query_string }}">马上注册新账号</a></h4>
+                <h4><a class="orange" href="{% url 'accounts:register' %}?{{ query_string }}">马上注册新账号</a></h4>
             </div>
         </div>
     </div>
