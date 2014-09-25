@@ -1,0 +1,18 @@
+{% load account_tags %}
+<div class="modal fade" id="create_success_popup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">尊敬的{{ object.name }}，感谢您对优草的信赖。</h4>
+            </div>
+            <div class="modal-body">
+                <p>我们的设计师<b>{{ object.preferred_designer.get_full_name|default_if_empty:object.preferred_designer.username }}</b>会通过您预留的手机号<b>{{ object.phone }}</b>和您取得联系。</p>
+                <p>您也可以通过QQ<b>{{ object.preferred_designer.profile.qq }}</b>直接与她沟通。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

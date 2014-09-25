@@ -156,3 +156,11 @@
     background: url('../image/auth_bg.jpg') top center no-repeat;
     background-size: cover;
 }
+
+#login a,#phone-login a,#register a {
+    color: orange;
+}
+
+#login a:hover,#phone-login a:hover,#register a:hover {
+    color: orange;
+}

@@ -1,4 +1,4 @@
-body, html {
+\body, html {
     height: 100%;
 }
 
@@ -97,7 +97,7 @@ a.highlight {
 }
 
 #header {
-    background: url(../image/header_bg.png) center center no-repeat;
+    background: url(../image/header_bg.jpg) center center no-repeat;
     background-size: cover;
     width: 100%;
     height: 250px;
@@ -107,7 +107,7 @@ a.highlight {
 }
 
 #header.home {
-    background: url(../image/home_header_bg.png) center center no-repeat;
+    background: url(../image/home_header_bg.jpg) center center no-repeat;
     background-size: cover;
     height: 500px;
 }

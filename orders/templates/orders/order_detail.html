@@ -210,5 +210,8 @@
         </div>
     </div>
     {% include "orders/return.html" %}
+    {% if mode %}
+    {% include "orders/create_success_popup.html" %}
+    {% endif %}
 </div>
 {% endblock %}

@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    if ($('#create_success_popup').size() > 0) {
+        $('#create_success_popup').modal({show: true});
+    }
+
     // address select
     $('#province, #city').change(function(){
         $(this).nextAll('select').addClass('hidden').children('option[value!=-1]').remove();

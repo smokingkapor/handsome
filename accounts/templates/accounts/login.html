@@ -51,6 +51,7 @@
                 </form>
             </div>
             <div class="col-md-4 col-md-offset-2">
+                <br />
                 <p>还没账号？您可以</p>
                 {% if query_string %}
                 <p><a href="{% url 'accounts:create_random_user' %}?{{ query_string }}" class="btn btn-primary">无账号快速下单</a></p>
