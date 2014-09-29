@@ -197,6 +197,10 @@
     font-size: 24px;
 }
 
+#create_success_popup {
+    top: calc(50% - 200px) !important;
+}
+
 #create_success_popup .modal-dialog {
     border: 10px #646464 solid;
 }

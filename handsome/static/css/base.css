@@ -1,4 +1,4 @@
-\body, html {
+body, html {
     height: 100%;
 }
 
@@ -109,11 +109,11 @@ a.highlight {
 #header.home {
     background: url(../image/home_header_bg.jpg) center center no-repeat;
     background-size: cover;
-    height: 500px;
+    height: 100%;
 }
 
 #header .buttons {
-    padding-top: 20%;
+    padding-top: 28%;
 }
 
 #header .btn {
@@ -169,4 +169,54 @@ a.highlight {
 
 .orange {
     color: orange;
+}
+
+#kefu {
+    width: 120px;
+    height: auto;
+    position: fixed;
+    top: 50%;
+    right: 5px;
+    z-index: 8888;
+    background: #fff;
+    border: 1px solid #d1d1d1;
+    border-top: 2px solid #ca2d25;
+    display: none;
+    margin-top: -240px;
+}
+#kefu .top {
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+#kefu .middle {
+    font-size: 12px;
+    width: 100%;
+    text-align: center;
+}
+#kefu .middle p {
+    color: #991C0A;
+}
+#kefu .close {
+    float: right;
+    margin-right: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.right_bar {
+    width: 28px;
+    height: 95px;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    margin-top: -242px;
+    z-index: 9999;
+}
+.right_bar img {
+    cursor: pointer;
 }

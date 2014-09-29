@@ -9,6 +9,15 @@ $(document).ready(function(){
         }
     });
     $('.carousel').carousel();
+
+    $('.right_bar').click(function() {
+        $(this).hide();
+        $('#kefu').show();
+    });
+    $('#kefu .close').click(function() {
+        $('.right_bar').show();
+        $('#kefu').hide();
+    });
 });
 
 function get_cookie(name) {

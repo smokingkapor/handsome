@@ -7,28 +7,6 @@
     color: white;
 }
 
-#home .case {
-    background: url(../image/home_case_bg.png) center center no-repeat;
-    height: 319px;
-}
-
-#home .case .panel {
-    color: white;
-    width: 327px;
-    height: 365px;
-    margin-top: -45px;
-    text-align: left;
-    display: inline-block;
-    background-color: rgb(93,134,200);
-    opacity: .8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=80)";
-}
-
-#home .case .panel-heading {
-    background-color: #3364B9;
-    font-size: larger;
-}
-
 #survey.carousel .item {
     min-height: 500px;
     width: 100%;
