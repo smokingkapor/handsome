@@ -172,7 +172,7 @@ a.highlight {
 }
 
 #kefu {
-    width: 120px;
+    width: 150px;
     height: auto;
     position: fixed;
     top: 50%;
@@ -198,9 +198,6 @@ a.highlight {
     font-size: 12px;
     width: 100%;
     text-align: center;
-}
-#kefu .middle p {
-    color: #991C0A;
 }
 #kefu .close {
     float: right;

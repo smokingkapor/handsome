@@ -70,3 +70,7 @@ class Clothing(models.Model):
         resize_source=dict(size=(1024, 1024), sharpen=True), blank=True, null=True)
     is_active = models.BooleanField(u'有货', default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def description(self):
+        return u'%s: %s' % (self.name, self.note)

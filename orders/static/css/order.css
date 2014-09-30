@@ -198,7 +198,7 @@
 }
 
 #create_success_popup {
-    top: calc(50% - 200px) !important;
+    top: calc(50% - 115px) !important;
 }
 
 #create_success_popup .modal-dialog {
