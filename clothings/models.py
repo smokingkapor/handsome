@@ -74,3 +74,7 @@ class Clothing(models.Model):
     @property
     def description(self):
         return u'%s: %s' % (self.name, self.note)
+
+    @property
+    def medium_image(self):
+        return self.image.get_thumbnail({'size': (256, 256)}).url

@@ -96,24 +96,22 @@ $(document).ready(function(){
                     $('#clothing-list tbody').empty();
                 }
                 var clothings = [];
-                $.each(data, function(i, item) {
-                    var clothing = item.fields;
-                    clothing.pk = item.pk;
+                $.each(data, function(i, clothing) {
                     var colors = [];
                     var sizes =[];
                     $.each(clothing.colors.split(' '), function(i, color){
                         if (color.trim().length > 0) {
-                            colors.push({pk: item.pk, color: color});
+                            colors.push({pk: clothing.pk, color: color});
                         }
                     });
                     $.each(clothing.sizes.split(' '), function(i, size){
                         if (size.trim().length > 0) {
-                            sizes.push({pk: item.pk, size: size});
+                            sizes.push({pk: clothing.pk, size: size});
                         }
                     });
                     clothing.popover_content = new Ractive({
                         template:'#select-popover-template',
-                        data: {colors: colors, sizes: sizes, pk: item.pk}
+                        data: {colors: colors, sizes: sizes, pk: clothing.pk}
                     }).toHTML();
                     clothings.push(clothing);
                 });
@@ -122,8 +120,8 @@ $(document).ready(function(){
                     template: '#clothing-template',
                     data: {clothings: clothings},
                     complete: function() {
-                        $.each(data, function(i, item) {
-                            $('#clothing-' + item.pk).data('clothing', item);
+                        $.each(data, function(i, clothing) {
+                            $('#clothing-' + clothing.pk).data('clothing', clothing);
                         });
                         $('.image-tooltip').tooltip();
                         $('.select-popover-btn').popover();
@@ -150,13 +148,11 @@ $(document).ready(function(){
             return;
         }
         var clothing = $('#clothing-'+id).data('clothing');
-        var selected_clothing = clothing.fields;
-        selected_clothing.pk = clothing.pk;
-        selected_clothing.color = color;
-        selected_clothing.size = size;
+        clothing.color = color;
+        clothing.size = size;
         var ractive = new Ractive({
             template: '#selected-clothing-template',
-            data: clothing.fields
+            data: clothing
         });
         $('#selected-clothings').append(ractive.toHTML());
         update_selected_clothing_ids();

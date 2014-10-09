@@ -62,10 +62,11 @@
                         <td colspan="5">{{ order.message }}</td>
                     </tr>
                 </table>
+                <p>个人照片</p>
                 <ul class="list-inline">
                     {% for photo in order.creator.photo_set.all %}
                     <li>
-                        <a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}"><img height="120" src="{{ photo.file|thumbnail_url:'small' }}" />
+                        <a target="_blank" href="{{ MEDIA_URL }}{{ photo.file }}"><img height="120" src="{{ photo.file|thumbnail_url:'small' }}" /></a>
                     </li>
                     {% empty %}
                     <li>用户没有上传个人照片</li>
@@ -81,10 +82,10 @@
                 <hr />
                 {% endcomment %}
                 <div class="form-group">
+                    <hr />
                     <input name="selected-clothings" type="hidden" id="selected-clothings-input" />
                     <div class="row" id="selected-clothings">
-                    </div>
-                    <hr />
+                    </div><br />
                     <label>选择服装：</label>
                     <div class="row">
                         <div class="col-sm-2">
@@ -127,7 +128,7 @@
                                 {{#clothings}}
                                 <tr id="clothing-{{pk}}">
                                     <td>
-                                        <a class="image-tooltip" href="javascript:void(0)" data-toggle="tooltip" data-placement="right" data-html="true" title="<img width=150 src='/media/{{image}}'>">{{name}}</a>
+                                        <a class="image-tooltip" href="javascript:void(0)" data-toggle="tooltip" data-placement="right" data-html="true" title="<img width=150 src='{{image}}'>">{{name}}</a>
                                     </td>
                                     <td>{{sizes}}</td>
                                     <td>{{colors}}</td>
@@ -163,10 +164,10 @@
                                 </div>
                             </script>
                             <script id='selected-clothing-template' type='text/ractive'>
-                                <div id="selected-clothing-{{pk}}" class="col-sm-2 selected-clothing" data-id="{{pk}}" data-color="{{color}}" data-size="{{size}}">
+                                <div id="selected-clothing-{{pk}}" class="col-sm-3 selected-clothing" data-id="{{pk}}" data-color="{{color}}" data-size="{{size}}">
                                     <div class="row">
                                         <div class="col-sm-12 text-center">
-                                            <img width="50" src="/media/{{image}}" />
+                                            <img width="256" src="{{image}}" />
                                         </div>
                                     </div>
                                     <div class="row">

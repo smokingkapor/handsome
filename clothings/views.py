@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core import serializers
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 from django.views.generic.base import View
@@ -107,7 +108,22 @@ class ClothingSearchView(StaffuserRequiredMixin, AjaxResponseMixin,
             page = 0
         else:
             page = int(page)
-        return self.render_json_object_response(self.search(category, name, page))  # noqa
+
+        clothings = []
+        for clo in self.search(category, name, page):
+            clothings.append({
+                'pk': clo.id,
+                'name': clo.name,
+                'sku': clo.sku,
+                'price': clo.price,
+                'sizes': clo.sizes,
+                'colors': clo.colors,
+                'note': clo.note,
+                'image': clo.medium_image,
+                'is_active': clo.is_active,
+                'category': clo.category
+            })
+        return self.render_json_response(clothings)
 
 
 class SupplierListView(SuperuserRequiredMixin, ListView):
