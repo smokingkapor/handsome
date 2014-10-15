@@ -14,7 +14,7 @@
             <a href="/#process">如何运作</a>
         </li>
         <li>
-            <a href="{% url 'portals:static_page' 'contact' %}">售后服务</a>
+            <a href="{% url 'portals:static_page' 'steps' %}">帮助中心</a>
         </li>
         <li>
             <a href="{% url 'portals:static_page' 'about' %}">关于优草</a>
@@ -34,11 +34,38 @@
         </li>
         {% endif %}
     </ul>
-    <div class="buttons">
-        <a href="{% url 'portals:survey' %}" class="btn">马上开始 ></a>
-        {% if user.is_authenticated and not user.profile.is_freshman %}
-        <a href="{% url 'portals:survey_more' %}" class="btn">一键下单 ></a>
-        {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="simple-intro">
+                    <p class="head">开启您的专属搭配之旅 只需三步</p><br />
+                    <div class="panel">
+                        <div class="panel-heading">>&nbsp;&nbsp;登录注册</div>
+                        <div class="panel-body">在优草注册您的账号，优草为您提供了多种注册方式。</div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">>&nbsp;&nbsp;填写资料</div>
+                        <div class="panel-body">填写一份简单问卷（身高、体重、穿衣偏好等），优草不泄露您的个人信息。</div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">>&nbsp;&nbsp;等待我们的设计方案</div>
+                        <div class="panel-body">我们会根据您填写的资料为您准备多套搭配方案（24小时之内），您可以登录优草网点击我的订单查看。</div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 text-left">
+                <a class="btn more-intro" href="{% url 'portals:static_page' 'steps' %}">查看图文说明 >></a>
+            </div>
+            <div class="col-md-2 text-center col-md-offset-1">
+                <a href="{% url 'portals:survey' %}" class="btn">马上开始 ></a>
+                {% if user.is_authenticated and not user.profile.is_freshman %}
+                <a href="{% url 'portals:survey_more' %}" class="btn">一键下单 ></a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 

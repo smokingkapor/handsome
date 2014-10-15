@@ -1,0 +1,35 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block title %}支付方式{% endblock %}
+
+{% block content %}
+<div class="page" id="return">
+    <div class="container">
+        <br /><br />
+        <div class="row">
+            <div class="col-md-2 col-md-offset-2">
+                <h3>用户帮助中心</h3>
+                <ul class="list-unstyled left-nav">
+                    <li><a href="{% url 'portals:static_page' 'steps' %}">优草流程</a></li>
+                    <li class="selected"><a href="{% url 'portals:static_page' 'payment' %}">支付方式</a></li>
+                    <li><a href="{% url 'portals:static_page' 'return' %}">退换货政策</a></li>
+                    <li><a href="{% url 'portals:static_page' 'faq' %}">常见问题</a></li>
+                    <li><a href="{% url 'portals:static_page' 'contact' %}">联系客服</a></li>
+                    <li><a href="{% url 'portals:static_page' 'about' %}">关于优草</a></li>
+                    <li><a href="{% url 'portals:static_page' 'terms' %}">使用协议</a></li>
+                    <li><a href="{% url 'portals:static_page' 'legal' %}">隐私声明</a></li>
+                </ul>
+            </div>
+            <div class="col-md-7">
+                <img width="300" src="{% static 'image/alipay.png' %}" /><br /><br />
+                <p class="red">目前优草暂时只开通了支付宝支付功能，各大网银支付功能将会陆续开放，带来的不便敬请谅解。</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

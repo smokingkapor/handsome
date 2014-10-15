@@ -1,0 +1,55 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block title %}常见问题{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container">
+        <br /><br />
+        <div class="row">
+            <div class="col-md-2 col-md-offset-2">
+                <h3>用户帮助中心</h3>
+                <ul class="list-unstyled left-nav">
+                    <li><a href="{% url 'portals:static_page' 'steps' %}">优草流程</a></li>
+                    <li><a href="{% url 'portals:static_page' 'payment' %}">支付方式</a></li>
+                    <li><a href="{% url 'portals:static_page' 'return' %}">退换货政策</a></li>
+                    <li class="selected"><a href="{% url 'portals:static_page' 'faq' %}">常见问题</a></li>
+                    <li><a href="{% url 'portals:static_page' 'contact' %}">联系客服</a></li>
+                    <li><a href="{% url 'portals:static_page' 'about' %}">关于优草</a></li>
+                    <li><a href="{% url 'portals:static_page' 'terms' %}">使用协议</a></li>
+                    <li><a href="{% url 'portals:static_page' 'legal' %}">隐私声明</a></li>
+                </ul>
+            </div>
+            <div class="col-md-7">
+                <ul class="list-unstyled text-left">
+                    <li>
+                        <p>1.&nbsp;问：我在优草上下单之后如何能看到设计方案？ </p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;答：我们会在24小时之内为您完成搭配方案并短信提醒您。您可以登录优草网，点击<b>我的订单</b>查看我们的设计方案。</p>
+                        <img width="600" src="{% static 'image/faqs/faq1.1.png' %}" /><br />
+                        <img width="600" src="{% static 'image/faqs/faq1.2.png' %}" /><br />
+                        <img width="600" src="{% static 'image/faqs/faq1.3.png' %}" />
+                        <br /><br />
+                    </li>
+                    <li>
+                        <p>2.&nbsp;问：优草的衣服价格和质量如何？每次配搭衣服的价格范围是多少？ </p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;答：优草的衣服都经过精挑细选,为用户提供高质量的服装。我们不收取搭配费用，我们会让客户自主选择搭配的范围，大部分客户选择的范围都在800元左右。</p>
+                        <br />
+                    </li>
+                    <li>
+                        <p>3.&nbsp;忘记登录名/密码</p>
+                        <p>&nbsp;用户在再次登录网站时如果忘记登录名/密码，可在登录页面下点击您预留的手机号快捷登录，使用网站发送的手机短信动态密码进行登录（动态密码有效时间为三十分钟，在三十分钟内可重复登录）。</p>
+                        <img width="600" src="{% static 'image/faqs/faq3.1.png' %}" />
+                        <p>在登陆后可点击首页显示的用户名进入用户管理中心进行密码修改。</p>
+                        <img width="600" src="{% static 'image/faqs/faq3.2.png' %}" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

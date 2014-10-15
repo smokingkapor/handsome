@@ -290,3 +290,7 @@
 .left-nav li a {
     color: black;
 }
+
+#return .table-bordered td, #return .table-bordered th {
+    border-color: #333;
+}

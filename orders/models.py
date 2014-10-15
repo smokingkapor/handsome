@@ -201,7 +201,7 @@ class Order(models.Model):
             return u'暂时没有快递信息'
 
     def __unicode__(self):
-        return '{}\'s order'.format(self.creator.username)
+        return u'{}\'s order'.format(self.creator.username)
 
 
 class OrderClothing(models.Model):

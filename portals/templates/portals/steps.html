@@ -1,0 +1,74 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block title %}优草流程{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container">
+        <br /><br />
+        <div class="row">
+            <div class="col-md-2 col-md-offset-2">
+                <h3>用户帮助中心</h3>
+                <ul class="list-unstyled left-nav">
+                    <li class="selected"><a href="{% url 'portals:static_page' 'steps' %}">优草流程</a></li>
+                    <li><a href="{% url 'portals:static_page' 'payment' %}">支付方式</a></li>
+                    <li><a href="{% url 'portals:static_page' 'return' %}">退换货政策</a></li>
+                    <li><a href="{% url 'portals:static_page' 'faq' %}">常见问题</a></li>
+                    <li><a href="{% url 'portals:static_page' 'contact' %}">联系客服</a></li>
+                    <li><a href="{% url 'portals:static_page' 'about' %}">关于优草</a></li>
+                    <li><a href="{% url 'portals:static_page' 'terms' %}">使用协议</a></li>
+                    <li><a href="{% url 'portals:static_page' 'legal' %}">隐私声明</a></li>
+                </ul>
+            </div>
+            <div class="col-md-7">
+                <ul class="list-unstyled text-left">
+                    <li>
+                        <h3><small>Step 1</small> 注册/登录</h3>
+                        <img width="600" src="{% static 'image/steps/step1.png' %}" />
+                        <br /><br />
+                    </li>
+                    <li>
+                        <h3><small>Step 2</small> 挑选搭配风格</h3>
+                        <img width="600" src="{% static 'image/steps/step2.png' %}" />
+                        <br /><br />
+                    </li>
+                    <li>
+                        <h3><small>Step 3</small> 选择设计师</h3>
+                        <img width="600" src="{% static 'image/steps/step3.png' %}" />
+                        <br /><br />
+                    </li>
+                    <li>
+                        <h3><small>Step 4</small> 完善个人资料</h3>
+                        <img width="600" src="{% static 'image/steps/step4.png' %}" />
+                        <br /><br />
+                    </li>
+                    <li>
+                        <h3><small>Step 5</small> 确定穿着场合及价格/提价搭配设计订单</h3>
+                        <img width="600" src="{% static 'image/steps/step5.png' %}" />
+                        <br /><br />
+                    </li>
+                    <li>
+                        <h3><small>Step 6</small> 订单提醒/查看搭配方案</h3>
+                        <img width="600" src="{% static 'image/steps/step6.png' %}" />
+                        <br /><br />
+                    </li>
+                    <li>
+                        <h3><small>Step 7</small> 挑选中意的搭配服装</h3>
+                        <img width="600" src="{% static 'image/steps/step7.png' %}" />
+                        <br /><br />
+                    </li>
+                    <li>
+                        <h3><small>Step 8</small> 物流配送</h3>
+                        <img width="400" src="{% static 'image/steps/step8.png' %}" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

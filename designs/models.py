@@ -67,8 +67,8 @@ class Design(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return 'Design for {} by {}'.format(self.client.username,
-                                            self.designer.username)
+        return u'Design for {} by {}'.format(self.client.username,
+                                             self.designer.username)
 
     @property
     def price(self):

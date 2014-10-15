@@ -112,13 +112,48 @@ a.highlight {
     height: 100%;
 }
 
-#header .buttons {
-    padding-top: 28%;
-}
-
 #header .btn {
     color: white;
     background-color: #3FADDE;
+}
+
+#header .buttons .btn {
+    position:absolute;
+    bottom:5px;
+}
+
+#header .simple-intro {
+    color: white;
+    width: 80%;
+    text-align: left
+}
+
+#header .simple-intro .head {
+    font-size: 20px;
+}
+
+#header .more-intro {
+    font-weight: bold;
+    background-color: #6E674E;
+    width: 80%;
+}
+
+#header .simple-intro .panel {
+    margin-bottom: 0;
+    border: none;
+}
+
+#header .simple-intro .panel-heading {
+    background-color: #494842;
+    color: white;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 0;
+}
+
+#header .simple-intro .panel-body {
+    background-color: #D8D6D3;
+    color: #333;
 }
 
 #header .menus li a {

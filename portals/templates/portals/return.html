@@ -1,0 +1,75 @@
+{% extends "page.html" %}
+{% load staticfiles %}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock%}
+
+{% block title %}售后服务{% endblock %}
+
+{% block content %}
+<div class="page" id="return">
+    <div class="container">
+        <br /><br />
+        <div class="row">
+            <div class="col-md-2 col-md-offset-2">
+                <h3>用户帮助中心</h3>
+                <ul class="list-unstyled left-nav">
+                    <li><a href="{% url 'portals:static_page' 'steps' %}">优草流程</a></li>
+                    <li><a href="{% url 'portals:static_page' 'payment' %}">支付方式</a></li>
+                    <li class="selected"><a href="{% url 'portals:static_page' 'return' %}">退换货政策</a></li>
+                    <li><a href="{% url 'portals:static_page' 'faq' %}">常见问题</a></li>
+                    <li><a href="{% url 'portals:static_page' 'contact' %}">联系客服</a></li>
+                    <li><a href="{% url 'portals:static_page' 'about' %}">关于优草</a></li>
+                    <li><a href="{% url 'portals:static_page' 'terms' %}">使用协议</a></li>
+                    <li><a href="{% url 'portals:static_page' 'legal' %}">隐私声明</a></li>
+                </ul>
+            </div>
+            <div class="col-md-7">
+                <h3>售后服务</h3>
+                <hr />
+                <p>退换货政策：<b>我们承诺七天无理由退换货。</b></p>
+                <p>1.主观上对商品不满意，不喜欢款式，大小不合适等均属非质量问题；<br />2.由于质量问题，或者发错商品造成的退换货问题，请拍照并联系优草客服，一定帮您解决问题 。<br />3.退换货时，请一定确保商品完好，配件齐全，以不影响二次销售为准，填好售后卡并与赠品一起退还。<br />4.如需办理退换货请及时联系优草售后，申请成功后联系快递收件，48小时内寄出（请您保留好快递底单，并将快递单号告知优草客服）切勿私自退回，以免丢件。</p><br />
+                <p><b>下列情况不提供退换货服务：</b></p>
+                <p>1.收到商品超过七天<br />2.已经对商品造成损坏，表面有明显人为瑕疵<br />3.商品已被使用、污损<br />4.商品吊牌、配件、包装被缺损<br />5.赠品<br />6.事先未与优草客服取得联系<br />7.没有在商品售后卡上填写详细退换货商品信息<br />8.恶意退换货<br />9.非本店出售商品</p><br />
+                <p><b>关于运费</b></p>
+                <p>1.若由优草商品质量问题，或者发错商品造成的退换货问题，运费由优草承担。<br />2.顾客若主观上对商品不满意，不喜欢款式、颜色，大小不合适等非质量问题造成的退换，运费需由顾客承担。<br />3.对于因由优草承担的运费，请您先垫付，我们退款时与商品款一同退还，退换商品的寄出不支持平邮，请务必选择快递，且不支持快递到付。</p>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>退货原因</th>
+                        <th>顾客寄回商品运费</th>
+                        <th>优草寄出商品运费</th>
+                    </tr>
+                    <tr>
+                        <td>商品质量问题</td>
+                        <td>优草</td>
+                        <td>优草</td>
+                    </tr>
+                    <tr>
+                        <td>发错商品</td>
+                        <td>优草</td>
+                        <td>优草</td>
+                    </tr>
+                    <tr>
+                        <td>不喜欢/不满意</td>
+                        <td>顾客</td>
+                        <td>优草</td>
+                    </tr>
+                    <tr>
+                        <td>非质量问题</td>
+                        <td>顾客</td>
+                        <td>优草</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">对于因优草承担的运费，请您先垫付，我们退款时与商品款一同退还，退换商品的寄出不支持平邮，请务必选择快递。</td>
+                    </tr>
+                </table><br />
+                <p><b>退换货办理</b></p>
+                <p>请在工作时间内联系优草客服为您办理（9:00AM-17:30PM）</p><br />
+                <p><b>退换货地址</b></p>
+                <p>浙江省杭州市滨江区江陵路567号新东方国际609  电话：0571-85127385 邮编：310000</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
