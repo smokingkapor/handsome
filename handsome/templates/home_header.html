@@ -59,7 +59,7 @@
             <div class="col-md-4 text-left">
                 <a class="btn more-intro" href="{% url 'portals:static_page' 'steps' %}">查看图文说明 >></a>
             </div>
-            <div class="col-md-2 text-center col-md-offset-1">
+            <div class="col-md-4 text-center">
                 <a href="{% url 'portals:survey' %}" class="btn">马上开始 ></a>
                 {% if user.is_authenticated and not user.profile.is_freshman %}
                 <a href="{% url 'portals:survey_more' %}" class="btn">一键下单 ></a>

@@ -124,18 +124,14 @@ a.highlight {
 
 #header .simple-intro {
     color: white;
-    width: 70%;
+    width: 60%;
     text-align: left
-}
-
-#header .simple-intro .head {
-    font-size: 16px;
 }
 
 #header .more-intro {
     font-weight: bold;
     background-color: #6E674E;
-    width: 70%;
+    width: 60%;
 }
 
 #header .simple-intro .panel {
