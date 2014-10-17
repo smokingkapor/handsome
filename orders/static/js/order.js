@@ -183,7 +183,7 @@ $(document).ready(function(){
         $('.clothing.selected').each(function(){
             ids.push($(this).data('id'));
         });
-        location.href = $(this).data('url') + '?ids=' + ids.join(',');
+        location.href = $(this).data('url') + '?ids=' + ids.join(',') + '&promo_code=' + $('#promotion').data('code');
     });
 
     $('.return-btn').click(function(){
@@ -235,6 +235,13 @@ $(document).ready(function(){
             $('.price span', $design).text(design_price);
             total_price += design_price;
         });
+        var discount = $('#promotion').data('discount');
+        if (discount) {
+            $('#promotion').show();
+            $('#promotion .price').text('-' + Math.round(total_price*(1-discount)*100)/100);
+            $('#final-price').show();
+            $('#final-price .price').text(Math.round(total_price*discount*100)/100);
+        }
         $('#order-detail .total_price').text(total_price);
     }
 
@@ -253,4 +260,29 @@ $(document).ready(function(){
         }
     });
     update_design_price();
+
+    // verify promo code
+    $('#verify-promo-btn').click(function(){
+        $.ajax({
+            url: $(this).data('url'),
+            data:{code: $('#promo-code').val()},
+            success: function(data) {
+                if (data.available) {
+                    $('#promotion').data('code', $('#promo-code').val()).data('discount', data.discount);
+                    $('#promo-form').hide();
+                    $('#promo-btn').remove();
+                    update_design_price();
+                } else {
+                    alert(data.reason);
+                }
+            }
+        });
+    });
+    $('#promo-btn').click(function(){
+        $('#promo-form').fadeToggle('slow');
+    });
+    $('#hide-promo-form-btn').click(function(){
+        $('#promo-form').hide();
+    });
+
 });

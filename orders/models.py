@@ -8,6 +8,7 @@ from django.db.models.signals import post_save
 
 from .constants import *  # noqa
 from accounts.models import Profile
+from promos.models import Promo
 
 
 class Province(models.Model):
@@ -129,6 +130,7 @@ class Order(models.Model):
                                  choices=SITUATION_CHOICES)
     message = models.TextField(blank=True)
 
+    promo = models.ForeignKey(Promo, blank=True, null=True)
     status = models.CharField(max_length=16, choices=STATUS_CHOICES,
                               default=CREATED)
     creator = models.ForeignKey(User, related_name='my_orders')
@@ -186,6 +188,18 @@ class Order(models.Model):
             receive_return_url = reverse('orders:receive_return', kwargs={'code': self.code})
             operations = '<a class="highlight" href="{}">收到退货></a>'.format(receive_return_url)
         return operations
+
+    @property
+    def final_price(self):
+        if self.promo:
+            return self.total_price * self.promo.discount
+        return self.total_price
+
+    @property
+    def discount(self):
+        if self.promo:
+            return self.total_price * (1-self.promo.discount)
+        return 0
 
     @property
     def express_info(self):

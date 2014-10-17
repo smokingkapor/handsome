@@ -84,6 +84,10 @@
                 <li {% if request.path == url %}class="selected"{% endif %}>
                     <a href="{{ url }}">配送单</a>
                 </li>
+                {% url 'promos:list' as url %}
+                <li {% if request.path == url %}class="selected"{% endif %}>
+                    <a href="{{ url }}">优惠码</a>
+                </li>
             </ul>
             {% endif %}
         </div>

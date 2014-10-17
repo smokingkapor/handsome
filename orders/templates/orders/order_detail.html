@@ -104,15 +104,32 @@
                                     <tr>
                                         <td colspan="2" class="text-right">
                                             <br />
-                                            <span>总计：<span class="total_price"></span>元</span>&nbsp;&nbsp;&nbsp;
+                                            <div>总计：<span class="total_price"></span>元</div><br />
+                                            <div id="promotion">优惠：<span class="price"></span>元</div>
+                                            <div id="final-price">实际应付：<span class="price"></span>元</div>
+                                            <form id="promo-form" class="form-inline">
+                                                <div class="form-group">
+                                                    <span for="promo-code">优惠码：</span>
+                                                    <input type="text" class="form-control input-sm" id="promo-code">
+                                                </div>
+                                                <div class="form-group">
+                                                    <button id="verify-promo-btn" data-url="{% url 'promos:verify' %}" class="btn btn-primary btn-sm" type="button">使用</button>
+                                                    <button id="hide-promo-form-btn" class="btn btn-default btn-sm" type="button">取消</button>
+                                                </div>
+                                            </form><br />
+                                            <a id="promo-btn" href="javascript:void(0)" class="orange">我有优惠码</a>&nbsp;&nbsp;
                                             <button id="confirm-selection-btn" data-url="{% url 'orders:select_clothings' code=object.code %}" class="btn btn-primary">确认并付款</button>
                                         </td>
                                     </tr>
-                                {% else  %}
+                                {% else %}
                                     <tr>
                                     <td colspan="2" class="text-right">
                                         <br />
-                                        <span>总计：<span class="total_price"></span>元</span>&nbsp;&nbsp;&nbsp;
+                                        <div>总计：<span class="total_price"></span>元</div><br />
+                                        {% if order.promo %}
+                                        <div id="promotion" style="display: block;">优惠：<span class="price">-{{ order.discount }}</span>元</div>
+                                        <div id="final-price" style="display: block;">实际应付：<span class="price">{{ order.final_price }}</span>元</div>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% endif %}
@@ -181,6 +198,12 @@
                                 <dl class="dl-horizontal">
                                     <dt>总价：</dt>
                                     <dd>{{ order.total_price|floatformat }}元</dd>
+                                    {% if order.promo %}
+                                    <dt>优惠：</dt>
+                                    <dd>-{{ order.discount|floatformat }}元</dd>
+                                    <dt>实际应付：</dt>
+                                    <dd>{{ order.final_price|floatformat }}元</dd>
+                                    {% endif %}
                                 </dl>
                             </div>
                         </div>

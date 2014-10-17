@@ -192,9 +192,13 @@
     display: none;
 }
 
-#order-detail .design .price span, #order-detail .total_price {
+#order-detail .design .price span, #order-detail .total_price, #promotion .price, #final-price .price {
     color: #FFCC00;
     font-size: 24px;
+}
+
+#order-detail #promotion, #order-detail #promo-form, #order-detail #final-price {
+    display: none;
 }
 
 #create_success_popup {
