@@ -1,0 +1,39 @@
+{% extends "page.html" %}
+{% load thumbnail %}
+
+{% block title %}优惠码{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-12 content">
+                <div class="text-right">
+                    <a href="{% url 'promos:create' %}" class="btn btn-primary">添加新的优惠码</a>
+                </div>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>优惠码</th>
+                            <th>折扣</th>
+                            <th>开始</th>
+                            <th>结束</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for obj in object_list %}
+                        <tr>
+                            <td>{{ obj.code }}</td>
+                            <td>{{ obj.discount }}</td>
+                            <td>{{ obj.start_at|date:"Y年m月d日" }}</td>
+                            <td>{{ obj.end_at|date:"Y年m月d日" }}</td>
+                            <td><a href="{% url 'promos:update' pk=obj.id %}">编辑</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

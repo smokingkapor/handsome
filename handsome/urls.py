@@ -12,6 +12,7 @@ urlpatterns = patterns(
     url(r'^designs/', include('designs.urls', 'designs', 'designs')),
     url(r'^orders/', include('orders.urls', 'orders', 'orders')),
     url(r'^payments/', include('payments.urls', 'payments', 'payments')),
+    url(r'^promos/', include('promos.urls', 'promos', 'promos')),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^flatpages/', include('django.contrib.flatpages.urls')),

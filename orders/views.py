@@ -29,6 +29,7 @@ from designs.constants import SELECTED, WAITING, REJECTED
 from designs.models import DesignClothing
 from handsome.utils import send_sms
 from orders.models import OrderClothing
+from promos.models import Promo
 
 
 class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
@@ -557,6 +558,10 @@ class SelectClothingView(LoginRequiredMixin, RedirectView):
                 design=design_clothing.design_set.first())
         order.status = ACCEPTED
         order.total_price = total_price
+        try:
+            order.promo = Promo.objects.get(code=self.request.GET.get('promo_code'))
+        except:
+            pass
         order.save()
         return '{}?code={}'.format(reverse('payments:home'), order.code)
 

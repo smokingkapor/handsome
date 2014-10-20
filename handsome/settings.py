@@ -42,6 +42,7 @@ LOCAL_APPS = (
     'orders',
     'payments',
     'portals',
+    'promos',
 )
 
 INSTALLED_APPS = (

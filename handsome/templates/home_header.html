@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="simple-intro">
-                    <p class="head">开启您的专属搭配之旅 只需三步</p><br />
+                    <p class="text-center">开启您的专属搭配之旅 只需三步</p>
                     <div class="panel">
                         <div class="panel-heading">>&nbsp;&nbsp;登录注册</div>
                         <div class="panel-body">在优草注册您的账号，优草为您提供了多种注册方式。</div>
@@ -59,7 +59,7 @@
             <div class="col-md-4 text-left">
                 <a class="btn more-intro" href="{% url 'portals:static_page' 'steps' %}">查看图文说明 >></a>
             </div>
-            <div class="col-md-2 text-center col-md-offset-1">
+            <div class="col-md-4 text-center">
                 <a href="{% url 'portals:survey' %}" class="btn">马上开始 ></a>
                 {% if user.is_authenticated and not user.profile.is_freshman %}
                 <a href="{% url 'portals:survey_more' %}" class="btn">一键下单 ></a>
@@ -114,6 +114,10 @@
                 {% url 'orders:clothings' as url %}
                 <li {% if request.path == url %}class="selected"{% endif %}>
                     <a href="{{ url }}">配送单</a>
+                </li>
+                {% url 'promos:list' as url %}
+                <li {% if request.path == url %}class="selected"{% endif %}>
+                    <a href="{{ url }}">优惠码</a>
                 </li>
             </ul>
             {% endif %}
