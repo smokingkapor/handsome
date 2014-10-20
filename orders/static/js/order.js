@@ -235,7 +235,7 @@ $(document).ready(function(){
             $('.price span', $design).text(design_price);
             total_price += design_price;
         });
-        var discount = $('#promotion').data('discount');
+        var discount = parseFloat($('#promotion').data('discount'));
         if (discount) {
             $('#promotion').show();
             $('#promotion .price').text('-' + Math.round(total_price*(1-discount)*100)/100);
