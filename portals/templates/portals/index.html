@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="{% static 'css/portal.css' %}">
 {% endblock%}
 
+{% block extrajs %}
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
+
 {% block title %}优草形象{% endblock %}
 
 {% block content %}
@@ -66,5 +70,17 @@
         </div>
         <br /><br /><br /><br />
     </div>
+</div>
+<div id="follow-ygrass">
+    <table>
+        <tr>
+            <td><p class="tip">扫描二维码关注优草形象官方微博，立即获得15%折扣优惠（请查看微博私信）</p></td>
+            <td><img src="{% static 'image/weibo.png' %}" width="120" height="120"></td>
+        </tr>
+        <tr>
+            <td><p class="tip">一键关注优草形象微博</p></td>
+            <td><wb:follow-button uid="5250208918" type="gray_1" width="67" height="24" ></wb:follow-button></td>
+        </tr>
+    </table>
 </div>
 {% endblock %}
