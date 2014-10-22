@@ -6,7 +6,7 @@ from .views import(
     OrderListView, PrepayView, PayView, SendView, ReceiveView, OrderDetailView,
     OrderClothingsView, SaveAddressView, RefundView, FinishDesignView,
     OrderSupplierClothingsView, SelectClothingView, UpdateAddressView,
-    ReturnView, ReceiveReturnView
+    ReturnView, ReceiveReturnView, RedesignView
 )
 
 
@@ -34,4 +34,5 @@ urlpatterns = patterns(
     url(r'^return/$', ReturnView.as_view(), name='return'),
     url(r'^(?P<code>\d+)/receive_return/$', ReceiveReturnView.as_view(), name='receive_return'),
     url(r'^(?P<code>\d+)/select_clothing/$', SelectClothingView.as_view(), name='select_clothings'),
+    url(r'^(?P<code>\d+)/redesign/$', RedesignView.as_view(), name='redesign'),
 )

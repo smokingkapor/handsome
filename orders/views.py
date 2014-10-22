@@ -233,6 +233,7 @@ class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
         data = super(OrderDetailView, self).get_context_data(**kwargs)
         data.update({
             'CREATED': CREATED,
+            'REDESIGN': REDESIGN,
             'PREPAID': PREPAID,
             'SELECTED': SELECTED,
             'WAITING': WAITING,
@@ -261,6 +262,7 @@ class OrderListView(StaffuserRequiredMixin, ListView):
             'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
             'STYLE_CHOICES': Profile.STYLE_CHOICES,
             'RETURNING': RETURNING,
+            'REDESIGN': REDESIGN,
             'designers': Profile.objects.filter(user__is_staff=True,
                                                 is_designer=True)
         })
@@ -596,3 +598,16 @@ class ReceiveReturnView(StaffuserRequiredMixin, RedirectView):
         order.status = REFUNDING
         order.save()
         return super(ReceiveReturnView, self).get_redirect_url(*args, **kwargs)
+
+
+class RedesignView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        order = Order.objects.get(code=self.kwargs['code'])
+        if self.request.user != order.creator or order.status != DESIGNED:
+            raise Http404
+
+        order.status = REDESIGN
+        order.redesign_reason = request.POST.get('reason', '')
+        order.save()
+        return redirect('orders:me')
