@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 
 from braces.views import LoginRequiredMixin
@@ -9,6 +9,7 @@ from accounts.constants import BUSINESS, CASUAL, ENGLAND, CASUAL_BUSINESS
 from accounts.forms import ProfileForm
 from accounts.models import Profile
 from orders.models import Order
+from django.http.response import HttpResponse
 
 
 class IndexView(TemplateView):
@@ -88,3 +89,11 @@ class StaticPageView(TemplateView):
 
     def get_template_names(self):
         return 'portals/{}.html'.format(self.kwargs['template_name'])
+
+
+class RobotsView(View):
+
+    def get(self, request, *args, **kwargs):
+        response = HttpResponse(mimetype='text/plain')
+        response.write('User-agent: *\nDisallow:\nAllow: /')
+        return response

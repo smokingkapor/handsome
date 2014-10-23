@@ -53,5 +53,14 @@
         <script src="{% static 'js/base.js' %}"></script>
         {% block extrajs_compress %}{% endblock %}
         {% endcompress %}
+        <script type="text/javascript">
+            (function(a,b,c,d){
+                a[c]=function(){a[c]["ar"]=a[c]["ar"]||[];a[c]["ar"].push(arguments);};
+                var s=b.createElement("script");s.async = 1;s.src="//t.agrantsem.com/js/agt.js";
+                var r=b.getElementsByTagName("script")[0];r.parentNode.insertBefore(s,r);
+            })(window,document,"_agtjs","script");
+            _agtjs("init","AG_677673_WYCV","ygrass.com");
+            _agtjs("trackPv");
+        </script>
     </body>
 </html>

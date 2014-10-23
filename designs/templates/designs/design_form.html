@@ -21,6 +21,9 @@
     <div class="container body">
         <div class="row">
             <div class="col-md-12">
+                {% if order.redesign_reason %}
+                <p>重新设计原因：{{ order.redesign_reason }}</p>
+                {% endif %}
                 <table class="table table-bordered">
                     <tr>
                         <td class="title">身高</td>

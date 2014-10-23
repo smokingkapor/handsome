@@ -78,6 +78,7 @@ class Order(models.Model):
         # (CREATED, u'等待支付预付款'),
         # (PREPAID, u'正在设计'),
         (DESIGNED, u'等待您选择'),
+        (REDESIGN, u'重新设计'),
         (ACCEPTED, u'等待支付'),
         (PAID, u'正在配送'),
         (SENT, u'已发货'),
@@ -131,6 +132,7 @@ class Order(models.Model):
     message = models.TextField(blank=True)
 
     promo = models.ForeignKey(Promo, blank=True, null=True)
+    redesign_reason = models.TextField(default='')
     status = models.CharField(max_length=16, choices=STATUS_CHOICES,
                               default=CREATED)
     creator = models.ForeignKey(User, related_name='my_orders')
@@ -174,7 +176,7 @@ class Order(models.Model):
         Operations for designer
         """
         operations = ''
-        if self.status == CREATED:
+        if self.status in [CREATED, REDESIGN]:
             create_design_url = u'{}?code={}'.format(reverse_lazy('designs:create'), self.code)
             finish_design_url = reverse_lazy('orders:finish_design', kwargs={'code': self.code})
             operations = '<a class="highlight" href="{}">创建方案></a> <a class="highlight" href="{}">设计结束></a>'.format(create_design_url, finish_design_url)
