@@ -94,7 +94,7 @@
                             <th>客户信息</th>
                             <th>配送地址</th>
                             <th>创建日期</th>
-                            <th>状态</th>
+                            <th class="col-sm-2">状态</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -109,6 +109,10 @@
                                 <p>{{ obj.get_status_display }}</p>
                                 {% if obj.status == RETURNING %}
                                 <p>{{ obj.express_info|safe }}</p>
+                                {% endif %}
+                                {% if obj.status == REDESIGN %}
+                                <p>原因：{{ obj.redesign_reason }}</p>
+                                <p class="orange">请先进入订单详情删除之前的设计方案</p>
                                 {% endif %}
                             </td>
                             <td>

@@ -284,5 +284,10 @@ $(document).ready(function(){
     $('#hide-promo-form-btn').click(function(){
         $('#promo-form').hide();
     });
-
+    $('#redesign-btn').click(function(){
+        $('#redesign-form').fadeToggle('slow');
+    });
+    $('#hide-redesign-form-btn').click(function(){
+        $('#redesign-form').hide();
+    });
 });

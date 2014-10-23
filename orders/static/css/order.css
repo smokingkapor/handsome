@@ -197,8 +197,12 @@
     font-size: 24px;
 }
 
-#order-detail #promotion, #order-detail #promo-form, #order-detail #final-price {
+#order-detail #promotion, #order-detail #promo-form, #order-detail #final-price, #order-detail #redesign-form {
     display: none;
+}
+
+#order-detail #redesign-form {
+    padding: 10px;
 }
 
 #create_success_popup {

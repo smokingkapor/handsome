@@ -41,7 +41,7 @@
                     </span>
                 </p>
                 <div class="panel-group" id="accordion">
-                    {% if order.status != CREATED %}
+                    {% if order.status != CREATED and order.status != REDESIGN or user.is_staff %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseZero">搭配方案</a></h4>
@@ -103,10 +103,27 @@
                                 {% if order.status == DESIGNED and not user.profile.is_designer %}
                                     <tr>
                                         <td colspan="2" class="text-right">
-                                            <br />
                                             <div>总计：<span class="total_price"></span>元</div><br />
                                             <div id="promotion">优惠：<span class="price"></span>元</div>
                                             <div id="final-price">实际应付：<span class="price"></span>元</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <br />
+                                            <a id="redesign-btn" href="javascript:void(0)" style="color: orange;">不满意，需要重新设计</a>
+                                            <form action="{% url 'orders:redesign' code=order.code %}" id="redesign-form" class="form-horizontal" method="post">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <textarea rows="3" name="reason" class="form-control"></textarea>
+                                                </div>
+                                                <div class="form-group text-right">
+                                                    <button class="btn btn-primary btn-sm" type="submit">确认</button>
+                                                    <button id="hide-redesign-form-btn" class="btn btn-default btn-sm" type="button">取消</button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="text-right">
                                             <form id="promo-form" class="form-inline">
                                                 <div class="form-group">
                                                     <span for="promo-code">优惠码：</span>
