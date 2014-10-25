@@ -305,7 +305,8 @@
 
 #follow-ygrass p.tip {
     color: white;
-    width: 145px;
+    width: 140px;
+    font-size: 13px;
 }
 
 #follow-ygrass td {
