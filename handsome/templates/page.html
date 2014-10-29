@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
-    {% if request.path == '/' %}
-    {% include "home_header.html" %}
-    {% else %}
-    {% include "header.html" %}
-    {% endif %}
+    {% include "new_header.html" %}
     {% block content %}{% endblock %}
     {% block extracontent %}{% endblock %}
     {% include "footer.html" %}
