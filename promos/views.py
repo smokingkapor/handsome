@@ -7,7 +7,8 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
 from braces.views import(
-    StaffuserRequiredMixin, AjaxResponseMixin, JSONResponseMixin
+    StaffuserRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
+    SuperuserRequiredMixin
 )
 
 from .models import Promo
@@ -17,12 +18,12 @@ class PromoListView(StaffuserRequiredMixin, ListView):
     model = Promo
 
 
-class CreatePromoView(StaffuserRequiredMixin, CreateView):
+class CreatePromoView(SuperuserRequiredMixin, CreateView):
     model = Promo
     success_url = reverse_lazy('promos:list')
 
 
-class UpdatePromoView(StaffuserRequiredMixin, UpdateView):
+class UpdatePromoView(SuperuserRequiredMixin, UpdateView):
     model = Promo
     success_url = reverse_lazy('promos:list')
 

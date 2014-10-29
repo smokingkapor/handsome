@@ -17,19 +17,19 @@
     <li>
         <a href="{% url 'orders:list' %}">客户订单</a>
     </li>
-    {% endif %}
-    {% if user.is_superuser %}
     <li>
         <a href="{% url 'clothings:list' %}">服装管理</a>
     </li>
+    <li>
+        <a href="{% url 'promos:list' %}">优惠码</a>
+    </li>
+    {% endif %}
+    {% if user.is_superuser %}
     <li>
         <a href="{% url 'clothings:supplier_list' %}">供应商管理</a>
     </li>
     <li>
         <a href="{% url 'orders:clothings' %}">配送单</a>
-    </li>
-    <li>
-        <a href="{% url 'promos:list' %}">优惠码</a>
     </li>
     {% endif %}
     {% if user.is_authenticated %}
