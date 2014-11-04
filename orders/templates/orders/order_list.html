@@ -20,7 +20,7 @@
                 <h4>客户订单</h4>
                 <hr />
                 <form class="form-inline" role="form">
-                    {% if user.is_superuser %}
+                    {% if user.is_superuser or not user.profile.is_designer %}
                     <div class="form-group">
                         <span>设计师：</span>
                         <select name="designer" class="form-control input-sm">

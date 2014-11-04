@@ -7,6 +7,53 @@
     color: white;
 }
 
+#home .btn {
+    color: white;
+    background-color: #3FADDE;
+}
+
+#home .buttons .btn {
+    position:absolute;
+    bottom:5px;
+}
+#home .start {
+    background: url(../image/home_header_bg.jpg) center center no-repeat;
+    background-size: cover;
+    height: 100%;
+    padding: 40px 0 100px 40px;
+}
+
+#home .simple-intro {
+    color: white;
+    width: 200px;
+    text-align: left;
+    font-size: 13px;
+}
+
+#home .more-intro {
+    font-weight: bold;
+    background-color: #6E674E;
+    width: 200px;
+}
+
+#home .simple-intro .panel {
+    margin-bottom: 0;
+    border: none;
+}
+
+#home .simple-intro .panel-heading {
+    background-color: #494842;
+    color: white;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 0;
+}
+
+#home .simple-intro .panel-body {
+    background-color: #D8D6D3;
+    color: #333;
+}
+
 #survey.carousel .item {
     min-height: 500px;
     width: 100%;
@@ -305,9 +352,18 @@
 
 #follow-ygrass p.tip {
     color: white;
-    width: 145px;
+    width: 140px;
+    font-size: 13px;
 }
 
 #follow-ygrass td {
     padding-top: 5px;
+}
+
+#follow-ygrass .follow-btn {
+    color: white;
+    size: 16px;
+    background-color: #F15B55;
+    padding: 7px 21px;
+    display: block;
 }

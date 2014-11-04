@@ -31,7 +31,7 @@ class UpdateClothingView(SuperuserRequiredMixin, UpdateView):
     success_url = reverse_lazy('clothings:list')
 
 
-class ClothingListView(SuperuserRequiredMixin, ListView):
+class ClothingListView(StaffuserRequiredMixin, ListView):
     """
     Display all the clothings
     """

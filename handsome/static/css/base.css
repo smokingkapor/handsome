@@ -112,53 +112,31 @@ a.highlight {
     height: 100%;
 }
 
-#header .btn {
-    color: white;
-    background-color: #3FADDE;
-}
-
-#header .buttons .btn {
-    position:absolute;
-    bottom:5px;
-}
-
-#header .simple-intro {
-    color: white;
-    width: 200px;
-    text-align: left;
-    font-size: 13px;
-}
-
-#header .more-intro {
-    font-weight: bold;
-    background-color: #6E674E;
-    width: 200px;
-}
-
-#header .simple-intro .panel {
-    margin-bottom: 0;
-    border: none;
-}
-
-#header .simple-intro .panel-heading {
-    background-color: #494842;
-    color: white;
-    font-weight: bold;
-    padding: 5px 15px;
-    border-radius: 0;
-}
-
-#header .simple-intro .panel-body {
-    background-color: #D8D6D3;
-    color: #333;
-}
-
 #header .menus li a {
     color: white;
 }
 
 #header .menus li {
     padding: 0 20px;
+}
+
+#new_header {
+    background-color: black;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+#new_header a {
+    color: white;
+}
+
+#new_header li {
+    padding: 0 25px;
+    font-size: 15px;
+}
+
+#header-logo {
+    padding: 5px 0 5px 32px;
 }
 
 #footer {

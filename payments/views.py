@@ -59,7 +59,7 @@ class PayView(LoginRequiredMixin, RedirectView):
             payment = 'final'
             subject = u'优草形象'
             # total_fee = order.total_price - order.prepayment
-            total_fee = order.total_price
+            total_fee = order.final_price
         else:
             raise Http404()
         site = get_current_site(self.request)
@@ -188,7 +188,7 @@ class RefundView(SuperuserRequiredMixin, RedirectView):
             if settings.DEBUG:
                 refund_amount = 0.01
             else:
-                refund_amount = order.total_price
+                refund_amount = order.final_price
             detail_data.append(u'{}^{}^{}'.format(payment.trade_no, refund_amount, u'用户申请退款'))
         params = {
              'notify_url': u'http://{}{}'.format(site.domain, reverse('payments:refund_notify')),
