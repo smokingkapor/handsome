@@ -38,9 +38,9 @@
                     <button type="submit" class="btn btn-default input-sm">查找</button>
                 </form>
                 <br />
-
+                {% if user.is_superuser %}
                 <div class="pull-right"><a class="btn btn-primary" href="{% url 'clothings:create' %}">添加</a></div>
-
+                {% endif %}
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
@@ -70,7 +70,11 @@
                             <td>{{ obj.colors }}</td>
                             <td>{{ obj.note }}</td>
                             <td>{{ obj.is_active }}</td>
-                            <td><a href="{% url 'clothings:update' pk=obj.id %}">编辑</a></td>
+                            <td>
+                                {% if user.is_superuser %}
+                                <a href="{% url 'clothings:update' pk=obj.id %}">编辑</a>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

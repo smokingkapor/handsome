@@ -207,3 +207,10 @@ class RemoveDesignView(StaffuserRequiredMixin, RedirectView):
             raise Http404
         design.delete()
         return reverse('orders:detail', kwargs={'code': design.order.code})
+
+
+class DesignPhotosView(LoginRequiredMixin, DesignPermissionMixin, DetailView):
+    slug_field = 'code'
+    slug_url_kwarg = 'code'
+    model = Design
+    template_name = 'designs/photos.html'

@@ -311,7 +311,7 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         Override. Filter the orders
         """
         qs = super(OrderListView, self).get_queryset()
-        if not self.request.user.is_superuser:
+        if self.request.user.profile.is_designer:
             qs = qs.filter(preferred_designer=self.request.user)
 
         params = self.get_params_from_request()
