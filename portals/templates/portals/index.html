@@ -11,6 +11,8 @@
 <div id="home" class="text-center">
     <div class="start">
         <div class="container">
+            <div style="height: 600px"></div>
+            {% comment %}
             <div class="row">
                 <div class="col-md-4">
                     <div class="simple-intro">
@@ -31,9 +33,12 @@
                     </div>
                 </div>
             </div>
+            {% endcomment %}
             <div class="row">
                 <div class="col-md-4 text-left">
+                    {% comment %}
                     <a class="btn more-intro" href="{% url 'portals:static_page' 'steps' %}">查看图文说明 >></a>
+                    {% endcomment %}
                 </div>
                 <div class="col-md-4 text-center">
                     <a href="{% url 'portals:survey' %}" class="btn">马上开始 ></a>
