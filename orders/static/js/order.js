@@ -177,6 +177,7 @@ $(document).ready(function(){
         if ($(this).is('.loading')) return; else $(this).addClass('loading');
         if ($('.clothing.selected').size() == 0) {
             alert('您忘记选择衣服了');
+            $(this).removeClass('loading');
             return;
         }
         var ids = [];
