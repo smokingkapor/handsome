@@ -72,7 +72,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                    {% if order.status == DESIGNED %}
+                                    {% if order.status == DESIGNED or order.status == CREATED or order.status == REDESIGN %}
                                         <ul class="list-inline clothings">
                                             {% for design_clothing in design.clothings.all %}
                                             <li class="clothing selected" data-price="{{ design_clothing.clothing.price }}" data-id="{{ design_clothing.id }}">
