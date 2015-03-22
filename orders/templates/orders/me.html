@@ -1,7 +1,8 @@
-{% extends "page.html" %}
+{% extends "accounts/user_center.html" %}
 {% load staticfiles thumbnail %}
 
 {% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/account.css' %}">
 <link rel="stylesheet" href="{% static 'css/order.css' %}">
 {% endblock%}
 
@@ -11,31 +12,29 @@
 
 {% block title %}我的订单{% endblock %}
 
-{% block content %}
-<div class="page">
-    <div class="container">
-        <div class="row">
-            <br />
-            <div class="text-center">
-                <img src="{% static 'image/ygrass_eng.png' %}" />
-                <h4>我的订单</h4>
-                <br />
-            </div>
-            <div id="my-orders">
-                {% for obj in object_list %}
-                <div class="order col-md-12">
-                    <div class="order-head row">
-                        <div class="text-left col-sm-6">
-                            <span>订单编号：</span><a href="{% url 'orders:detail' code=obj.code %}">{{ obj.code }}</a>
-                            <span class="sep">|</span>
-                            <span>{{ obj.created_at|date:"Y年m月d日 H:i" }}</span>
-                        </div>
-                        <div class="text-right col-sm-6">
-                            <span class="pull-right">订单状态：{{ obj.get_status_display }}</span>
+{% block user_center_content %}
+<div class="container">
+    <div class="row">
+        <div id="my-orders">
+            {% for obj in object_list %}
+            <div class="order col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="text-left col-sm-9">
+                                <span>订单编号：</span>
+                                <a href="{% url 'orders:detail' code=obj.code %}">{{ obj.code }}</a>
+                                <span class="sep">|</span>
+                                <span>{{ obj.created_at|date:"m月d日 H:i" }}</span>
+                            </div>
+                            <div class="text-right col-sm-3">
+                                <span>{{ obj.get_status_display }}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="order-body row">
-                        <div class="col-sm-10">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-9">
                             {% if obj.design_set.exists %}
                                 {% for design in obj.design_set.all %}
                                     {% if design.photos.first %}
@@ -45,24 +44,60 @@
                             {% else %}
                                 <p>{{ obj.get_status_display }}</p>
                             {% endif %}
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="buttons">
-                                {{ obj.get_operations|safe }}
-                                <a href="{% url 'orders:detail' code=obj.code %}">订单详情</a>
-                                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ obj.preferred_designer.profile.qq }}&site=qq&menu=yes">联系设计师 </a>
                             </div>
-                            <div>
-                                <br />
-                                {% if obj.status == SENT %}
-                                <p><span class="glyphicon glyphicon-info-sign"></span> {{ obj.express_info }}</p>
+                            <div class="col-sm-3">
+                                {{ obj.get_operations|safe }}
+                                <a class="btn btn-sm order-detail-btn" href="{% url 'orders:detail' code=obj.code %}">订单详情>></a><br /><br />
+                                {% if obj.preferred_designer %}
+                                <a class="btn btn-sm contact-designer-btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ obj.preferred_designer.profile.qq }}&site=qq&menu=yes">联系设计师 </a>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>
+
+            {% comment %}
+            <div class="order col-md-12">
+                <div class="order-head row">
+                    <div class="text-left col-sm-6">
+                        <span>订单编号：</span><a href="{% url 'orders:detail' code=obj.code %}">{{ obj.code }}</a>
+                        <span class="sep">|</span>
+                        <span>{{ obj.created_at|date:"m月d日 H:i" }}</span>
+                    </div>
+                    <div class="text-right col-sm-6">
+                        <span class="pull-right">订单状态：{{ obj.get_status_display }}</span>
+                    </div>
+                </div>
+                <div class="order-body row">
+                    <div class="col-sm-10">
+                        {% if obj.design_set.exists %}
+                            {% for design in obj.design_set.all %}
+                                {% if design.photos.first %}
+                                    <a href="{% url 'orders:detail' code=obj.code %}"><img height="200" src="{{ design.photos.first.file|thumbnail_url:'medium' }}" /></a>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <p>{{ obj.get_status_display }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="buttons">
+                            {{ obj.get_operations|safe }}
+                            <a href="{% url 'orders:detail' code=obj.code %}">订单详情</a>
+                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ obj.preferred_designer.profile.qq }}&site=qq&menu=yes">联系设计师 </a>
+                        </div>
+                        <div>
+                            <br />
+                            {% if obj.status == SENT %}
+                            <p><span class="glyphicon glyphicon-info-sign"></span> {{ obj.express_info }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endcomment %}
+            {% endfor %}
         </div>
     </div>
     {% include "orders/return.html" %}

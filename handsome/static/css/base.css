@@ -4,7 +4,7 @@ body, html {
 
 body {
     font: 14px "微软雅黑", "MicrosoftYahei", "宋体", "Arial Narrow", HELVETICA;
-    background-color: #E0E0E0;
+    background-color: #F8F8F8;
 }
 
 a:hover, a:focus {
@@ -35,11 +35,6 @@ a.highlight {
     box-shadow: 3px 3px 3px #888888;
     zoom: 1;
     filter: progid:DXImageTransform.Microsoft.DropShadow(OffX=3, OffY=3, Color=#888888);
-}
-
-#login-form {
-    padding: 20px 10px 0 10px;
-    width: 340px;
 }
 
 .eye_conversion {
@@ -79,12 +74,16 @@ a.highlight {
 
 .page {
     width: 100%;
-    min-height: 93%;
     position: relative;
+    padding: 40px 0;
 }
 
 .btn, .panel, .form-control {
     border-radius: 0;
+}
+
+.btn-primary {
+    background-color: #1583D8;
 }
 
 .form-control.alone {
@@ -96,61 +95,83 @@ a.highlight {
     display: inline;
 }
 
-#header {
-    background: url(../image/header_bg.jpg) center center no-repeat;
-    background-size: cover;
-    width: 100%;
-    height: 250px;
+.emblem {
+    border: 0;
+    border-top: 1px solid #eee;
     position: relative;
-    font-size: 15px;
-    padding-top: 20px;
+    margin: 50px 0;
 }
 
-#header.home {
-    background: url(../image/home_header_bg.jpg) center center no-repeat;
-    background-size: cover;
-    height: 100%;
+.emblem img {
+    position: absolute;
+    margin: auto;
+    top: 0; left: 0; bottom: 0; right: 0;
 }
 
-#header .menus li a {
-    color: white;
+#header {
+    background-color: white;
 }
 
-#header .menus li {
-    padding: 0 20px;
+#header .logo {
+    padding: 15px 50px 15px 0;
 }
 
-#new_header {
-    background-color: black;
-    padding: 10px 20px;
-    margin-bottom: 20px;
+#top-menu {
+    padding-top: 45px;
 }
 
-#new_header a {
-    color: white;
-}
-
-#new_header li {
-    padding: 0 25px;
-    font-size: 15px;
-}
-
-#header-logo {
-    padding: 5px 0 5px 32px;
+#top-menu li a {
+    display: inline-block;
+    padding: 5px 20px;
+    border: 1px solid #5D5D5D;
+    color: #5D5D5D;
+    margin-left: 10px;
 }
 
 #footer {
-    padding-top: 5px;
+    margin-top: 10px;
+    padding: 50px 0;
+    background-color: #E5E5E0;
 }
 
-#foot-steps {
-    background-color: #00224D;
-    background-image: url(../image/foot-steps-bg.png);
-    background-repeat: repeat-x;
-    color: #408BED;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+#footer .block {
+    background-color: #464644;
+    display: inline-block;
+    /*padding: 15px 45px;*/
+    padding-top: 13px;
+    width: 215px;
+    height: 100px;
+    color: lightgray;
+    font-weight: bold;
+    margin-top: 3px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#footer .block p {
+    margin: 10px 0 0 0;
+}
+
+#footer .block span {
+    margin-right: 30px;
+}
+
+#footer .block img.up {
+    height: 45px;
+}
+
+#footer .block img.right {
+    height: 90px;
+    margin-top: -7px;
+}
+
+#footer a {
+    color: #464644;
+}
+
+#footer .copyright {
+    color: gray;
 }
 
 #steps li {

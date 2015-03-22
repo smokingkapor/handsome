@@ -36,70 +36,65 @@
     color: white;
 }
 
-#create-order {
-    width: 100%;
-    min-height: 93%;
-    position: relative;
-}
-
-#create-order input.form-control {
-    display: inline;
-    width: 300px;
-}
-
-#create-order select {
-    width: 100px;
-    display: inline;
-}
-
-#create-order .my-requirements .title {
-    padding: 15px 40px;
-    min-width: 160px;
-}
-
-#create-order .delivery {
-    background-color: #555764;
-    padding: 20px;
-    color: white;
-}
-
-#create-order .my-requirements {
-    background-color: #333541;
-    color: white;
-    padding: 20px;
-}
-
-#create-order .my-requirements table {
-    width: 96%;
-}
-
-#my-orders a {
-    color: white;
-}
-
-#my-orders .order {
-    background-color: #333541;
-    color: white;
-    margin-top: 15px;
-}
-
-#my-orders .order-head {
-    padding: 15px 5px;
-}
-
-#my-orders .order-body {
-    background-color: #434551;
-    padding: 15px 5px;
-}
-
-#my-orders .order-body .buttons {
-    background-color: #333541;
+#my-orders .panel-heading {
     padding: 5px 15px;
 }
 
-#my-orders .order-body .buttons a {
-    display: block;
-    padding: 5px;
+#my-orders .order-detail-btn {
+    background-color: #1583D8;
+    color: white;
+}
+
+#my-orders .contact-designer-btn {
+    background-color: #FF8916;
+    color: white;
+    padding: 5px 13px;
+}
+
+#create-order ul li {
+    margin: 15px 0;
+}
+
+#create-order ul .name {
+    color: #1583D8;
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    font-size: 1.3em;
+}
+
+#create-order ul .value {
+    display: inline-block;
+    margin-left: 20px;
+    border-bottom: 1px solid lightgray;
+    width: 80%;
+    padding-left: 10px;
+    font-size: 1.3em;
+}
+
+#create-order .message {
+    margin-left: 100px;
+    border: 1px solid lightgray;
+    padding: 15px;
+}
+
+#create-order-success {
+    background-color: #F3FDED;
+    border: 1px solid lightgray;
+    border-top: 2px solid #76BB4F;
+    border-bottom: 2px solid #E8E8E7;
+    font-size: 1.3em;
+    color: #76BB4F;
+    padding: 90px;
+}
+
+#create-order-success .btn {
+    background-color: #FF7D14;
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    font-size: 1em;
+    margin: 0 10px;
 }
 
 #order-detail .panel-group {
@@ -203,6 +198,24 @@
 
 #order-detail #redesign-form {
     padding: 10px;
+}
+
+#order-address .name {
+    text-align: right;
+    background-color: #FCFCFC;
+    color: #999999;
+}
+
+#order-address .content {
+    background-color: #ffffff;
+}
+
+#order-address table {
+    padding: 10px;
+}
+
+#order-address table td {
+    padding: 15px;
 }
 
 #create_success_popup {

@@ -10,7 +10,7 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http.response import HttpResponse
 from django.views.generic.base import RedirectView, View, TemplateView
-from django.views.generic.edit import FormView, CreateView
+from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.utils.crypto import get_random_string
 
 from braces.views import(
@@ -225,17 +225,20 @@ class RemovePhotoView(LoginRequiredMixin, AjaxResponseMixin,
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/profile.html'
 
+    def get_context_data(self, **kwargs):
+        data = super(ProfileView, self).get_context_data(**kwargs)
+        data.update({'PANTS_STYLE_CHOICES': Profile.PANTS_STYLE_CHOICES})
+        return data
+
 
 class UpdateProfileView(LoginRequiredMixin, AjaxResponseMixin,
-                        JsonRequestResponseMixin, FormView):
+                        JsonRequestResponseMixin, UpdateView):
     form_class = ProfileForm
     template_name = 'accounts/update_profile.html'
+    success_url = reverse_lazy('accounts:profile')
 
-    def post_ajax(self, request, *args, **kwargs):
-        form = ProfileForm(request.POST, instance=self.request.user.profile)
-        form.save()
-        return self.render_json_response({'success': True,
-                                          'next': reverse('accounts:profile')})
+    def get_object(self, queryset=None):
+        return self.request.user.profile
 
     def get_context_data(self, **kwargs):
         """
@@ -243,12 +246,9 @@ class UpdateProfileView(LoginRequiredMixin, AjaxResponseMixin,
         """
         data = super(UpdateProfileView, self).get_context_data(**kwargs)
         data.update({
-            'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
             'CLOTHING_SIZE_CHOICES': Profile.CLOTHING_SIZE_CHOICES,
             'PANTS_SIZE_CHOICES': Profile.PANTS_SIZE_CHOICES,
-            'PANTS_STYLE_CHOICES': Profile.PANTS_STYLE_CHOICES,
-            'SHOE_SIZE_CHOICES': Profile.SHOE_SIZE_CHOICES,
-            'COLOR_CHOICES': Profile.COLOR_CHOICES,
+            'PANTS_STYLE_CHOICES': Profile.PANTS_STYLE_CHOICES
         })
         return data
 

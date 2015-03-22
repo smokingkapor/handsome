@@ -1,63 +1,67 @@
-{% extends "page.html" %}
-{% load staticfiles %}
+{% extends "accounts/user_center.html" %}
+{% load handsome_template_tags thumbnail %}
 
-{% block title %}用户管理{% endblock %}
-
-{% block extracss_compress %}
-<link rel="stylesheet" href="{% static 'css/account.css' %}">
-{% endblock %}
-
-{% block extrajs_compress %}
-<script src="{% static 'js/account.js' %}"></script>
-{% endblock %}
-
-{% block content %}
-<div class="page">
-    <div class="container">
-        <div class="text-center">
-            <br />
-            <img src="{% static 'image/ygrass_eng.png' %}" />
-            <h4>用户管理</h4>
-            <br />
-        </div>
-        <div class="row">
-            <ul class="list-inline tabs">
-                <li class="selected"><a href="{% url 'accounts:profile' %}">个人中心</a></li>
-                <li><a href="{% url 'orders:update_address' %}">发货地址管理</a></li>
-                <li><a href="{% url 'accounts:update_password' %}">密码修改</a></li>
+{% block user_center_content %}
+<div class="container" id="profile">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <ul class="list-inline row-1">
+                <li class="column col-1">
+                    <ul class="list-inline">
+                        <li class="name">
+                            <span>年龄</span><br />
+                            <span>AGE</span>
+                        </li>
+                        <li class="value">{{ user.profile.age }}</li>
+                        <li class="unit">岁</li>
+                    </ul>
+                </li>
+                <li class="column col-2">
+                    <ul class="list-inline">
+                        <li class="name">
+                            <span>身高</span><br />
+                            <span>HEIGHT</span>
+                        </li>
+                        <li class="value">{{ user.profile.height }}</li>
+                        <li class="unit">CM</li>
+                    </ul>
+                </li>
+                <li class="column col-3">
+                    <ul class="list-inline">
+                        <li class="name">
+                            <span>体重</span><br />
+                            <span>WEIGHT</span>
+                        </li>
+                        <li class="value">{{ user.profile.weight }}</li>
+                        <li class="unit">KG</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="list-inline row-2">
+                <li class="column col-1">
+                    <div class="name">上衣尺码</div>
+                    <div class="value">{{ user.profile.get_clothing_size_display }}</div>
+                    <div class="name">裤子尺码</div>
+                    <div class="value">{{ user.profile.get_pants_size_display }}</div>
+                </li>
+                <li class="column col-2">
+                    <div class="name">穿衣偏好</div>
+                    <ul class="list-inline pants-style">
+                        {% for choice in PANTS_STYLE_CHOICES %}
+                            <li {% if user.profile.pants_style == choice.0 %}class="selected"{% endif %}>{{ choice.1 }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="column col-3">
+                    <div class="name">个人照片</div>
+                    <img class="img-responsive photo" src="{{ user.photo_set.first.file|thumbnail_url:'medium' }}" />
+                </li>
             </ul>
         </div>
-        <div class="row" id="profile">
-            <div class="col-md-12">
-                <table>
-                    <tr>
-                        <td class="title">身高</td>
-                        <td>{{ user.profile.height }}</td>
-                        <td class="title">体重</td>
-                        <td>{{ user.profile.weight }}</td>
-                        <td class="title">年龄段</td>
-                        <td>{{ user.profile.get_age_group_display }}</td>
-                    </tr>
-                    <tr>
-                        <td class="title">衣服尺码</td>
-                        <td>{{ user.profile.get_clothing_size_display }}</td>
-                        <td class="title">裤子尺码</td>
-                        <td>{{ user.profile.get_pants_size_display }}</td>
-                        <td class="title">鞋子尺码</td>
-                        <td>{{ user.profile.get_shoe_size_display }}</td>
-                    </tr>
-                    <tr>
-                        <td class="title">喜欢的颜色</td>
-                        <td>{{ user.profile.get_color_display }}</td>
-                        <td class="title">裤子偏好</td>
-                        <td>{{ user.profile.get_pants_style_display }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-right"><a href="{% url 'accounts:update_profile' %}" class="btn btn-primary">修改</a></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+    </div>
+    <div class="row text-center">
+        <br />
+        <a href="{% url 'accounts:update_profile' %}" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;修改</a>
     </div>
 </div>
 {% endblock %}

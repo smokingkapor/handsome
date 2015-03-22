@@ -10,9 +10,9 @@ class CreateOrderForm(forms.ModelForm):
     """
     class Meta:
         model = Order
-        fields = ('message', 'preferred_designer', 'age_group', 'price_group',
-                  'style', 'height', 'weight', 'color', 'clothing_size',
-                  'pants_size', 'pants_style', 'shoe_size', 'situation')
+        fields = ('message', 'preferred_designer', 'age', 'price_group',
+                  'problem', 'height', 'weight', 'clothing_size',
+                  'pants_size', 'pants_style',)
 
 
 class FinishDesignForm(forms.Form):

@@ -1,127 +1,101 @@
-{% extends "page.html" %}
-{% load staticfiles thumbnail %}
+{% extends "accounts/user_center.html" %}
+{% load handsome_template_tags %}
 
-{% block title %}用户管理{% endblock %}
+{% block user_center_content %}
+<div id="update-profile" class="container">
+    <div class="row">
+        <form class="form-horizontal col-md-10 col-md-offset-1" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span class="col-sm-4 control-label">年龄</span>
 
-{% block extracss_compress %}
-<link rel="stylesheet" href="{% static 'css/account.css' %}">
-{% endblock %}
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="{{ user.profile.age }}" name="age">
 
-{% block extrajs_compress %}
-<script src="{% static 'js/account.js' %}"></script>
-{% endblock %}
-
-{% block content %}
-<div id="update-profile" class="page">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="text-center">
-                    <br />
-                    <img src="{% static 'image/ygrass_eng.png' %}" />
-                    <h4>用户管理</h4>
-                    <br />
-                </div>
-                <div class="row">
-                    <ul class="list-inline tabs">
-                        <li class="selected"><a href="{% url 'accounts:profile' %}">个人中心</a></li>
-                        <li><a href="{% url 'orders:update_address' %}">发货地址管理</a></li>
-                        <li><a href="{% url 'accounts:update_password' %}">密码修改</a></li>
-                    </ul>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 color1">
-                        <div class="line">
-                            <span class="label">身高*</span>
-                            <input id="height" type="text" class="form-control alone" value="{{ user.profile.height }}" /> <small>(厘米)</small>
-                            <span class="label">体重*</span>
-                            <input id="weight" type="text" class="form-control alone" value="{{ user.profile.weight }}" /> <small>(公斤)</small>
-                        </div>
-                        <div class="line">
-                            <span class="label">年龄*</span>
-                            <ul class="list-inline inline selector" id="age">
-                                {% for choice in AGE_GROUP_CHOICES %}
-                                    {% if user.profile.age_group == choice.0 %}
-                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
-                                    {% else %}
-                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
+                                <div class="input-group-addon">&nbsp;岁&nbsp;</div>
+                            </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <span class="col-sm-4 control-label">身高</span>
 
-                    <div class="col-sm-12 color2">
-                        <div class="line">
-                            <span class="label">衣服尺码*</span>
-                            <ul class="list-inline inline selector" id="clothing_size">
-                                {% for choice in CLOTHING_SIZE_CHOICES %}
-                                    {% if user.profile.clothing_size == choice.0 %}
-                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
-                                    {% else %}
-                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="line">
-                            <span class="label">裤子尺码*</span>
-                            <ul class="list-inline inline selector" id="pants_size">
-                                {% for choice in PANTS_SIZE_CHOICES %}
-                                    {% if user.profile.pants_size == choice.0 %}
-                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
-                                    {% else %}
-                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="line">
-                            <span class="label">鞋子尺码*</span>
-                            <ul class="list-inline inline selector" id="shoe_size">
-                                {% for choice in SHOE_SIZE_CHOICES %}
-                                    {% if user.profile.shoe_size == choice.0 %}
-                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
-                                    {% else %}
-                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="{{ user.profile.height }}" name="height">
+
+                                <div class="input-group-addon">CM</div>
+                            </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <span class="col-sm-4 control-label">体重</span>
 
-                    <div class="col-sm-12 color3">
-                        <div class="line">
-                            <span class="label">喜欢的颜色*</span>
-                            <ul class="list-inline inline selector" id="color">
-                                {% for choice in COLOR_CHOICES %}
-                                    {% if user.profile.color == choice.0 %}
-                                    <li class="selected" style="background-color: {{ choice.0 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}">&nbsp;&nbsp;</li>
-                                    {% else %}
-                                    <li style="background-color: {{ choice.0 }}" data-label="{{ choice.1 }}" data-value="{{ choice.0 }}">&nbsp;&nbsp;</li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="{{ user.profile.height }}" name="weight">
+
+                                <div class="input-group-addon">&nbsp;KG</div>
+                            </div>
                         </div>
-                        <div class="line">
-                            <span class="label">裤子偏好*</span>
-                            <ul class="list-inline inline selector" id="pants_style">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span class="col-sm-4 control-label">穿着偏好</span>
+
+                        <div class="col-sm-8">
+                            <select class="form-control" name="pants_style">
                                 {% for choice in PANTS_STYLE_CHOICES %}
                                     {% if user.profile.pants_style == choice.0 %}
-                                    <li class="selected" data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                        <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
                                     {% else %}
-                                    <li data-value="{{ choice.0 }}">{{ choice.1 }}</li>
+                                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
                                     {% endif %}
                                 {% endfor %}
-                            </ul>
+                            </select>
                         </div>
-                        <div class="line">
-                            <button id="update-profile-btn" class="btn btn-primary" data-url="{% url 'accounts:update_profile' %}" data-loading-text="正在提交...">确认修改</button>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-4 control-label">衣服尺码</span>
+
+                        <div class="col-sm-8">
+                            <select class="form-control" name="clothing_size">
+                                {% for choice in CLOTHING_SIZE_CHOICES %}
+                                    {% if user.profile.clothing_size == choice.0 %}
+                                        <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                    {% else %}
+                                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <span class="col-sm-4 control-label">裤子尺码</span>
+
+                        <div class="col-sm-8">
+                            <select class="form-control" name="pants_size">
+                                {% for choice in PANTS_SIZE_CHOICES %}
+                                    {% if user.profile.clothing_size == choice.0 %}
+                                        <option selected="selected" value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                    {% else %}
+                                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="row text-center">
+                <br />
+                <button id="update-profile-btn" class="btn btn-primary btn-lg" data-url="{% url 'accounts:update_profile' %}" data-loading-text="正在提交...">确认修改</button>
+            </div>
+        </form>
     </div>
+    <br/><br/>
 </div>
 {% endblock %}

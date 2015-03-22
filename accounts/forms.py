@@ -91,7 +91,7 @@ class RegisterForm(forms.Form):
         """
         data = self.cleaned_data
         if data.get('password') != data.get('password2'):
-            raise forms.ValidationError(u'密码匹配')
+            raise forms.ValidationError(u'两次输入的密码不匹配')
         if User.objects.filter(username=data.get('username')).exists():
             raise forms.ValidationError('用户名已经存在，是不是忘记了密码？')
         return self.data
@@ -116,8 +116,7 @@ class ProfileForm(forms.ModelForm):
     """
     class Meta:
         model = Profile
-        fields = ('height', 'weight', 'color', 'clothing_size', 'pants_size',
-                  'shoe_size', 'pants_style', 'age_group')
+        fields = ('height', 'weight', 'clothing_size', 'pants_size', 'pants_style', 'age')
 
 
 class UpdatePasswordForm(forms.Form):

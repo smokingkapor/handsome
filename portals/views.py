@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
+import json
+
 from django.core.urlresolvers import reverse_lazy
+from django.http.response import HttpResponse
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 
 from braces.views import LoginRequiredMixin
 
-from accounts.constants import BUSINESS, CASUAL, ENGLAND, CASUAL_BUSINESS
 from accounts.forms import ProfileForm
 from accounts.models import Profile
 from orders.models import Order
-from django.http.response import HttpResponse
 
 
 class IndexView(TemplateView):
@@ -31,14 +32,8 @@ class SurveyView(TemplateView):
         """
         data = super(SurveyView, self).get_context_data(**kwargs)
         data.update({
-            'STYLE_CHOICES': Profile.STYLE_CHOICES,
-            'designers': Profile.objects.filter(user__is_staff=True, is_designer=True),
-            'STYLE_IMAGES': {
-                BUSINESS: range(1, 6),
-                CASUAL: range(1, 7),
-                ENGLAND: range(1, 6),
-                CASUAL_BUSINESS: range(1, 6)
-            }
+            'PROBLEMS': Order.PROBLEMS,
+            'PROBLEMS_JSON': json.dumps(Order.PROBLEMS),
         })
         return data
 
@@ -65,15 +60,9 @@ class SurveyMoreView(LoginRequiredMixin, FormView):
         """
         data = super(SurveyMoreView, self).get_context_data(**kwargs)
         data.update({
-            'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
-            'STYLE_CHOICES': Profile.STYLE_CHOICES,
             'CLOTHING_SIZE_CHOICES': Profile.CLOTHING_SIZE_CHOICES,
             'PANTS_SIZE_CHOICES': Profile.PANTS_SIZE_CHOICES,
-            'PANTS_STYLE_CHOICES': Profile.PANTS_STYLE_CHOICES,
-            'SHOE_SIZE_CHOICES': Profile.SHOE_SIZE_CHOICES,
-            'COLOR_CHOICES': Profile.COLOR_CHOICES,
-            'SITUATION_CHOICES': Order.SITUATION_CHOICES,
-            'designers': Profile.objects.filter(user__is_staff=True, is_designer=True),  # noqa
+            'PANTS_STYLE_CHOICES': Profile.PANTS_STYLE_CHOICES
         })
         return data
 

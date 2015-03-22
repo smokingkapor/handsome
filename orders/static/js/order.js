@@ -3,9 +3,60 @@ $(document).ready(function(){
         $('#create_success_popup').modal({show: true});
     }
 
-    // address select
+    // init basic info
+    try {
+        var survey = JSON.parse(localStorage.survey || '{}');
+    } catch(err){
+        var survey = {};
+    }
+    var $createOrder = $('#create-order');
+    if ($createOrder.size() > 0 && !$createOrder.is('.one-key')) {
+        for (name in survey) {
+            var $field = $('.' + name, $createOrder);
+            $field.text(survey[name].label);
+        }
+    }
+
+    // create order
+    $('#create-order-btn').click(function(){
+        try {
+            var survey = JSON.parse(localStorage.survey || '{}');
+        } catch(err){
+            var survey = {};
+        }
+        var $btn = $(this);
+        $btn.button('loading');
+        var data = {
+            age: survey.age.value,
+            height: survey.height.value,
+            weight: survey.weight.value,
+            clothing_size: survey.clothing_size.value,
+            pants_size: survey.pants_size.value,
+            pants_style: survey.pants_style.value,
+            price_group: survey.price.value,
+            message: survey.message.value,
+            problem: survey.problem.value,
+            csrfmiddlewaretoken: get_cookie('csrftoken')
+        };
+        $.ajax({
+            url: $btn.data('url'),
+            type: 'post',
+            dataType: 'json',
+            data: data,
+            success: function(data) {
+                $btn.button('reset');
+                if (data.success) {
+                    localStorage.survey = JSON.stringify({});
+                    location.href = data.next;
+                } else {
+                    alert('创建订单失败！');
+                }
+            }
+        });
+    });
+
     $('#province, #city').change(function(){
-        $(this).nextAll('select').addClass('hidden').children('option[value!=-1]').remove();
+        $(this).parent().nextAll().find('select').addClass('hidden').children('option[value!=-1]').remove();
         var pk = $(this).val();
         if (pk != -1) {
             var $target = $($(this).data('target'));
@@ -98,7 +149,10 @@ $(document).ready(function(){
                 $('#address-pk').val(data.id);
                 $('#address-edit-panel').addClass('hidden');
                 $('#full-adress').removeClass('hidden');
-                $('#full-adress span:first').text(data.address);
+                $('#full-adress .nickname').text(data.name);
+                $('#full-adress .phone').text(data.phone);
+                $('#full-adress .region').text(data.region);
+                $('#full-adress .house').text(data.house);
             }
         });
     });
@@ -106,71 +160,6 @@ $(document).ready(function(){
     $('#edit-address-btn').click(function() {
         $('#address-edit-panel').removeClass('hidden');
         $('#full-adress').addClass('hidden');
-    });
-
-    // init basic info
-    try {
-        var survey = JSON.parse(localStorage.survey || '{}');
-    } catch(err){
-        var survey = {};
-    }
-    if ($('#create-order').size() > 0 && !$('#create-order').is('.one-key')) {
-        for (name in survey) {
-            var $field = $('#' + name);
-            if ($field.length) {
-                $field.find('span').text(survey[name].label);
-            }
-        }
-        if (survey.designer) {
-            $('#designer img').attr('src', survey.designer.avatar);
-        }
-        if (survey.message) {
-            $('#message').text(survey.message.label);
-        }
-    }
-
-    // create order
-    $('#create-order-btn').click(function(){
-        if ($('#address-edit-panel').is(':visible')) {
-            alert('请先保存配送信息');
-            return;
-        }
-        try {
-            var survey = JSON.parse(localStorage.survey || '{}');
-        } catch(err){
-            var survey = {};
-        }
-        var $btn = $(this);
-        $btn.button('loading');
-        var data = {
-            age_group: survey.age.value,
-            clothing_size: survey.clothing_size.value,
-            color: survey.color.value,
-            preferred_designer: survey.designer.value,
-            height: survey.height.value,
-            pants_size: survey.pants_size.value,
-            pants_style: survey.pants_style.value,
-            price_group: survey.price.value,
-            message: survey.message.value,
-            shoe_size: survey.shoe_size.value,
-            situation: survey.situation.value,
-            style: survey.style.value,
-            weight: survey.weight.value,
-            address: $('#address-pk').val(),
-            csrfmiddlewaretoken: get_cookie('csrftoken')
-        };
-        $.ajax({
-            url: $btn.data('url'),
-            type: 'post',
-            dataType: 'json',
-            data: data,
-            success: function(data) {
-                $btn.button('reset');
-                if (data.success) {
-                    location.href = data.next;
-                }
-            }
-        });
     });
 
     $('#confirm-selection-btn').click(function(){

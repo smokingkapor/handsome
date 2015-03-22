@@ -1,0 +1,185 @@
+$('#province, #city').change(function(){
+    $(this).parent().nextAll().find('select').addClass('hidden').children('option[value!=-1]').remove();
+    var pk = $(this).val();
+    if (pk != -1) {
+        var $target = $($(this).data('target'));
+        $.get($(this).data('url'), {pk: pk}, function(data){
+            $.each(data, function(){
+                $('<option>').val(this.pk).text(this.fields.name).appendTo($target);
+            });
+            if (data.length > 0) {
+                $target.removeClass('hidden');
+            }
+        });
+    }
+});
+
+// update address
+$('select.address').change(function(){
+    var address = '';
+    $('select.address').each(function(){
+        if ($(this).val() != -1) {
+            address += $('option:selected', this).text();
+        }
+    });
+    if (address.length > 0) {
+        address += '  ';
+    }
+    $('#region').text(address);
+});
+
+// validate all the fields in the address form
+function validate_address_form() {
+    var fields = ['#name', '#phone', '#house'];
+    for (var i in fields) {
+        var $field = $(fields[i]);
+        var val = $field.val();
+        if (!val) {
+            $field.parents('.form-group').addClass('has-error');
+        } else {
+            $field.parents('.form-group').removeClass('has-error');
+        }
+    }
+
+    if (!/^1[3-8]\d{9}$/.test($('#phone').val())) {
+        alert('手机号码格式不正确');
+        $('#phone').parents('.form-group').addClass('has-error');
+    }
+
+    $('select.address:hidden').each(function(){
+        $(this).parents('.form-group').removeClass('has-error');
+    });
+
+    $('select.address:visible').each(function(){
+        if ($(this).val() == '-1') {
+            $(this).parents('.form-group').addClass('has-error');
+        } else {
+            $(this).parents('.form-group').removeClass('has-error');
+        }
+    });
+
+    return $('#create-order .has-error').size() == 0;
+}
+
+// cancel address edit
+$('#cancel-edit-address-btn').click(function() {
+    $('#address-edit-panel').addClass('hidden');
+    $('#full-adress').removeClass('hidden');
+});
+
+// save the address info
+$('#save-address-btn').click(function(){
+    if (!validate_address_form()) {
+        return;
+    }
+    var data = {
+        address_id: $('#address-pk').val(),
+        name: $('#name').val(),
+        phone: $('#phone').val(),
+        house: $('#house').val(),
+        province: $('#province').val()
+    };
+    if ($('#city').is(':visible')) {
+        data['city'] = $('#city').val();
+    }
+    if ($('#country').is(':visible')) {
+        data['country'] = $('#country').val();
+    }
+    $.ajax({
+        url: $(this).data('url'),
+        data: data,
+        success: function(data) {
+            $('#address-pk').val(data.id);
+            $('#address-edit-panel').addClass('hidden');
+            $('#full-adress').removeClass('hidden');
+            $('#full-adress span:first').text(data.address);
+        }
+    });
+});
+
+$('#edit-address-btn').click(function() {
+    $('#address-edit-panel').removeClass('hidden');
+    $('#full-adress').addClass('hidden');
+});
+
+
+
+
+
+
+<div class="row">
+    <form class="form-horizontal col-md-12 delivery" role="form">
+        <input type="hidden" id="address-pk" value="{{ address.id }}" />
+        <p id="full-adress" {% if not address %}class="hidden"{% endif %}>
+            <span>{{ address|default_if_none:'' }}</span>
+            <a href="javascript:void(0)" id="edit-address-btn"><span class="glyphicon glyphicon-edit"></span>修改</a>
+        </p>
+        <div id="address-edit-panel" {% if address %}class="hidden"{% endif %}>
+            <div class="form-group">
+                <small class="col-sm-2 control-label"><b class="text-danger">*</b>收货人&nbsp;&nbsp;&nbsp;：</small>
+                <div class="col-sm-10">
+                    <input id="name" class="form-control input-sm" value="{{ address.name }}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <small class="col-sm-2 control-label"><b class="text-danger">*</b>所在地区：</small>
+                <div class="col-sm-10">
+                    <select id="province" class="form-control input-sm address" data-target="#city" data-url="{% url 'orders:load_address' %}?level=city">
+                        <option value="-1">--请选择--</option>
+                        {% for province in provinces %}
+                            {% if province == address.province %}
+                                <option value="{{ province.id }}" selected="selected">{{ province.name }}</option>
+                            {% else %}
+                                <option value="{{ province.id }}">{{ province.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <select id="city" class="form-control input-sm address {% if not address.city %}hidden{% endif %}" data-target="#country" data-url="{% url 'orders:load_address' %}?level=country">
+                        <option value="-1">--请选择--</option>
+                        {% for city in address.province.city_set.all %}
+                            {% if city == address.city %}
+                                <option value="{{ city.id }}" selected="selected">{{ city.name }}</option>
+                            {% else %}
+                                <option value="{{ city.id }}">{{ city.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <select id="country" class="form-control input-sm address {% if not address.country %}hidden{% endif %}" data-target="#town" data-url="{% url 'orders:load_address' %}?level=town">
+                        <option value="-1">--请选择--</option>
+                        {% for country in address.city.country_set.all %}
+                            {% if country == address.country %}
+                                <option value="{{ country.id }}" selected="selected">{{ country.name }}</option>
+                            {% else %}
+                                <option value="{{ country.id }}">{{ country.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <small class="col-sm-2 control-label"><b class="text-danger">*</b>详细地址：</small>
+                    <div class="col-sm-10">
+                        <span id="region">{{ address.get_region }}</span>
+                        <input id="house" class="form-control input-sm" value="{{ address.house }}" />
+                    </div>
+            </div>
+            <div class="form-group">
+                <small class="col-sm-2 control-label"><b class="text-danger">*</b>手机号：</small>
+                <div class="col-sm-10">
+                    <input id="phone" class="form-control input-sm" value="{% if address.phone %}{{ address.phone }}{% elif user.profile.phone %}{{ user.profile.phone }}{% endif %}" />
+                    <small>(提示：请您输入真实的手机号，您下次可以使用手机号动态密码登录。登录后您可以在账户中修改账号和密码。)</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="save-address-btn" type="button" data-url="{% url 'orders:save_address' %}" class="btn btn-default">保存配送信息</button>
+                    {% if address %}
+                    <a id="cancel-edit-address-btn" href="javascript:void(0)">取消</a>
+                    {% endif %}
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

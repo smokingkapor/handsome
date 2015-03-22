@@ -73,6 +73,75 @@ class Order(models.Model):
     """
     Order model
     """
+    PROBLEM_CHOICES = (
+        (CONFUSED_CASUAL, u'休闲'),
+        (CONFUSED_BUSINESS, u'休闲商务'),
+        (CONFUSED_SPORT, u'运动'),
+        (CONFUSED_MASHUP, u'混搭'),
+
+        (FORMAL_OCCASION_DATING, u'约会'),
+        (FORMAL_OCCASION_MEETING, u'会议'),
+        (FORMAL_OCCASION_PARTY, u'聚会'),
+        (FORMAL_OCCASION_DAILY, u'日常穿着'),
+
+        (POOR_BODY_FAT, u'偏胖'),
+        (POOR_BODY_THIN, u'偏瘦'),
+        (POOR_BODY_SPECIFIC, u'特定部位不足'),
+        (POOR_BODY_OTHER, u'其他'),
+
+        (HAVE_A_LOOK_HANDSOME, u'希望穿的更帅'),
+        (HAVE_A_LOOK_MATURE, u'显成熟'),
+        (HAVE_A_LOOK_YOUNG, u'显年轻'),
+        (HAVE_A_LOOK_OTHER, u'其他')
+    )
+
+    PROBLEMS = [
+        {
+            'value': CONFUSED,
+            'label': u'想改变现有穿衣风格',
+            'title': u'请选择您要的风格',
+            'children': [
+                [CONFUSED_CASUAL, u'休闲'],
+                [CONFUSED_BUSINESS, u'休闲商务'],
+                [CONFUSED_SPORT, u'运动'],
+                [CONFUSED_MASHUP, u'混搭']
+            ]
+        },
+        {
+            'value': FORMAL_OCCASION,
+            'label': u'要参加特定场合',
+            'title': u'请选择您要参加的场合',
+            'children': [
+                [FORMAL_OCCASION_DATING, u'约会'],
+                [FORMAL_OCCASION_MEETING, u'会议'],
+                [FORMAL_OCCASION_PARTY, u'聚会'],
+                [FORMAL_OCCASION_DAILY, u'日常穿着']
+            ]
+        },
+        {
+            'value': POOR_BODY,
+            'label': u'想弥补身形不足',
+            'title': u'请选择您身材不足的类型',
+            'children': [
+                [POOR_BODY_FAT, u'偏胖'],
+                [POOR_BODY_THIN, u'偏瘦'],
+                [POOR_BODY_SPECIFIC, u'特定部位不足'],
+                [POOR_BODY_OTHER, u'其他']
+            ]
+        },
+        {
+            'value': HAVE_A_LOOK,
+            'label': u'随便看看',
+            'title': u'请选择您想要的改变',
+            'children': [
+                [HAVE_A_LOOK_HANDSOME, u'希望穿的更帅'],
+                [HAVE_A_LOOK_MATURE, u'显成熟'],
+                [HAVE_A_LOOK_YOUNG, u'显年轻'],
+                [HAVE_A_LOOK_OTHER, u'其他']
+            ]
+        }
+    ]
+
     STATUS_CHOICES = (
         (CREATED, u'正在设计'),
         # (CREATED, u'等待支付预付款'),
@@ -89,12 +158,6 @@ class Order(models.Model):
         (RETURNING, u'正在退货'),
     )
 
-    SITUATION_CHOICES = (
-        (PARTY, u'聚会'),
-        (WORK, u'上班'),
-        (DATING, u'约会'),
-        (OTHER, u'其他')
-    )
 
     code = models.CharField(max_length=32, unique=True, blank=True, null=True)
     total_price = models.FloatField(default=0)
@@ -110,25 +173,20 @@ class Order(models.Model):
     report = models.TextField(blank=True, null=True)
 
     # user requirements
-    style = models.CharField(max_length=32, blank=True,
-                             choices=Profile.STYLE_CHOICES)
-    age_group = models.CharField(max_length=32, blank=True,
-                                 choices=Profile.AGE_GROUP_CHOICES)
+    age = models.CharField(max_length=32, blank=True)
     price_group = models.FloatField()
     height = models.CharField(max_length=16, blank=True)
     weight = models.CharField(max_length=16, blank=True)
-    color = models.CharField(max_length=32, choices=Profile.COLOR_CHOICES)
     clothing_size = models.CharField(max_length=16, blank=True,
                                      choices=Profile.CLOTHING_SIZE_CHOICES)
     pants_size = models.CharField(max_length=16, blank=True,
                                   choices=Profile.PANTS_SIZE_CHOICES)
     pants_style = models.CharField(max_length=16, blank=True,
                                    choices=Profile.PANTS_STYLE_CHOICES)
-    shoe_size = models.CharField(max_length=16, blank=True,
-                                 choices=Profile.SHOE_SIZE_CHOICES)
-    preferred_designer = models.ForeignKey(User, related_name='designed_orders')  # noqa
-    situation = models.CharField(max_length=16, blank=True,
-                                 choices=SITUATION_CHOICES)
+    problem = models.CharField(max_length=32, blank=True,
+                               choices=PROBLEM_CHOICES)
+    preferred_designer = models.ForeignKey(User, related_name='designed_orders',
+                                           blank=True, null=True)  # noqa
     message = models.TextField(blank=True)
 
     promo = models.ForeignKey(Promo, blank=True, null=True)
@@ -151,10 +209,10 @@ class Order(models.Model):
         Get operation buttons for current order
         """
         operations = ''
-#         if self.status == CREATED:
-#             # prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
-#             prepay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
-#             operations = u'<a href="{}">支付预付款</a>'.format(prepay_url)
+        #         if self.status == CREATED:
+        #             # prepay_url = reverse('orders:prepay', kwargs={'code': self.code})
+        #             prepay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
+        #             operations = u'<a href="{}">支付预付款</a>'.format(prepay_url)
         if self.status == ACCEPTED:
             # pay_url = reverse('orders:pay', kwargs={'code': self.code})
             pay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)

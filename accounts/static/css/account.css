@@ -1,166 +1,130 @@
-#phone-login {
-    background-color: #333541;
-    padding: 40px 20px;
-    color: white;
-}
-
-#phone-login .btn-primary {
-    padding: 5px 50px;
-}
-
-#login {
-    background-color: #333541;
-    padding: 40px 0;
-    color: white;
-}
-
-#login .btn-primary {
-    padding: 5px 50px;
-}
-
-#register {
-    background-color: #333541;
-    padding: 40px 0;
-    color: white;
-}
-
-#register .btn-primary {
-    padding: 5px 50px;
-}
-
-#profile {
-    background-color: #333541;
-    padding: 40px 0;
-    color: white;
-}
-
-#profile table .title {
-    padding: 15px 40px;
-    text-align: right;
-    min-width: 160px;
-}
-
-#update-password {
-    background-color: #333541;
-    padding: 40px 0;
-    color: white;
-}
-
-#update-profile .line {
-    padding: 20px;
-    color: white;
-}
-
-#update-profile .line .selector li {
-    background-color: white;
-    padding: 6px 15px;
-    margin-right: 15px;
-    color: #333;
-}
-
-#update-profile .line.required {
-    background-color: lightcoral;
-}
-
-#update-profile .line .image-selector li {
-    background-color: white;
-    padding: 1px;
-    margin: 0px 10px;
-    position: relative;
-    text-align: center;
-}
-
-
-#update-profile .line .image-selector li .cover {
-    position: absolute;
-    display: none;
-    color: white;
-    font-size: 20px;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #3364B9;
-    opacity: .7;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=70)";
-}
-
-#update-profile .line .image-selector li .name {
-    margin-top: 60%;
-}
-
-#update-profile .line .selector li:hover, #update-profile .line .selector li.selected {
-    padding: 5px 14px;
-    border: 1px white solid;
-    background-color: #3364B9;
-    color: white;
-    cursor: pointer;
-}
-
-#update-profile .line .image-selector li:hover .cover {
-    display: block;
-    cursor: pointer;
-}
-
-#update-profile .line .label {
-    padding-right: 15px;
-    font-size: 16px;
-    font-weight: normal;
-    width: 100px;
-    display: inline-block;
-}
-
-#update-profile .color1 {
-    background-color: #63677B;
-    padding: 20px;
-}
-
-#update-profile .color2 {
-    background-color: #555764;
-    padding: 20px;
-}
-
-#update-profile .color3 {
-    background-color: #333541;
-    padding: 20px;
-}
-
-.tabs {
-    margin: 0;
-    margin-bottom: 1px;
-}
-
-.tabs li {
-    background-color: #606374;
-    padding: 5px 15px;
-}
-
-.tabs li.selected {
-    background-color: #3464B9;
-}
-
-.tabs li a {
-    color: white;
-}
-
-#case {
-    background-color: #333541;
-    color: white;
-    padding: 15px;
-}
-
-#case .cases {
-    background-color: #434551;
-}
-
-#login,#phone-login,#register {
-    background: url('../image/auth_bg.jpg') top center no-repeat;
-    background-size: cover;
-}
-
 #login a,#phone-login a,#register a {
     color: orange;
 }
 
 #login a:hover,#phone-login a:hover,#register a:hover {
     color: orange;
+}
+
+#user-center .header {
+    background-color: black;
+    color: white;
+}
+
+#user-center .header li {
+    margin-left: 35px;
+    padding: 5px 0 5px 0;
+}
+
+#user-center .header li a {
+    color: lightgray;;
+    font-size: 1.1em;
+}
+
+#user-center .header li .glyphicon {
+    font-size: 1.6em;
+    vertical-align: middle;
+    margin-top: -5px;
+    color: lightgray;
+}
+
+#user-center .header b {
+    font-size: 1.5em;
+}
+
+#user-center .header li.selected .glyphicon, #user-center .header li.selected a {
+    color: #1872BC;
+}
+
+#user-center .header li.selected {
+    border-bottom: 4px solid #1872BC;
+}
+
+#user-center .header ul {
+    margin: 0;
+}
+
+#user-center .header .btn {
+    margin-top: 6px;
+}
+
+#profile .column {
+    border: 1px solid lightgray;
+    margin: 5px;
+    padding: 10px;
+    float: left;
+    background-color: white;
+    text-align: center;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#profile .row-1 .name {
+    font-size: 1.5em;
+    text-align: right;
+}
+
+#profile .row-1 .value {
+    font-size: 4.5em;
+    font-weight: bolder;
+}
+
+#profile .row-1 .unit {
+    font-size: 1.5em;
+}
+
+#profile .col-1 {
+    width: 28%;
+}
+
+#profile .col-2 {
+    width: 38%;
+}
+
+#profile .col-3 {
+    width: 28%;
+}
+
+#profile .row-2 .name {
+    font-size: 1.5em;
+}
+
+#profile .row-2 .value {
+    font-size: 4.5em;
+    font-weight: bolder;
+}
+
+#profile .pants-style li {
+    background: url(../image/pants_style.png) center center no-repeat;
+    width: 60px;
+    height: 185px;
+    padding: 18px 20px 0 20px;
+    margin: 7px 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#profile .pants-style li.selected {
+    background: url(../image/pants_style_selected.png) center center no-repeat;
+}
+
+#profile .photo {
+    padding: 13px 0;
+    max-height: 90%;
+    max-width: 96%;
+    -max-height: 90%;
+    -max-width: 96%;
+}
+
+#profile .btn, #update-profile .btn {
+    padding: 10px 55px;
+}
+
+#update-profile input.form-control {
+    border-right: 0;
+}
+
+#update-profile .input-group-addon {
+    background-color: #ffffff;
 }

@@ -6,101 +6,93 @@
 {% endblock%}
 
 {% block extrajs_compress %}
+    <script src="{% static 'js/portal.js' %}"></script>
 {% endblock%}
 {% block extrajs %}
-    <script src="{% static 'js/portal.js' %}"></script>
-<!--[if lte IE 9]>       
+<!--[if lte IE 9]>
     <script src="{% static 'ie-bootstrap-carousel/ie-bootstrap-carousel.min.js' %}"></script>
 <![endif]-->
-{% endblock%}
+{% endblock %}
 
 {% block title %}优草形象{% endblock %}
 
 {% block content %}
 <div class="carousel slide page" id="survey" data-ride="carousel" data-wrap="false" data-interval="false">
-    {% include "steps.html" %}
     <div class="carousel-inner">
-        <div class="item active" id="style">
-            <div class="carousel-caption">
-                <div class="text-center">
-                    <div><img src="{% static 'image/ygrass_eng.png' %}" /></div>
-                    <h4>时尚风格选择</h4>
-                    <p><small>您想让我们为您打造哪种风格？</small></p>
+        <div class="item problem active container auto-slide">
+            <div class="carousel-caption row">
+                <div class="col-md-12">
+                    <h4 class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;亲，我们可以解决以下问题，请选择您的问题！</h4>
                     <br />
-                    <ul class="selector auto-slide list-inline">
-                        {% for choice in STYLE_CHOICES %}
-                        <li class="option" data-value="{{ choice.0 }}", data-label="{{ choice.1 }}">
-                            <div class="title">
-                                <h2>{{ choice.1 }}</h2>
-                                <p><a data-toggle="modal" data-target="#modal_{{ choice.0 }}" href="javascript:void(0)">查看更多照片</a></p>
+                    <div class="row">
+                        {% for problem in PROBLEMS %}
+                        <div class="col-sm-3">
+                            <div class="option" data-value="{{ problem.value }}" data-label="{{ problem.label }}">
+                                <img src="{{ STATIC_URL }}image/new/problem_{{ forloop.counter }}.png" /><br /><br />
+                                <h4>{{ problem.label }}</h4>
                             </div>
-                            <img width="250" src="{{ STATIC_URL }}image/styles/{{ choice.0 }}/0.jpg" />
-                            <span class="btn btn-primary select-btn">选择这种</span>
-                        </li>
+                        </div>
                         {% endfor %}
-                    </ul>
+                    </div>
+                </div>
+                {% comment %}
+                <div class="col-md-4 text-left survey-intro">
+                    <br /><br /><br /><br /><br />
+                    <h3>只需简单三步</h3>
+                    <h4>专业形象顾问为您服务</h4>
+                    <div class="row">
+                        <div class="col-sm-1 index">①</div>
+                        <div class="col-sm-6 step">两分钟的简单问卷</div>
+                    </div>
+                    <div class="row">
+                        <p class="col-sm-5 col-sm-offset-2 arrow">↓</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1 index">②</div>
+                        <div class="col-sm-8 step">免费获取您专属的搭配方案</div>
+                    </div>
+                    <div class="row">
+                        <p class="col-sm-5 col-sm-offset-2 arrow">↓</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1 index">③</div>
+                        <div class="col-sm-6 step">便捷下单闪电发货</div>
+                    </div>
+                </div>
+                {% endcomment %}
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <a class="next" href="javascript:void(0);"><img src="{% static 'image/new/next_btn.png' %}"></a>
                 </div>
             </div>
         </div>
 
-        <div class="item" id="designer">
-            <div class="carousel-caption">
-                <div class="text-center">
-                    <div><img src="{% static 'image/ygrass_eng.png' %}" /></div>
-                    <h4>设计师选择</h4>
-                    <p><small>我们的设计师都有自己独特的搭配风格，您可以查看她们的搭配案例来选择自己喜爱的设计师。她们会在您下单之后和您取得联系。</small></p>
+        <div class="item problem-children container last-slide" data-url="{% url 'portals:survey_more' %}">
+            <script>var PROBLEMS = {{ PROBLEMS_JSON|safe }};</script>
+            <div class="carousel-caption row">
+                <div class="col-md-12">
+                    <h4 class="text-left title">&nbsp;&nbsp;&nbsp;&nbsp;</h4>
                     <br />
-                    <ul class="selector last-slide list-inline" data-url="{% url 'portals:survey_more' %}">
-                        {% for designer in designers %}
-                        <li class="option" data-value="{{ designer.user.id }}" data-label="{{ designer.user.get_full_name|default_if_empty:designer.user.username }}" data-avatar="{{ designer.avatar|thumbnail_url:'small' }}">
-                            <img height="512" src="{{ designer.avatar|thumbnail_url:'large' }}" /><br />
-                            <a class="btn btn-primary case" href="{% url 'accounts:designer_case' pk=designer.user.id %}">她的设计案例</a>
-                            <div class="intro">
-                                <p class="name"><b>{{ designer.user.get_full_name|default_if_empty:designer.user.username }}</b></p>
-                                <p class="content">{{ designer.intro|linebreaks }}</p>
-                                <br /><br /><br />
-                                <span class="btn btn-primary select-btn">选择她</span>
+                    <div class="row">
+                        <div class="col-sm-3 option-template hidden">
+                            <div class="option">
+                                <img src="{{ STATIC_URL }}image/new/problem_1.png" /><br /><br />
+                                <h4></h4>
                             </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="row">
-                    <div class="col-md-11 text-right">
-                        <br /><br />
-                        <a class="previous" href="javascript:void(0);"><img src="{% static 'image/back_btn.png' %}"></a>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 text-left">
+                    <a class="previous" href="javascript:void(0);"><img src="{% static 'image/new/back_btn.png' %}"></a>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a class="next" href="javascript:void(0);"><img src="{% static 'image/new/next_btn.png' %}"></a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% for style, values in STYLE_IMAGES.items %}
-<div class="modal fade" id="modal_{{ style }}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id="carousel_{{ style }}" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    {% for file in values %}
-                    <li data-target="#carousel_{{ style }}" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
-                    {% endfor %}
-                </ol>
-                <div class="carousel-inner">
-                    {% for file in values %}
-                    <div class="item {% if forloop.first %}active{% endif %}">
-                      <img data-src="{{ STATIC_URL }}image/styles/{{ style }}/{{ file }}.jpg" />
-                    </div>
-                    {% endfor %}
-                </div>
-                <a class="left carousel-control" href="#carousel_{{ style }}" role="button" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                </a>
-                <a class="right carousel-control" href="#carousel_{{ style }}" role="button" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
 {% endblock %}

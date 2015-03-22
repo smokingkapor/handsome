@@ -4,6 +4,7 @@ from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
+from django.forms.models import model_to_dict
 from django.http.response import Http404
 from django.shortcuts import redirect
 from django.views.generic.base import View, RedirectView, TemplateView,\
@@ -46,14 +47,6 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         Override. Add extra data to context
         """
         data = super(CreateOrderView, self).get_context_data(**kwargs)
-        try:
-            address = self.request.user.address_set.get(is_selected=True)
-        except Address.DoesNotExist:
-            address = None
-        data.update({
-            'address': address,
-            'provinces': Province.objects.all()
-        })
         if self.request.GET.get('source') == 'one-key':
             # create order by one-key, pass the last order to the context
             data.update({'last_order': self.request.user.my_orders.last()})
@@ -70,22 +63,11 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order.creator = profile.user
         profile.height = order.height
         profile.weight = order.weight
-        profile.age_group = order.age_group
-        profile.color = order.color
+        profile.age = order.age
         profile.clothing_size = order.clothing_size
         profile.pants_size = order.pants_size
         profile.pants_style = order.pants_style
-        profile.shoe_size = order.shoe_size
         profile.save()
-
-        # order address info
-        address = Address.objects.get(id=self.request.REQUEST['address'])
-        order.address_province = address.province
-        order.address_city = address.city
-        order.address_country = address.country
-        order.house = address.house
-        order.name = address.name
-        order.phone = address.phone
 
         order.save()
 
@@ -95,8 +77,8 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         profile.save()
 
         if self.request.is_ajax():
-            # url = u'{}?code={}'.format(reverse('payments:home'), order.code)
-            url = reverse('orders:detail', kwargs={'code': order.code}) + '?mode=create'
+            # url = reverse('orders:detail', kwargs={'code': order.code}) + '?mode=create'
+            url = reverse('orders:create_success', kwargs={'code': order.code})
             return self.render_json_response({'success': True, 'next': url})
 
         return super(CreateOrderView, self).form_valid(form)
@@ -161,8 +143,9 @@ class SaveAddressView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         request.user.profile.phone = request.REQUEST['phone']
         request.user.profile.save()
 
-        return self.render_json_response({'id': address.id,
-                                          'address': unicode(address)})
+        addr_dict = model_to_dict(address, fields=('id', 'name', 'phone', 'house'))
+        addr_dict.update({'region': address.get_region()})
+        return self.render_json_response(addr_dict)
 
 
 class UpdateAddressView(LoginRequiredMixin, FormView):

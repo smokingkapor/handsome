@@ -3,21 +3,23 @@
 
 {% block title %}订单创建成功{% endblock %}
 
+{% block extrajs_compress %}
+<script src="{% static 'js/order.js' %}"></script>
+{% endblock%}
+
+{% block extracss_compress %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock%}
+
 {% block content %}
 <div class="page">
-    <div class="container body">
-        <div>
-            <h4>订单创建成功</h4>
-            <hr />
-        </div>
+    <div class="container">
         <div class="row">
-            <div class="col-md-12 content">
-                <div class="row">
-                    <div class="col-md-offset-4 col-md-6">
-                        <p>订单创建成功，还差最后一步，<b>支付10%的预付款</b>。<a href="#">马上支付</a></p>
-                        <p>感谢您的支持 :-)</p>
-                    </div>
-                </div>
+            <div id="create-order-success" class="col-md-10 col-md-offset-1 text-center">
+                <p><img src="{% static 'image/create_success.png' %}"></p>
+                <p>我们已经收到您的需求，并会在24小时内将搭配方案反馈给您。</p>
+                <br /><br /><br />
+                <p class="gray">点击<a class="btn" href="{% url 'orders:me' %}"><span class="glyphicon glyphicon-shopping-cart"></span>我的订单</a>查看订单状态</p>
             </div>
         </div>
     </div>

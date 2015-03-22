@@ -10,114 +10,55 @@
 {% block content %}
 <div id="home" class="text-center">
     <div class="start">
-        <div class="container">
-            <div style="height: 600px"></div>
-            {% comment %}
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="simple-intro">
-                        <p class="text-center">开启您的专属搭配之旅 只需三步</p>
-                        <div class="panel">
-                            <div class="panel-heading">>&nbsp;&nbsp;登录注册</div>
-                            <div class="panel-body">在优草注册您的账号，优草为您提供了多种注册方式。</div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">>&nbsp;&nbsp;填写资料</div>
-                            <div class="panel-body">填写一份简单问卷（身高、体重、穿衣偏好等），优草不会泄露您的个人信息。</div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">>&nbsp;&nbsp;等待设计方案</div>
-                            <div class="panel-body">我们会根据您填写的资料为您准备多套搭配方案（24小时之内），您可以登录优草网点击我的订单查看。</div>
-                        </div>
-                        <br />
-                    </div>
-                </div>
-            </div>
-            {% endcomment %}
-            <div class="row">
-                <div class="col-md-4 text-left">
-                    {% comment %}
-                    <a class="btn more-intro" href="{% url 'portals:static_page' 'steps' %}">查看图文说明 >></a>
-                    {% endcomment %}
-                </div>
-                <div class="col-md-4 text-center">
-                    <a href="{% url 'portals:survey' %}" class="btn">马上开始 ></a>
-                    {% if user.is_authenticated and not user.profile.is_freshman %}
-                    <a href="{% url 'portals:survey_more' %}" class="btn">一键下单 ></a>
-                    {% endif %}
-                </div>
+        <div style="height: 350px"></div>
+    </div>
+    <div class="container">
+        <div class="case row">
+            <ul class="list-inline">
+                <li>
+                    <img src="{% static 'image/new/home/case_1.png' %}" />
+                    <p>约会、面试、相亲？</p>
+                </li>
+                <li>
+                    <img src="{% static 'image/new/home/case_2.png' %}" />
+                    <p>不满意自己的身材？</p>
+                </li>
+                <li>
+                    <img src="{% static 'image/new/home/case_3.png' %}" />
+                    <p>不知道穿什么？</p>
+                </li>
+            </ul>
+            <p class="intro-large">优草形象，为您<b>量身选配</b></p>
+            <p class="intro-medium">专业&nbsp;&nbsp;☆&nbsp;&nbsp;快捷&nbsp;&nbsp;☆&nbsp;&nbsp;品质</p>
+            <div>
+                <br />
+                <a href="{% url 'portals:survey' %}" class="btn btn-primary btn-lg">立即体验</a>
+                {% if user.is_authenticated and not user.profile.is_freshman %}
+                <a href="{% url 'portals:survey_more' %}" class="btn btn-primary btn-lg">一键下单</a>
+                {% endif %}
             </div>
         </div>
-    </div>
-    <a name="process"></a>
-    <div class="col-md-12">
-        <br /><br />
-        <img src="{% static 'image/ygrass_eng.png' %}" />
-        <h3>如何运作</h3>
-        <br />
-    </div>
-    <img src="{% static 'image/home_steps.png' %}" />
-    <div class="intro">
-        <br /><br /><br />
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <img src="{% static 'image/ygrass_eng_lucid.png' %}" />
-                    <h3>优草的服装</h3>
-                    <br />
-                </div>
-                <br /><br />
-                <div class="col-md-12">
-                    <div class="col-sm-6 text-right">
-                        <img src="{% static 'image/home_intro_rect.jpg' %}" />
-                    </div>
-                    <div class="col-sm-4 text-left">
-                        <br /><br /><br /><br />
-                        <p>优草的服装来源渠道丰富，款式和质量都经过我们的专业人员精挑细选，同时在保持平价的基础上，为您提供最佳的穿着解决方案。无论您是要参加聚会、相亲或是平时上班，我们的服装库都可以确保有最合适您的款式。</p>
-                    </div>
-                </div>
+        <div class="emblem"><img src="{% static 'image/new/emblem.png' %}" /></div><br />
+
+        <div class="intro row text-left">
+            <div class="header"><div style="height: 248px"></div></div>
+            <div class="col-md-4 col-md-offset-1">
+                <p class="title">专业形象顾问</p>
+                <p class="desp">我们的形象顾问为您打造最合适的穿着方案，让您在不同场合都能应对自如。</p>
             </div>
-        </div>
-        <br /><br /><br /><br />
-    </div>
-    <div class="idea">
-        <br /><br /><br />
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <img src="{% static 'image/ygrass_eng.png' %}" />
-                    <h3>优草理念</h3>
-                    <br />
-                </div>
-                <br /><br />
-                <div class="col-md-12">
-                    <div class="col-sm-6 text-right">
-                        <img src="{% static 'image/idea.png' %}" />
-                    </div>
-                    <div class="col-sm-4 text-left">
-                        <br />
-                        <h4>优草形象坚持认为</h4>
-                        <p>适合您的才是最合适的，我们不追求潮、不追求奢侈、更不追求浮夸。一件衣服的价值不仅是它的价格，更是穿在您身上的形象的提升。我们附庸风雅，但不故作高雅；我们不惜成本，但不虚抬高价。</p>
-                        <br />
-                        <p>我们坚信：<b>量身选配的，才是顾客满意的。</b></p>
-                    </div>
-                </div>
+            <div class="col-md-4 col-md-offset-2">
+                <p class="title">职业时尚买手</p>
+                <p class="desp">每件服装都由我们的时尚买手为您精心细选而来，只为让别人看到最有型的你。</p>
             </div>
+            <div class="text-center col-md-12"><br /><br /><a href="#" class="btn btn-lg">了解更多</a><br /><br /></div>
         </div>
-        <br /><br /><br /><br />
+        <div class="emblem"><img src="{% static 'image/new/emblem.png' %}" /></div><br /><br />
+
+        <div class="more-intro row">
+            <div class="col-md-6 text-right"><img src="{% static 'image/new/home/more_intro.jpg' %}" /></div>
+            <div class="col-md-4 col-md-offset-1 text-left intro-large">每套方案都经过我们的专业搭配，无论在颜色材质上都经过精心设计。</div>
+            <div class="text-center col-md-12"><br /><br /><a href="#" class="btn btn-primary btn-lg">了解更多</a><br /><br /></div>
+        </div>
     </div>
-</div>
-<div id="follow-ygrass">
-    <ul class="list-unstyled">
-        <li><img src="{% static 'image/weibo.png' %}" width="140" height="140"></li>
-        <li><p class="tip">扫描二维码关注优草形象官方微博，立即获得15%折扣优惠（请查看微博私信）</p></li>
-        <li><hr /></li>
-        {% comment %}
-        <li><wb:follow-button uid="5250208918" type="gray_1" width="147" height="24" ></wb:follow-button></li>
-        <li><p class="tip">一键关注优草形象微博</p></li>
-        {% endcomment %}
-        <li><a target="_blank" href="http://weibo.com/ygrass" class="follow-btn"><img src="{% static 'image/weibo_logo.png' %}">&nbsp;&nbsp;加关注</a></li>
-        <li><p class="tip">一键关注优草形象微博</p></li>
-    </ul>
 </div>
 {% endblock %}

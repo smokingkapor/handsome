@@ -1,51 +1,26 @@
 {% load account_tags staticfiles %}
-<div><img id="header-logo" src="{% static 'image/logo_4.png' %}" /></div>
-<ul id="new_header" class="list-inline">
-    <li>
-        <a href="/">首页</a>
-    </li>
-    <li>
-        <a href="/#process">如何运作</a>
-    </li>
-    <li>
-        <a href="{% url 'portals:static_page' 'steps' %}">帮助中心</a>
-    </li>
-    <li>
-        <a href="{% url 'portals:static_page' 'about' %}">关于优草</a>
-    </li>
-    {% if user.is_staff %}
-    <li>
-        <a href="{% url 'orders:list' %}">客户订单</a>
-    </li>
-    <li>
-        <a href="{% url 'clothings:list' %}">服装管理</a>
-    </li>
-    <li>
-        <a href="{% url 'promos:list' %}">优惠码</a>
-    </li>
-    {% endif %}
-    {% if user.is_superuser %}
-    <li>
-        <a href="{% url 'clothings:supplier_list' %}">供应商管理</a>
-    </li>
-    <li>
-        <a href="{% url 'orders:clothings' %}">配送单</a>
-    </li>
-    {% endif %}
-    {% if user.is_authenticated %}
-        {% if not user.is_staff %}
-        <li>
-            <a href="{% url 'orders:me' %}">我的订单</a>
-        </li>
-        {% endif %}
-    <li>
-        <a href="{% url 'accounts:profile' %}">{{ user.get_full_name|default_if_empty:user.username }}</a>
-        <a href="{% url 'accounts:logout' %}" class="navbar-link">退出</a>
-    </li>
-    {% else %}
-    <li>
-        <a href="{% url 'accounts:login' %}">登录 | </a>
-        <a href="{% url 'accounts:register' %}">注册</a>
-    </li>
-    {% endif %}
-</ul>
+<div id="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 text-center">
+                <a href="/"><img class="logo" src="{% static 'image/new/logo.png' %}" /></a>
+                <a href="/"><img src="{% static 'image/new/slogon.png' %}" /></a>
+            </div>
+            <div id="top-menu" class="col-md-7 text-right">
+                <ul class="list-inline">
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'orders:me' %}">{{ user.get_full_name|default_if_empty:user.username }}</a>
+                        <a href="{% url 'accounts:logout' %}" class="navbar-link">退出</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'accounts:login' %}">登录</a>
+                        <a href="{% url 'accounts:register' %}">注册</a>
+                    </li>
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
