@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import random
 from datetime import datetime
 
 from django.conf import settings
@@ -61,6 +62,7 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         order = form.save(commit=False)
         # order.prepayment = order.price_group * 0.1
         order.creator = profile.user
+        order.preferred_designer = random.choice(list(Profile.objects.filter(is_designer=True))).user
         profile.height = order.height
         profile.weight = order.weight
         profile.age = order.age
@@ -224,6 +226,7 @@ class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
             'DESIGNED': DESIGNED,
             'SENT': SENT,
             'RETURNING': RETURNING,
+            'READONLY': self.object.status not in [CREATED, DESIGNED, REDESIGN]
         })
         data.update(self.request.GET.dict())
         return data
@@ -242,8 +245,6 @@ class OrderListView(StaffuserRequiredMixin, ListView):
         data = super(OrderListView, self).get_context_data(**kwargs)
         data.update({
             'STATUS_CHOICES': Order.STATUS_CHOICES,
-            'AGE_GROUP_CHOICES': Profile.AGE_GROUP_CHOICES,
-            'STYLE_CHOICES': Profile.STYLE_CHOICES,
             'RETURNING': RETURNING,
             'REDESIGN': REDESIGN,
             'designers': Profile.objects.filter(user__is_staff=True,

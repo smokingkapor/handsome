@@ -30,35 +30,24 @@
                         <td>{{ order.height }}厘米</td>
                         <td class="title">体重</td>
                         <td>{{ order.weight }}公斤</td>
-                        <td class="title">年龄段</td>
-                        <td>{{ order.get_age_group_display }}</td>
+                        <td class="title">年龄</td>
+                        <td>{{ order.age }}</td>
                     </tr>
                     <tr>
+                        <td class="title">穿着偏好</td>
+                        <td>{{ order.get_pants_style_display }}</td>
                         <td class="title">衣服尺码</td>
                         <td>{{ order.get_clothing_size_display }}</td>
                         <td class="title">裤子尺码</td>
                         <td>{{ order.get_pants_size_display }}</td>
-                        <td class="title">鞋子尺码</td>
-                        <td>{{ order.get_shoe_size_display }}</td>
                     </tr>
                     <tr>
-                        <td class="title">喜欢的颜色</td>
-                        <td>{{ order.get_color_display }}</td>
-                        <td class="title">裤子偏好</td>
-                        <td>{{ order.get_pants_style_display }}</td>
                         <td class="title">价位</td>
                         <td>{{ order.price_group }}元左右</td>
-                    </tr>
-                    <tr>
-                        <td class="title">选择的风格</td>
-                        <td>{{ order.get_style_display }}</td>
-                        <td class="title">选择的设计师</td>
-                        <td>
-                            <img class="avatar" width="40" src="{{ order.preferred_designer.profile.avatar|thumbnail_url:'small' }}" />
-                            <span>{{ order.preferred_designer.get_full_name|default_if_empty:order.preferred_designer.username }}</span>
-                        </td>
-                        <td class="title">定制的场合</td>
-                        <td>{{ order.get_situation_display }}</td>
+                        <td class="title">类型</td>
+                        <td>{{ order.get_problem_display }}</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td class="title">更多要求</td>

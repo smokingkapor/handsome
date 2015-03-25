@@ -12,6 +12,7 @@ from .constants import WAITING, REJECTED, SELECTED
 from clothings.models import Clothing
 from handsome.utils import path_and_rename
 from orders.models import Order
+from orders.constants import CREATED, DESIGNED, REDESIGN
 
 
 class DesignPhoto(models.Model):
@@ -76,6 +77,18 @@ class Design(models.Model):
         for design_clothing in self.clothings.all():
             total_price += design_clothing.clothing.price
         return total_price
+
+    @property
+    def available_clothings(self):
+        '''
+        Return the clothings depend on the order status.
+        If design is waiting for the user to choose, display all the clothings in the design.
+        If the user has selected the clothings, display the selected clothings only.
+        '''
+        if self.order.status in [CREATED, DESIGNED, REDESIGN]:
+            return self.clothings.all()
+        else:
+            return [oc.design_clothing for oc in self.orderclothing_set.all()]
 
 
 def generate_design_code(sender, instance, created, *args, **kwargs):

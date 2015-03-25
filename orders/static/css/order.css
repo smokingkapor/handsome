@@ -97,8 +97,12 @@
     margin: 0 10px;
 }
 
-#order-detail .panel-group {
-    color: white;
+#order-detail .panel-title a {
+    display: block;
+}
+
+#order-detail #collapseZero .panel-body {
+    padding: 0;
 }
 
 #order-detail table {
@@ -106,70 +110,56 @@
 }
 
 #order-detail table .title {
-    padding: 15px 40px;
+    padding: 5px 25px;
     text-align: right;
-    min-width: 160px;
+    width: 160px;
+    color: #1583D8;
 }
 
-#order-detail .panel-group a {
-    color: white;
-}
-
-#order-detail .panel {
-    border: none;
-}
-
-#order-detail .panel-heading {
-    background-color: #333541;
-    border: none;
-}
-
-#order-detail .panel-heading a {
-    display: block;
-}
-
-#order-detail .panel-body {
-    background-color: #434551;
-    border: none;
-}
-
-#order-detail .design .slide {
-    width: 300px;
-}
-
-#order-detail .design .carousel-indicators {
-    bottom: -10px;
+#order-detail table .value {
+    border-bottom: 1px solid lightgray;
 }
 
 #order-detail .design td {
     border: none;
 }
 
-#order-detail .design {
-    background-color: #63677B;
-    border-top: 1px dotted gray;
-}
-
 #order-detail .design .preview {
-    padding: 20px;
-    margin: 5px;
+    vertical-align: top;
     width: 300px;
-}
-
-#order-detail .carousel-inner>.item>img {
-    height: 200px;
 }
 
 #order-detail .clothings .clothing {
     cursor: pointer;
     position: relative;
+    border: 1px solid lightgray;
+    padding: 10px;
+    margin: 10px;
+}
+
+#order-detail .clothings .clothing img {
+    height: 80px;
+}
+
+#order-detail .clothings .clothing .price {
+    color: orange;
+    font-size: 1.5em;
+}
+
+#order-detail .clothings .clothing p {
+    margin: 0;
+}
+
+#order-detail .clothings .clothing li {
+    vertical-align: top;
 }
 
 #order-detail .clothings .clothing .zoom {
     position: absolute;
-    top: 0;
-    right: 20px;
-    color: #333;
+    top: 10px;
+    left: 10px;
+    color: orange;
+    font-size: 1.5em;
     display: none;
 }
 
@@ -177,8 +167,8 @@
     display: inline;
 }
 
-#order-detail .clothings .clothing.selected .glyphicon {
-    display: inline-block;
+#order-detail .clothings .clothing.selected {
+    background: white url(../image/new/selected-icon-small.png) bottom right no-repeat;
 }
 
 #order-detail .clothings .clothing .glyphicon-ok {
