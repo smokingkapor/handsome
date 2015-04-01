@@ -42,16 +42,18 @@
                         <td>{{ order.get_pants_size_display }}</td>
                     </tr>
                     <tr>
-                        <td class="title">价位</td>
-                        <td>{{ order.price_group }}元左右</td>
-                        <td class="title">类型</td>
-                        <td>{{ order.get_problem_display }}</td>
-                        <td></td>
-                        <td></td>
+                        <td class="title">场合</td>
+                        <td>{{ order.get_situation_display }}</td>
+                        <td class="title">平时</td>
+                        <td>{{ order.get_usual_dress_display }}</td>
+                        <td class="title">喜欢</td>
+                        <td>{{ order.get_preferred_dress_display }}</td>
                     </tr>
                     <tr>
+                        <td class="title">价位</td>
+                        <td>{{ order.price_group }}元左右</td>
                         <td class="title">更多要求</td>
-                        <td colspan="5">{{ order.message }}</td>
+                        <td colspan="3">{{ order.message }}</td>
                     </tr>
                 </table>
                 <p>个人照片</p>

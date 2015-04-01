@@ -58,7 +58,7 @@
 #create-order ul .name {
     color: #1583D8;
     display: inline-block;
-    width: 80px;
+    width: 120px;
     text-align: right;
     font-size: 1.3em;
 }
@@ -73,7 +73,7 @@
 }
 
 #create-order .message {
-    margin-left: 100px;
+    margin-left: 140px;
     border: 1px solid lightgray;
     padding: 15px;
 }

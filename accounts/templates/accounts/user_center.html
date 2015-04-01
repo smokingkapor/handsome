@@ -37,9 +37,11 @@
                         <a href="{% url 'accounts:update_password' %}">密码修改</a>
                     </li>
                 </ul>
+                {% if not user.profile.is_freshman %}
                 <div class="col-md-2">
-                    <a href="{% url 'portals:survey' %}" class="btn btn-primary btn-sm">快速下单</a>
+                    <a href="{% url 'portals:survey' %}?mode=onekey" class="btn btn-primary btn-sm">快速下单</a>
                 </div>
+            {% endif %}
             </div>
         </div>
     </div>

@@ -23,3 +23,13 @@ WHATEVER = 'whatever'
 
 # Photo tag
 FULL_BODY_SHOT = 'full body shot'
+
+# usual dress
+USUAL_1 = '1'
+USUAL_2 = '2'
+USUAL_3 = '3'
+
+# preferred dress
+PREFERRED_1 = '1'
+PREFERRED_2 = '2'
+PREFERRED_3 = '3'

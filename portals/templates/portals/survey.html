@@ -17,49 +17,24 @@
 {% block title %}优草形象{% endblock %}
 
 {% block content %}
-<div class="carousel slide page" id="survey" data-ride="carousel" data-wrap="false" data-interval="false">
+<div class="carousel slide page {% if onekeymode %}onekeymode{% endif %}" id="survey" data-ride="carousel" data-wrap="false" data-interval="false">
     <div class="carousel-inner">
-        <div class="item problem active container auto-slide">
+        <div class="item situation active container {% if onekeymode %}last-slide{% endif %}" {% if onekeymode %}data-url="{% url 'portals:survey_more' %}"{% endif %}>
             <div class="carousel-caption row">
                 <div class="col-md-12">
-                    <h4 class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;亲，我们可以解决以下问题，请选择您的问题！</h4>
+                    <h4 class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;请选择您的着装的场合</h4>
                     <br />
                     <div class="row">
-                        {% for problem in PROBLEMS %}
+                        {% for choice in SITUATION_CHOICES %}
                         <div class="col-sm-3">
-                            <div class="option" data-value="{{ problem.value }}" data-label="{{ problem.label }}">
+                            <div class="option" data-value="{{ choice.0 }}" data-label="{{ choice.1 }}">
                                 <img src="{{ STATIC_URL }}image/new/problem_{{ forloop.counter }}.png" /><br /><br />
-                                <h4>{{ problem.label }}</h4>
+                                <h4>{{ choice.1 }}</h4>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
-                {% comment %}
-                <div class="col-md-4 text-left survey-intro">
-                    <br /><br /><br /><br /><br />
-                    <h3>只需简单三步</h3>
-                    <h4>专业形象顾问为您服务</h4>
-                    <div class="row">
-                        <div class="col-sm-1 index">①</div>
-                        <div class="col-sm-6 step">两分钟的简单问卷</div>
-                    </div>
-                    <div class="row">
-                        <p class="col-sm-5 col-sm-offset-2 arrow">↓</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-1 index">②</div>
-                        <div class="col-sm-8 step">免费获取您专属的搭配方案</div>
-                    </div>
-                    <div class="row">
-                        <p class="col-sm-5 col-sm-offset-2 arrow">↓</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-1 index">③</div>
-                        <div class="col-sm-6 step">便捷下单闪电发货</div>
-                    </div>
-                </div>
-                {% endcomment %}
             </div>
             <div class="row">
                 <div class="col-md-12 text-right">
@@ -68,19 +43,47 @@
             </div>
         </div>
 
-        <div class="item problem-children container last-slide" data-url="{% url 'portals:survey_more' %}">
-            <script>var PROBLEMS = {{ PROBLEMS_JSON|safe }};</script>
+        <div class="item usual container multiple">
             <div class="carousel-caption row">
                 <div class="col-md-12">
-                    <h4 class="text-left title">&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+                    <h4 class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;请选择您平时着装的样子</h4>
                     <br />
                     <div class="row">
-                        <div class="col-sm-3 option-template hidden">
-                            <div class="option">
-                                <img src="{{ STATIC_URL }}image/new/problem_1.png" /><br /><br />
-                                <h4></h4>
+                        {% for value, label in USUAL_DRESS_OPTIONS.items %}
+                        <div class="col-sm-3">
+                            <div class="option" data-value="{{ value }}" data-label="{{ label }}">
+                                <img src="{{ STATIC_URL }}image/new/problem_{{ forloop.counter }}.png" /><br /><br />
+                                <h4>{{ label }}</h4>
                             </div>
                         </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 text-left">
+                    <a class="previous" href="javascript:void(0);"><img src="{% static 'image/new/back_btn.png' %}"></a>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a class="next" href="javascript:void(0);"><img src="{% static 'image/new/next_btn.png' %}"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="item preferred container last-slide multiple" data-url="{% url 'portals:survey_more' %}">
+            <div class="carousel-caption row">
+                <div class="col-md-12">
+                    <h4 class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;请选择您喜欢的着装类型</h4>
+                    <br />
+                    <div class="row">
+                        {% for value, label in PREFERRED_DRESS_OPTIONS.items %}
+                        <div class="col-sm-3">
+                            <div class="option" data-value="{{ value }}" data-label="{{ label }}">
+                                <img src="{{ STATIC_URL }}image/new/problem_{{ forloop.counter }}.png" /><br /><br />
+                                <h4>{{ label }}</h4>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

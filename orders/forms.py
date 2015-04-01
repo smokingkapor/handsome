@@ -11,8 +11,8 @@ class CreateOrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ('message', 'preferred_designer', 'age', 'price_group',
-                  'problem', 'height', 'weight', 'clothing_size',
-                  'pants_size', 'pants_style',)
+                  'situation', 'usual_dress', 'preferred_dress', 'height',
+                  'weight', 'clothing_size', 'pants_size', 'pants_style',)
 
 
 class FinishDesignForm(forms.Form):

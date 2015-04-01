@@ -10,10 +10,17 @@ $(document).ready(function(){
         var survey = {};
     }
     var $createOrder = $('#create-order');
-    if ($createOrder.size() > 0 && !$createOrder.is('.one-key')) {
+    if ($createOrder.size() > 0) {
         for (name in survey) {
             var $field = $('.' + name, $createOrder);
             $field.text(survey[name].label);
+        }
+        if (survey.onekeymode) {
+            $('.usual').parents('li').hide();
+            $('.preferred').parents('li').hide();
+        }
+        if (!survey.message.value) {
+            $('.message').parents('li').hide();
         }
     }
 
@@ -35,9 +42,13 @@ $(document).ready(function(){
             pants_style: survey.pants_style.value,
             price_group: survey.price.value,
             message: survey.message.value,
-            problem: survey.problem.value,
+            situation: survey.situation.value,
             csrfmiddlewaretoken: get_cookie('csrftoken')
         };
+        if (!survey.onekeymode) {
+            data['usual_dress'] = JSON.stringify(survey.usual.value);
+            data['preferred_dress'] = JSON.stringify(survey.preferred.value);
+        }
         $.ajax({
             url: $btn.data('url'),
             type: 'post',

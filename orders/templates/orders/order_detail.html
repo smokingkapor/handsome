@@ -138,28 +138,30 @@
                                 <tr>
                                     <td class="title">年龄</td>
                                     <td class="value">{{ order.age }}岁</td>
-                                    <td class="title">穿着偏好</td>
-                                    <td class="value">{{ order.get_pants_style_display }}</td>
-                                </tr>
-                                <tr>
                                     <td class="title">身高</td>
                                     <td class="value">{{ order.height }}CM</td>
-                                    <td class="title">衣服尺码</td>
-                                    <td class="value">{{ order.get_clothing_size_display }}</td>
-                                </tr>
-                                <tr>
                                     <td class="title">体重</td>
                                     <td class="value">{{ order.weight }}KG</td>
+                                </tr>
+                                <tr>
+                                    <td class="title">穿着偏好</td>
+                                    <td class="value">{{ order.get_pants_style_display }}</td>
+                                    <td class="title">衣服尺码</td>
+                                    <td class="value">{{ order.get_clothing_size_display }}</td>
                                     <td class="title">裤子尺码</td>
                                     <td class="value">{{ order.get_pants_size_display }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="title">类型</td>
-                                    <td class="value">{{ order.get_problem_display }}</td>
-                                    <td class="title">个人预算</td>
-                                    <td class="value">{{ order.price_group }}元左右</td>
+                                    <td class="title">场合</td>
+                                    <td class="value">{{ order.get_situation_display }}</td>
+                                    <td class="title">平时的类型</td>
+                                    <td class="value">{{ order.get_usual_dress_display }}</td>
+                                    <td class="title">喜欢的类型</td>
+                                    <td class="value">{{ order.get_preferred_dress_display }}</td>
                                 </tr>
                                 <tr>
+                                    <td class="title">个人预算</td>
+                                    <td class="value">{{ order.price_group }}元左右</td>
                                     <td class="title">更多要求</td>
                                     <td colspan="3">{{ order.message }}</td>
                                 </tr>

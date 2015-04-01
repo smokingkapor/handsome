@@ -32,8 +32,10 @@ class SurveyView(TemplateView):
         """
         data = super(SurveyView, self).get_context_data(**kwargs)
         data.update({
-            'PROBLEMS': Order.PROBLEMS,
-            'PROBLEMS_JSON': json.dumps(Order.PROBLEMS),
+            'onekeymode': self.request.GET.get('mode') == 'onekey',
+            'SITUATION_CHOICES': Order.SITUATION_CHOICES,
+            'USUAL_DRESS_OPTIONS': Profile.USUAL_DRESS_OPTIONS,
+            'PREFERRED_DRESS_OPTIONS': Profile.PREFERRED_DRESS_OPTIONS
         })
         return data
 

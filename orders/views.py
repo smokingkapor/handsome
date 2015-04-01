@@ -69,6 +69,14 @@ class CreateOrderView(LoginRequiredMixin, AjaxResponseMixin, JSONResponseMixin,
         profile.clothing_size = order.clothing_size
         profile.pants_size = order.pants_size
         profile.pants_style = order.pants_style
+        if order.usual_dress:
+            profile.usual_dress = order.usual_dress
+        else:
+            order.usual_dress = profile.usual_dress
+        if order.preferred_dress:
+            profile.preferred_dress = order.preferred_dress
+        else:
+            order.preferred_dress = profile.preferred_dress
         profile.save()
 
         order.save()

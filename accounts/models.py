@@ -39,6 +39,18 @@ class Profile(models.Model):
         (WHATEVER, u'都可以'),
     )
 
+    USUAL_DRESS_OPTIONS = {
+        USUAL_1: u'平时着装的样子1',
+        USUAL_2: u'平时着装的样子2',
+        USUAL_3: u'平时着装的样子3'
+    }
+
+    PREFERRED_DRESS_OPTIONS = {
+        PREFERRED_1: u'喜欢的着装类型1',
+        PREFERRED_2: u'喜欢的着装类型2',
+        PREFERRED_3: u'喜欢的着装类型3'
+    }
+
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=16, db_index=True, blank=True)
     avatar = ThumbnailerImageField(
@@ -56,6 +68,8 @@ class Profile(models.Model):
                                   choices=PANTS_SIZE_CHOICES)
     pants_style = models.CharField(max_length=16, blank=True,
                                    choices=PANTS_STYLE_CHOICES)
+    usual_dress = models.TextField(blank=True)
+    preferred_dress = models.TextField(blank=True)
     is_freshman = models.BooleanField(default=True)
     intro = models.TextField(blank=True)
     qq = models.CharField(max_length=32, blank=True)

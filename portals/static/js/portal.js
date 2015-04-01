@@ -11,10 +11,11 @@ $(document).ready(function(){
     $(document).on('click', '#survey .option', function(){
         var $selector = $(this).parents('.item');
         var $option = $(this);
-        $selector.find('.option').removeClass('selected');
-        $option.addClass('selected');
-        if ($selector.is('.problem')){
-            render_problem_children($option.data('value'));
+        if ($selector.is('.multiple')) {
+            $option.toggleClass('selected');
+        } else {
+            $selector.find('.option').removeClass('selected');
+            $option.addClass('selected');
         }
     });
     $('#survey a.next').click(function(){
@@ -30,29 +31,6 @@ $(document).ready(function(){
             $('.carousel').carousel('next');
         }
     });
-
-    // render the problem children slide
-    function render_problem_children(problem) {
-        var $slide_item = $('#survey .problem-children');
-        var $option_template = $('.option-template', $slide_item);
-        // remove follwing options
-        $option_template.siblings('div').remove();
-        for (var i in PROBLEMS) {
-            if (PROBLEMS[i].value == problem) {
-                $('.title', $slide_item).text(PROBLEMS[i].title);
-                for (var j in PROBLEMS[i].children) {
-                    var child = PROBLEMS[i].children[j];
-                    var $new_option = $option_template.clone();
-                    $new_option.removeClass('option-template hidden');
-                    $('.option', $new_option).data('value', child[0]);
-                    $('.option', $new_option).data('label', child[1]);
-                    $('h4', $new_option).text(child[1]);
-                    $option_template.before($new_option);
-                }
-                break;
-            }
-        }
-    }
 
     // price slider tooltip
     if ($('#price-slider').size() > 0){
@@ -121,6 +99,41 @@ $(document).ready(function(){
         $survey = $('#survey');
         $surveyMore = $('#survey-more');
 
+        if ($survey.length) {
+            survey = {};
+            $selectedOption = $('.situation .option.selected', $survey);
+            survey.situation = {
+                label: $selectedOption.data('label'),
+                value: $selectedOption.data('value')
+            };
+
+            if ($survey.is('.onekeymode')) {
+                survey.onekeymode = true;
+            } else {
+                var selectedUsualValues = [];
+                var selectedUsualLabels = [];
+                $('.usual .option.selected', $survey).each(function() {
+                    selectedUsualValues.push($(this).data('value'));
+                    selectedUsualLabels.push($(this).data('label'));
+                });
+                survey.usual = {
+                    label: selectedUsualLabels,
+                    value: selectedUsualValues
+                };
+
+                var selectedPreferredValues = [];
+                var selectedPreferredLabels = [];
+                $('.preferred .option.selected', $survey).each(function() {
+                    selectedPreferredValues.push($(this).data('value'));
+                    selectedPreferredLabels.push($(this).data('label'));
+                });
+                survey.preferred = {
+                    label: selectedPreferredLabels,
+                    value: selectedPreferredValues
+                };
+            }
+        }
+
         if ($surveyMore.length) {
             $age = $('.age', $surveyMore);
             survey.age = {
@@ -171,23 +184,6 @@ $(document).ready(function(){
             };
         }
 
-        if ($survey.length) {
-            $selectedOption = $('.problem .option.selected', $survey);
-            survey.parent_problem = {
-                label: $selectedOption.data('label'),
-                value: $selectedOption.data('value')
-            };
-
-            $selectedOption = $('.problem-children .option.selected', $survey);
-            survey.problem = {
-                value: $selectedOption.data('value')
-            };
-            for (i in PROBLEMS) {
-                if (PROBLEMS[i].value == survey.parent_problem.value) {
-                    survey.problem.label = PROBLEMS[i].label + ',' + $selectedOption.data('label');
-                }
-            }
-        }
 
         localStorage.survey = JSON.stringify(survey);
     }

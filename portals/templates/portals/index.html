@@ -10,7 +10,13 @@
 {% block content %}
 <div id="home" class="text-center">
     <div class="start">
-        <div style="height: 350px"></div>
+        <div style="height: 350px">
+            <div class="col-md-offset-8 col-md-4">
+                <br /><br /><br /><br /><br /><br /><br />
+                <h4><b>先改变，后遇见</b></h4>
+                <a href="{% url 'portals:survey' %}" class="btn btn-primary ">立即体验</a>
+            </div>
+        </div>
     </div>
     <div class="container">
         <div class="case row">
@@ -30,13 +36,6 @@
             </ul>
             <p class="intro-large">优草形象，为您<b>量身选配</b></p>
             <p class="intro-medium">专业&nbsp;&nbsp;☆&nbsp;&nbsp;快捷&nbsp;&nbsp;☆&nbsp;&nbsp;品质</p>
-            <div>
-                <br />
-                <a href="{% url 'portals:survey' %}" class="btn btn-primary btn-lg">立即体验</a>
-                {% if user.is_authenticated and not user.profile.is_freshman %}
-                <a href="{% url 'portals:survey_more' %}" class="btn btn-primary btn-lg">一键下单</a>
-                {% endif %}
-            </div>
         </div>
         <div class="emblem"><img src="{% static 'image/new/emblem.png' %}" /></div><br />
 
