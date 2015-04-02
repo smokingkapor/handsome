@@ -237,6 +237,17 @@ class OrderDetailView(LoginRequiredMixin, OrderPermissionMixin, DetailView):
             'READONLY': self.object.status not in [CREATED, DESIGNED, REDESIGN]
         })
         data.update(self.request.GET.dict())
+
+        # address
+        try:
+            address = self.request.user.address_set.get(is_selected=True)
+        except Address.DoesNotExist:
+            address = None
+        data.update({
+            'address': address,
+            'provinces': Province.objects.all()
+        })
+
         return data
 
 

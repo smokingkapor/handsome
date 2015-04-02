@@ -47,7 +47,7 @@
                             </div>
                             <div class="col-sm-3 btns">
                                 {{ obj.get_operations|safe }}
-                                <a class="btn btn-sm order-detail-btn" href="{% url 'orders:detail' code=obj.code %}">订单详情>></a>
+                                <a class="btn btn-sm btn-default" href="{% url 'orders:detail' code=obj.code %}">订单详情>></a>
                                 {% if obj.preferred_designer %}
                                 <a class="btn btn-sm contact-designer-btn" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={{ obj.preferred_designer.profile.qq }}&site=qq&menu=yes">联系设计师 </a>
                                 {% endif %}

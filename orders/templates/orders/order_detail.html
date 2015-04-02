@@ -108,7 +108,7 @@
                                             </div>
                                         </form><br />
                                         <a id="promo-btn" href="javascript:void(0)" class="orange">我有优惠码</a>&nbsp;&nbsp;
-                                        <button id="confirm-selection-btn" data-url="{% url 'orders:select_clothings' code=object.code %}" class="btn btn-primary">确认并付款</button>
+                                        <button id="confirm-selection-btn" class="btn btn-primary">我选好了</button>
                                     </td>
                                 </tr>
                             {% else %}
@@ -219,4 +219,5 @@
 {% if mode %}
 {% include "orders/create_success_popup.html" %}
 {% endif %}
+{% include "orders/address_popup.html" %}
 {% endblock %}

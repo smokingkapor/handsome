@@ -40,19 +40,19 @@
     padding: 5px 15px;
 }
 
-#my-orders .order-detail-btn {
-    background-color: #1583D8;
-    color: white;
-}
-
 #my-orders .contact-designer-btn {
     background-color: #FF8916;
     color: white;
-    padding: 5px 13px;
 }
 
 #my-orders .order .btns .btn {
     margin: 5px 0;
+    width: 88px;
+}
+
+#my-orders .order .btn-operation {
+    background-color: #1583D8;
+    color: white;
 }
 
 #create-order ul li {

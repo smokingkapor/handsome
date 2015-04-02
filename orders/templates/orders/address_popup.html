@@ -1,0 +1,38 @@
+<div class="modal fade" id="orderAddress" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">收货地址</h4>
+            </div>
+            <div class="modal-body">
+                <div id="full-adress" {% if not address %}class="hidden"{% endif %}>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="name">收货人：</td>
+                            <td class="nickname">{{ address.name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="name">联系电话：</td>
+                            <td class="phone">{{ address.phone }}</td>
+                        </tr>
+                        <tr>
+                            <td class="name">所在地区：</td>
+                            <td class="region">{{ address.get_region }}</td>
+                        </tr>
+                        <tr>
+                            <td class="name">详细地址：</td>
+                            <td name="house">{{ address.house }}</td>
+                        </tr>
+                    </table>
+                    <p class="text-right">
+                        <a href="javascript:void(0)" class="btn btn-default" id="edit-address-btn">修改地址</a> &nbsp;&nbsp;
+                        <a href="javascript:void(0)" data-url="{% url 'orders:select_clothings' code=object.code %}"  class="btn btn-primary" id="confirm-address-btn">确定，去支付</a>
+                    </p>
+                </div>
+                {% include "orders/address_form.html" %}
+            </div>
+        </div>
+    </div>
+</div>

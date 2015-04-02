@@ -173,18 +173,21 @@ $(document).ready(function(){
         $('#full-adress').addClass('hidden');
     });
 
-    $('#confirm-selection-btn').click(function(){
-        if ($(this).is('.loading')) return; else $(this).addClass('loading');
-        if ($('.clothing.selected').size() == 0) {
-            alert('您忘记选择衣服了');
-            $(this).removeClass('loading');
-            return;
-        }
+    $('#confirm-address-btn').click(function() {
         var ids = [];
         $('.clothing.selected').each(function(){
             ids.push($(this).data('id'));
         });
         location.href = $(this).data('url') + '?ids=' + ids.join(',') + '&promo_code=' + $('#promotion').data('code');
+    });
+
+    $('#confirm-selection-btn').click(function(){
+        if ($('.clothing.selected').size() == 0) {
+            alert('您忘记选择衣服了');
+            $(this).removeClass('loading');
+            return;
+        }
+        $('#orderAddress').modal('show');
     });
 
     $('.return-btn').click(function(){

@@ -169,16 +169,16 @@ class Order(models.Model):
         if self.status == ACCEPTED:
             # pay_url = reverse('orders:pay', kwargs={'code': self.code})
             pay_url = u'{}?code={}'.format(reverse('payments:home'), self.code)
-            operations = u'<a class="btn btn-sm" href="{}">支付</a>'.format(pay_url)
+            operations = u'<a class="btn btn-sm btn-operation" href="{}">支付</a>'.format(pay_url)
         elif self.status == SENT:
             receive_url = reverse('orders:receive', kwargs={'code': self.code})
-            operations = u'<a class="btn btn-sm" href="{}">确认收货</a>'.format(receive_url)
+            operations = u'<a class="btn btn-sm btn-operation" href="{}">确认收货</a>'.format(receive_url)
         elif self.status == DESIGNED:
             choose_design_url = reverse('orders:detail', kwargs={'code': self.code})
-            operations = u'<a class="btn btn-sm" href="{}">挑选设计</a>'.format(choose_design_url)
+            operations = u'<a class="btn btn-sm btn-operation" href="{}">挑选设计</a>'.format(choose_design_url)
         elif self.status in [SENT, DONE]:
             return_url = '{}?code={}'.format(reverse('orders:return'), self.code)
-            operations = u'<a class="btn btn-sm" href="javascript:void(0)" class="return-btn" data-url="{}">申请退货</a>'.format(return_url)
+            operations = u'<a class="btn btn-sm btn-operation" href="javascript:void(0)" class="return-btn" data-url="{}">申请退货</a>'.format(return_url)
 
         return operations
 
