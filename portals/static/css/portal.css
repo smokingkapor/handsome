@@ -18,10 +18,11 @@
 
 #home .start .btn {
     color: white;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-    padding: 3px 35px;
+    -webkit-border-radius: 26px;
+    -moz-border-radius: 26px;
+    border-radius: 26px;
+    padding: 7px 50px;
+    font-size: 1.3em;
 }
 
 #home .case {
