@@ -2,11 +2,21 @@
 <div id="header">
     <div class="container">
         <div class="row">
-            <div class="col-md-5 text-center">
+            <div class="col-md-2 text-center">
                 <a href="/"><img class="logo" src="{% static 'image/new/logo.png' %}" /></a>
-                <a href="/"><img src="{% static 'image/new/slogon.png' %}" /></a>
             </div>
-            <div id="top-menu" class="col-md-7 text-right">
+            <div id="top-menu-link" class="col-md-8">
+                <ul class="list-inline pull-left">
+                    <li><a href="/">服务流程</a></li>
+                    <li><a href="/">服务保障</a></li>
+                </ul>
+                <ul class="list-inline pull-right">
+                    <li><a href="{% url 'orders:me' %}"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;我的订单</a></li>
+                    <li><a href="/"><span class="glyphicon glyphicon-phone"></span>&nbsp;下载APP</a></li>
+                    <li><a href="/">帮助中心</a></li>
+                </ul>
+            </div>
+            <div id="top-menu" class="col-md-2 text-center">
                 <ul class="list-inline">
                     {% if user.is_staff %}
                     <li>
@@ -30,11 +40,13 @@
                     {% if user.is_authenticated %}
                     <li>
                         <a href="{% url 'orders:me' %}">{{ user.get_full_name|default_if_empty:user.username }}</a>
+                        <span>|</span>
                         <a href="{% url 'accounts:logout' %}" class="navbar-link">退出</a>
                     </li>
                     {% else %}
                     <li>
                         <a href="{% url 'accounts:login' %}">登录</a>
+                        <span>|</span>
                         <a href="{% url 'accounts:register' %}">注册</a>
                     </li>
                     {% endif %}

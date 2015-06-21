@@ -3,26 +3,30 @@
 }
 
 #home .btn-lg {
-    padding: 10px 50px;
-    font-size: 2em;
+    padding: 5px 30px;
+    font-size: 1.6em;
     color: white;
 }
 
 #home .start {
-    background: url(../image/new/home/header_bg.jpg) center center no-repeat;
+    background: url(../image/new/home/part1.png) center center no-repeat;
     background-size: cover;
     height: 100%;
     padding: 40px 0 100px 40px;
-    color: black;
+    color: white;
+}
+
+#home .start h3 {
+    font-size: 60px;
 }
 
 #home .start .btn {
     color: white;
-    -webkit-border-radius: 26px;
-    -moz-border-radius: 26px;
-    border-radius: 26px;
+    background-color: transparent;
     padding: 7px 50px;
+    border-radius: 3px;
     font-size: 1.3em;
+    border-color: white;
 }
 
 #home .case {
@@ -30,7 +34,7 @@
 }
 
 #home .case li {
-    padding: 20px 100px;
+    padding: 20px 40px;
 }
 
 #home .case li p {
@@ -48,22 +52,24 @@
     padding: 10px;
 }
 
-#home .intro .header {
-    background: url(../image/new/home/intro_bg.jpg) center center no-repeat;
+#home .pada {
+    background: url(../image/new/home/part2.png) center center no-repeat;
+    background-size: cover;
     height: 100%;
+    padding: 40px 0 100px 40px;
+    color: white;
 }
 
-#home .intro .title {
-    font-size: 2.2em;
+#home .paga {
+    background-color: white;
 }
 
-#home .intro .desp {
-    font-size: 1.2em;
-    color: gray;
-}
-
-#home .more-intro .intro-large {
-    font-size: 1.8em;
+#home .paja {
+    background: url(../image/new/home/header_bg.jpg) center center no-repeat;
+    background-size: cover;
+    height: 100%;
+    padding: 40px 0 100px 40px;
+    color: white;
 }
 
 #survey .carousel-caption {

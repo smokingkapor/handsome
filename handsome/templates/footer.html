@@ -2,55 +2,26 @@
 <div id="footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 text-center">
-                <div class="block">
-                    <img class="up" src="{% static 'image/new/footer/7days.png' %}" />
-                    <p>七天无理由退换货</p>
+            <div class="col-md-4">
+                <img src="{% static 'image/logo_2.png' %}"/>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <br /><br /><br />
+                    <a href="{% url 'portals:static_page' 'about' %}">关于优草</a>&nbsp;|&nbsp;
+                    <a href="{% url 'portals:static_page' 'contact' %}">联系优草</a>&nbsp;|&nbsp;
+                    <a href="{% url 'portals:static_page' 'contact' %}">合作链接</a>&nbsp;|&nbsp;
+                    <a href="{% url 'portals:static_page' 'contact' %}">售后服务</a>&nbsp;|&nbsp;
+                    <a href="{% url 'portals:static_page' 'terms' %}">隐私政策</a>
                 </div>
-            </div>
-            <div class="col-md-4 text-center">
-                <div class="block">
-                    <img class="up" src="{% static 'image/new/footer/phone.png' %}" />
-                    <p>0571-88888888</p>
+                <div class="row">
+                    <br />
+                    <span class="text-left copyright">© 2014 ygrass.com, all rights reserved. 浙ICP备14019743号-1</span>
+                    <script type="text/javascript">
+                        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F1130d8d6edb9d1fa0dc1893c9f22e46a' type='text/javascript'%3E%3C/script%3E"));
+                    </script>
                 </div>
-            </div>
-            <div class="col-md-4 text-center">
-                <div class="block">
-                    <img class="up" src="{% static 'image/new/footer/info.png' %}" />
-                    <p>各季信息</p>
-                </div>
-            </div>
-        </div>
-        <br /><br />
-        <div class="row">
-            <div class="col-md-4 col-md-offset-2 text-center">
-                <div class="block">
-                    <span>微博</span>
-                    <img class="right" src="{% static 'image/new/footer/weibo.png' %}" />
-                </div>
-            </div>
-            <div class="col-md-4 text-center">
-                <div class="block">
-                    <span>微信</span>
-                    <img class="right" src="{% static 'image/new/footer/weixin.jpg' %}" />
-                </div>
-            </div>
-        </div>
-        <br /><br />
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <a href="{% url 'portals:static_page' 'about' %}">关于优草</a>&nbsp;|&nbsp;
-                <a href="{% url 'portals:static_page' 'contact' %}">联系优草</a>&nbsp;|&nbsp;
-                <a href="{% url 'portals:static_page' 'terms' %}">使用协议</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <span class="text-left copyright">© 2014 ygrass.com, all rights reserved. 浙ICP备14019743号-1</span>
-                <script type="text/javascript">
-                    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-                    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F1130d8d6edb9d1fa0dc1893c9f22e46a' type='text/javascript'%3E%3C/script%3E"));
-                </script>
             </div>
         </div>
     </div>
